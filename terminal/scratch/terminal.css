@@ -1,0 +1,15 @@
+body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#terminal {
+    width: 100vw;
+    height: 100vh;
+    color: greenyellow;
+    background-color: black;
+    margin: 0;
+    padding: 0;
+}
