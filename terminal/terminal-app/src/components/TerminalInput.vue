@@ -1,22 +1,19 @@
 <template>
     <span id="terminal-input">
         <TerminalPWDUser/>
-        <TerminalEditableWrapper :editableText="editableText"/>
-        <TerminalCursorTabWrapper :fontSize="fontSize"/>
+        <TerminalEditableWrapper :cursorIndex="cursorIndex" :editableText="editableText"/>
     </span>
 </template>
 
 <script>
-import TerminalPWDUser from './TerminalPWDUser';
-import TerminalEditableWrapper from './TerminalEditableWrapper';
-import TerminalCursorTabWrapper from './TerminalCursorTabWrapper';
+import TerminalPWDUser from './TerminalPWDUser.vue';
+import TerminalEditableWrapper from './TerminalEditableWrapper.vue';
 
 export default {
     name: 'TerminalInput',
     components: {
         TerminalPWDUser,
         TerminalEditableWrapper,
-        TerminalCursorTabWrapper
     },
     props: {
         fontSize: {
@@ -25,6 +22,10 @@ export default {
         },
         editableText: {
             type: String,
+            required: true
+        },
+        cursorIndex: {
+            type: Number,
             required: true
         }
     }

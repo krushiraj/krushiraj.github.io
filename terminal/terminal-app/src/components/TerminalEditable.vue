@@ -1,5 +1,5 @@
 <template>
-    <span>{{textToRender}}</span>
+    <span class="editable">{{textToRender}}</span>
 </template>
 
 <script>

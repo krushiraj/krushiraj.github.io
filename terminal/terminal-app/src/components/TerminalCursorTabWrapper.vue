@@ -1,6 +1,6 @@
 <template>
     <span id='cursor-tab-wrapper'>
-        <TerminalCursor :fontSize="fontSize"/>
+        <TerminalCursor :charBeneath="charBeneath" :fontSize="fontSize"/>
         <TerminalTabAutoComplete :suggestions="suggestions"/>
     </span>
 </template>
@@ -23,6 +23,10 @@ export default {
         fontSize: {
             type: Number,
             required: true
+        },
+        charBeneath: {
+            type: String,
+            default: ' '
         }
     }
 }

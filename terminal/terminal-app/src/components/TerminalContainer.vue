@@ -6,7 +6,7 @@
 		v-on:keydown="handleInput"
 	>
 		<TerminalLogin v-if="!isLoggedIn" />
-		<TerminalInput :fontSize="fontSize" :editableText="editableText" />
+		<TerminalInput :fontSize="fontSize" :cursorIndex="cursorIndex" :editableText="editableText" />
 	</div>
 </template>
 
@@ -14,7 +14,7 @@
 /* eslint-disable */
 
 
-import TerminalInput from './TerminalInput';
+import TerminalInput from './TerminalInput.vue';
 import TerminalLogin from "./TerminalLogin.vue";
 
 export default {
@@ -25,7 +25,8 @@ export default {
 	},
 	data() {
 		return {
-			editableText: ""
+			editableText: "",
+			cursorIndex: 0
 		}
 	},
 	props: {
@@ -47,6 +48,9 @@ export default {
 		}
 	},
 	computed: {
+		commandTokens: ({editableText}) => {
+
+		},
 		lastPunctuationIndex: ({punctuationIndices}) => {
 			return punctuationIndices[
 				punctuationIndices.length - 1
@@ -94,6 +98,12 @@ export default {
 		isEnter({key, keyCode}) {
 			return keyCode == 13 || key == "Enter";
 		},
+		isArrow(char) {
+			return {
+				check: char.startsWith('Arrow'),
+				direction: char.slice(5)
+			};
+		},
 		isControlActive({metaKey, ctrlKey}) {
 			const os = this.os;
 			if (os == "MacOS") {
@@ -123,6 +133,14 @@ export default {
 				)
 			}
 		},
+		handleSideArrows(direction, ctrl) {
+			if(direction == "Left") {
+				this.cursorIndex -= this.cursorIndex == 0 ? 0 : 1;
+			} else if (direction == "Right") {
+				const end = this.editableText.length;
+				this.cursorIndex += this.cursorIndex == end ? 0 : 1;
+			}
+		},
 		getRequiredData(e) {
 			const char = e.key;
 			return {
@@ -133,6 +151,7 @@ export default {
 				alnum: this.isAlNum(char),
 				isTab: this.isTab(char),
 				isEnter: this.isEnter(e),
+				isArrow: this.isArrow(char),
 				isLastCharPunc: this.isPunctuationOrSymbol(
 					this.editableText[this.editableText.length - 1] || ''
 				),
@@ -150,6 +169,7 @@ export default {
 				alnum,
 				isTab,
 				isEnter,
+				isArrow,
 				isLastCharPunc
 			} = this.getRequiredData(e);
 			console.log(e);
@@ -162,10 +182,14 @@ export default {
 			else if (this.isBackspace(char)) {
 				this.handleBackspace(ctrl);
 			}
+			else if (isArrow.check) {
+				this.handleSideArrows(isArrow.direction, ctrl);
+			}
 			else if(alnum || punctuation){
 				if (punctuation && !isLastCharPunc)
 					this.punctuationIndices.push(this.editableText.length);
 				this.editableText += ctrl ? '' : char;
+				this.cursorIndex += 1;
 			}
 		}
 	}
@@ -223,9 +247,6 @@ tab - autocomplete
 up/down - commands from history
 left-right - move cursor by one char
 	ctrl - move cursor one word
-backspace - remove one char
-	ctrl - remove one word
-
 */
 </script>
 

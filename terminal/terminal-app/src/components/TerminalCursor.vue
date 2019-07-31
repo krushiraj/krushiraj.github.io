@@ -1,11 +1,11 @@
 <template>
     <span 
-        id="cursor" 
+        class="cursor" 
         :style="{
             '--animation-duration': blinkSpeed+'s', 
             fontSize: (0.9*fontSize)+'rem'
         }"
-    >&nbsp;</span>
+    >{{_charBeneath}}</span>
 </template>
 
 <script>
@@ -19,6 +19,16 @@ export default {
         fontSize: {
             type: Number,
             required: true
+        },
+        charBeneath: {
+            type: String,
+            default: ' ' 
+            //equivalent to &nbsp;
+        }
+    },
+    computed: {
+        _charBeneath({charBeneath}) {
+            return charBeneath.replace(/\s/g, '\u00a0')
         }
     }
 }
@@ -37,7 +47,7 @@ export default {
     }
 }
 
-#cursor {
+.cursor {
     animation-name: blink;
     animation-iteration-count: infinite;
     animation-duration: var(--animation-duration);
