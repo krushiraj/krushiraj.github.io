@@ -13,9 +13,9 @@
 <script>
 /* eslint-disable */
 
-
 import TerminalInput from './TerminalInput.vue';
 import TerminalLogin from "./TerminalLogin.vue";
+import {executeCommand, commands} from './CommandProcessor.js';
 
 export default {
 	name: "TerminalContainer",
@@ -192,8 +192,28 @@ export default {
 				),
 			}
 		},
-		processCommand({command, options, args}) {
+		autoComplete() {
+			//TODO Autocomplete
+		},
+		getTokenType(token, context) {
+			const hasContext = context.length != 0;
+			if(!hasContext && token.length != 0) {
+				return 'command';
+			} else if(hasContext) {
+				if(token.trim() == '') {
+					return 'delimiter';
+				} else if(token.startsWith('--')) {
+					return 'optkey';
+				} else if(context[context.length-1]['str'].startsWith('--')) {
+					return 'optval';
+				} else {
+					return 'argument';
+				}
+			}
+		},
+		processCommand() {
 			//TODO Command processor
+			executeCommand(this.commandTokens);
 		},
 		handleInput(e) {
 			const {
@@ -204,6 +224,7 @@ export default {
 			} = this.getRequiredData(e);
 			if (isEnter){
 				console.log('TODO: Command processing');
+				this.processCommand();
 			}
 			else if (isTab) {
 				console.log('TODO: Autocompletion');
@@ -220,8 +241,8 @@ export default {
 		}
 	},
 	computed: {
-		commandTokens: ({editableText}) => {
-			console.log(editableText)
+		commandTokens({editableText}) {
+			const getTokenType = this.getTokenType;
 			let _tokens = editableText.match(/([a-zA-Z0-9-]+)|(\s+)/g);
 			let tokens = [], start = 0, end = 0;
 			for(let index in _tokens) {
@@ -229,7 +250,8 @@ export default {
 				tokens.push({
 					str: _tokens[index],
 					start,
-					end
+					end,
+					type: getTokenType(_tokens[index], tokens)
 				});
 				start = end + 1;
 			}
