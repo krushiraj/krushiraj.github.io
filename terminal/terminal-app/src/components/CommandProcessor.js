@@ -87,6 +87,32 @@ const getCommandObj = (commandTokens) => {
     return obj;
 }
 
+const paintReadOnly = (output) => {
+    currentState.children.push({
+        child: TerminalReadOnly,
+        props: {
+            readOnlyText: output,
+            breakOnNewLine: true
+        }
+    });
+}
+
+const paintInput = (pwd, cursorIndex, editableText) => {
+    currentState.children.push({
+        child: TerminalInput,
+        props: {
+            pwd, cursorIndex, editableText
+        }
+    });
+}
+
+const paintInputNew = () => {
+    currentState.cursorIndex = 0;
+    currentState.editableText = '';
+    const {pwd, cursorIndex, editableText} = currentState;
+    paintInput(pwd, cursorIndex, editableText);
+}
+
 //======================command executors==========================
 
 const execute_ls = (info) => {
@@ -94,6 +120,7 @@ const execute_ls = (info) => {
 }
 
 const changeDir = (current, to) => {
+    if (to == '..')
     return current + to + '/';
 }
 
@@ -107,23 +134,9 @@ const execute_cd = ({command}) => {
         output = `ERROR: ${toDir} is not a directory.`;
     }
     if (output) {
-        currentState.children.push({
-            child: TerminalReadOnly,
-            props: {
-                readOnlyText: output,
-                breakOnNewLine: true
-            }
-        });
+        paintReadOnly(output);
     }
-    currentState.cursorIndex = 0;
-    currentState.editableText = '';
-    const {pwd, cursorIndex, fontSize, editableText} = currentState;
-    currentState.children.push({
-        child: TerminalInput,
-        props: {
-            pwd, cursorIndex, fontSize, editableText
-        }
-    });
+    paintInputNew();
 }
 
 const execute_cat = (info) => {
