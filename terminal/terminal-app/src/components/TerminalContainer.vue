@@ -18,6 +18,7 @@
 import TerminalInput from './TerminalInput.vue';
 import TerminalLogin from "./TerminalLogin.vue";
 import {executeCommand, commands} from './CommandProcessor.js';
+import TerminalReadOnly from './TerminalReadOnly.vue';
 
 export default {
 	name: "TerminalContainer",
@@ -28,7 +29,10 @@ export default {
 	data() {
 		return {
 			editableText: "",
-			cursorIndex: 0
+			cursorIndex: 0,
+			pwd: '/',
+			childrenData: [],
+			history: []
 		}
 	},
 	props: {
@@ -43,10 +47,6 @@ export default {
 		isLoggedIn: {
 			type: Boolean,
 			default: false
-		},
-		pwd: {
-			type: String,
-			default: '/'
 		}
 	},
 	methods: {
@@ -57,7 +57,7 @@ export default {
 			return shiftKey;
 		},
 		isPunctuationOrSymbol(char) {
-			return !!char.match(/[.,';:"?\s-]/);
+			return !!char.match(/[\.,';:"?\s-]/);
 		},
 		isAlNum(char) {
 			return !!char.match(/[a-zA-Z0-9]/) && char.length == 1;
@@ -216,9 +216,28 @@ export default {
 				}
 			}
 		},
+		paintEditableAsReadOnly() {
+			const userPwd = document.getElementById("user-pwd").textContent;
+			const editable = this.childrenData[this.childrenData.length-1];
+			const readonly = {
+				child: TerminalReadOnly,
+				props: {
+					readOnlyText: userPwd.trim().concat(' ', editable.props.editableText),
+					breakOnNewLine: true,
+				}
+			}
+			this.childrenData.pop();
+			this.childrenData.push(readonly);
+		},
 		processCommand() {
-			//TODO Command processor
+			this.paintEditableAsReadOnly();
 			executeCommand(this);
+		},
+		updateChanges() {
+			const {editableText, fontSize, cursorIndex, pwd} = this;
+			this.childrenData[this.childrenData.length-1].props = {
+				editableText, fontSize, cursorIndex, pwd
+			};
 		},
 		handleInput(e) {
 			const {
@@ -243,6 +262,7 @@ export default {
 			else if(alnum || punctuation){
 				this.mutateText(ctrl, char);
 			}
+			this.updateChanges();
 		}
 	},
 	computed: {
@@ -301,15 +321,18 @@ export default {
 
 			return os;
 		},
-		children: ({pwd, cursorIndex, fontSize, editableText}) => {
-			return [
-				{
+		children({pwd, cursorIndex, fontSize, editableText, childrenData}) {
+			if (childrenData && childrenData.length != 0) {
+				return childrenData;
+			} else {
+				childrenData.push({
 					child: TerminalInput,
 					props: {
 						pwd, cursorIndex, fontSize, editableText
 					}
-				}
-			]
+				});
+				return childrenData;
+			}
 		}
 	}
 };
