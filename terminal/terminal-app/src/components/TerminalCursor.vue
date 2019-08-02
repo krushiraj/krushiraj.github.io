@@ -2,8 +2,7 @@
     <span 
         class="cursor" 
         :style="{
-            '--animation-duration': blinkSpeed+'s', 
-            fontSize: (0.9*fontSize)+'rem'
+            '--animation-duration': blinkSpeed+'s'
         }"
     >{{_charBeneath}}</span>
 </template>
@@ -15,10 +14,6 @@ export default {
         blinkSpeed: {
             type: Number,
             default: 1
-        },
-        fontSize: {
-            type: Number,
-            required: true
         },
         charBeneath: {
             type: String,
@@ -51,5 +46,6 @@ export default {
     animation-name: blink;
     animation-iteration-count: infinite;
     animation-duration: var(--animation-duration);
+    font-size: calc(var(--font-size)*0.9);
 }
 </style>

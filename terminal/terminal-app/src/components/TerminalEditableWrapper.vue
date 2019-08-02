@@ -35,7 +35,7 @@ export default {
     	this.appendChild(arr, TerminalEditable, { editableText });
     },
     appendCursorChild(arr, charBeneath) {
-      	this.appendChild(arr, TerminalCursorTabWrapper, { charBeneath, fontSize: 1 });
+      	this.appendChild(arr, TerminalCursorTabWrapper, { charBeneath });
     },
     appendChildrenFromText(arr, text, index) {
 		const tokens = text.match(/([a-zA-Z0-9-]+)|(\s+)/g);

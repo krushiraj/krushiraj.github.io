@@ -2,7 +2,7 @@
 	<div
 		id="terminal-container"
 		tabindex="1"
-		v-bind:style="{fontSize: fontSize + 'rem'}"
+		:style="{'--font-size': fontSize + 'rem'}"
 		v-on:keydown="handleInput"
 	>
 		<TerminalLogin v-if="!isLoggedIn" />
@@ -19,6 +19,8 @@ import TerminalInput from './TerminalInput.vue';
 import TerminalLogin from "./TerminalLogin.vue";
 import {executeCommand, commands} from './CommandProcessor.js';
 import TerminalReadOnly from './TerminalReadOnly.vue';
+
+//TODO: Allow user settings for color, font and font-sizes
 
 export default {
 	name: "TerminalContainer",
@@ -234,9 +236,9 @@ export default {
 			executeCommand(this);
 		},
 		updateChanges() {
-			const {editableText, fontSize, cursorIndex, pwd} = this;
+			const {editableText, cursorIndex, pwd} = this;
 			this.childrenData[this.childrenData.length-1].props = {
-				editableText, fontSize, cursorIndex, pwd
+				editableText, cursorIndex, pwd
 			};
 		},
 		handleInput(e) {
@@ -321,14 +323,14 @@ export default {
 
 			return os;
 		},
-		children({pwd, cursorIndex, fontSize, editableText, childrenData}) {
+		children({pwd, cursorIndex, editableText, childrenData}) {
 			if (childrenData && childrenData.length != 0) {
 				return childrenData;
 			} else {
 				childrenData.push({
 					child: TerminalInput,
 					props: {
-						pwd, cursorIndex, fontSize, editableText
+						pwd, cursorIndex, editableText
 					}
 				});
 				return childrenData;
@@ -336,68 +338,12 @@ export default {
 		}
 	}
 };
-/*
-
-fs: {
-	pwd: <present working directory>,
-	.: <pwd>,
-	..: <parent directory>,
-
-	folderName: {
-		type: Folder,
-		children: {
-			...childrenFilesAndFolders
-		}
-	},
-	fileName: {
-		type: File,
-	}
-}
-
-obj: {
-	command: String,
-	options: {
-		'--opt1': val1,
-		'--opt2': val2
-	},
-	args: [
-		arg1,
-		arg2
-	]
-}
-
-command [options] [arguments]
-
-commandStructure: {
-	commandName: {
-		options: [...opts],
-		arguments: [...args]
-	}
-}
-
-commandProcessor: {
-	commandName: function(...args, ...opts)
-}
-
-commands: [
-	ls, cd, cat, help, clear, color, tree, ver
-	/the next commands will directly throw permission denied error/,
-	mv, rm, mkdir, vi <newfilename>
-]
-
-tab - autocomplete
-up/down - commands from history
-*/
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
 #terminal-container {
-	/*
-	TODO: P1 - instead of passing few props for sake of CSS
-		just create CSS vars here and use them in children
-	*/
-	--test-var: 1.1rem;
+	font-size: var(--font-size);
 	padding: 10px;
 	height: auto;
 	width: auto;

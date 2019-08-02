@@ -16,10 +16,6 @@ export default {
         TerminalEditableWrapper,
     },
     props: {
-        fontSize: {
-            type: Number,
-            required: true
-        },
         editableText: {
             type: String,
             required: true

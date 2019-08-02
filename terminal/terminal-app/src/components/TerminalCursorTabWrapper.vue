@@ -1,6 +1,6 @@
 <template>
     <span id='cursor-tab-wrapper'>
-        <TerminalCursor :charBeneath="charBeneath" :fontSize="fontSize"/>
+        <TerminalCursor :charBeneath="charBeneath"/>
         <TerminalTabAutoComplete :suggestions="suggestions"/>
     </span>
 </template>
@@ -19,10 +19,6 @@ export default {
         suggestions: {
             type: Array,
             default: () => []
-        },
-        fontSize: {
-            type: Number,
-            required: true
         },
         charBeneath: {
             type: String,
