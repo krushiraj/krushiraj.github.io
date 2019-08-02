@@ -6,7 +6,9 @@
 		v-on:keydown="handleInput"
 	>
 		<TerminalLogin v-if="!isLoggedIn" />
-		<TerminalInput :fontSize="fontSize" :cursorIndex="cursorIndex" :editableText="editableText" />
+		<template v-for="({child, props}, index) in children">
+			<component :is="child" v-bind="props" :key="index"></component>
+		</template>
 	</div>
 </template>
 
@@ -41,6 +43,10 @@ export default {
 		isLoggedIn: {
 			type: Boolean,
 			default: false
+		},
+		pwd: {
+			type: String,
+			default: '/'
 		}
 	},
 	methods: {
@@ -51,7 +57,7 @@ export default {
 			return shiftKey;
 		},
 		isPunctuationOrSymbol(char) {
-			return !!char.match(/[.,';:"?\s]/);
+			return !!char.match(/[.,';:"?\s-]/);
 		},
 		isAlNum(char) {
 			return !!char.match(/[a-zA-Z0-9]/) && char.length == 1;
@@ -154,7 +160,6 @@ export default {
 			return newIndex + (append ? (dir ? -1 : 1) : 0);
 		},
 		handleSideArrows(direction, ctrl) {
-			// debugger;
 			if(direction == "Left") {
 				this.cursorIndex = (
 					ctrl ? 
@@ -204,7 +209,7 @@ export default {
 					return 'delimiter';
 				} else if(token.startsWith('--')) {
 					return 'optkey';
-				} else if(context[context.length-1]['str'].startsWith('--')) {
+				} else if(context[context.length-2]['str'].startsWith('--')) {
 					return 'optval';
 				} else {
 					return 'argument';
@@ -213,7 +218,7 @@ export default {
 		},
 		processCommand() {
 			//TODO Command processor
-			executeCommand(this.commandTokens);
+			executeCommand(this);
 		},
 		handleInput(e) {
 			const {
@@ -295,6 +300,16 @@ export default {
 			}
 
 			return os;
+		},
+		children: ({pwd, cursorIndex, fontSize, editableText}) => {
+			return [
+				{
+					child: TerminalInput,
+					props: {
+						pwd, cursorIndex, fontSize, editableText
+					}
+				}
+			]
 		}
 	}
 };

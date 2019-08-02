@@ -23,7 +23,7 @@ export default {
         },
         pwd: {
             type: String,
-            default: '/'
+            required: true
         }
     }
 }
