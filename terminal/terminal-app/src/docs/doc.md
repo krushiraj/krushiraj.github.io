@@ -40,10 +40,14 @@ commandProcessor: {
 }
 
 commands: [
-	ls, cd, cat, help, clear, color, tree, ver
+	ls, cd, cat, help, clear, color, tree, ver, fontsize
 	/the next commands will directly throw permission denied error/,
-	mv, rm, mkdir, vi <newfilename>
+	mv, rm, mkdir
 ]
 
 tab - autocomplete
 up/down - commands from history
+backspace - clear 1 char
+    ctrl - clear upto last found punctuation preceeded by char
+left/right - move cursor by 1 char
+    ctrl - move to last found punctuation preceeded by char
