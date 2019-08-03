@@ -15,7 +15,7 @@ export default {
     props: {
         username: {
             type: String,
-            default: 'Guest'
+            required: true
         },
         sysname: {
             type: String,

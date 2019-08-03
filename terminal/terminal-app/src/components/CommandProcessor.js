@@ -1,10 +1,10 @@
 /*eslint-disable*/
-import {getEntFromPath} from './fs.js';
+import FSTree from './fs.js';
 import TerminalReadOnly from './TerminalReadOnly.vue';
 import TerminalInput from './TerminalInput.vue';
 
 let currentState = {};
-
+const fsTree = new FSTree();
 //Add new code on top of this function
 //Add new funcs here
 
@@ -113,25 +113,33 @@ const paintInputNew = () => {
     paintInput(pwd, cursorIndex, editableText);
 }
 
+const handleError = ({message}) => {
+    paintReadOnly(message);
+    paintInputNew();
+}
 //======================command executors==========================
 
-const execute_ls = (info) => {
-
-}
-
-const changeDir = (current, to) => {
-    if (to == '..')
-    return current + to + '/';
+const execute_ls = ({command}) => {
+    const whichDir = command.args[0] || '.';
+    const dirEnt = fsTree.getEntFromPath(whichDir);
+    let output = ['.', '..'];
+    for(let key in dirEnt.data) {
+        output.push(dirEnt.data[key].name);
+    }
+    paintReadOnly(output.join('\n'));
+    paintInputNew();
 }
 
 const execute_cd = ({command}) => {
     const toDir = command.args[0];
-    const dirEnt = getEntFromPath(currentState.pwd+toDir);
+    const dirEnt = fsTree.getEntFromPath(toDir, true);
     let output = undefined;
     if (!dirEnt.error && dirEnt.type == 'directory') {
-        currentState.pwd = changeDir(currentState.pwd, toDir);
+        currentState.pwd = (dirEnt.path);
     } else if (dirEnt.type == 'file') {
         output = `ERROR: ${toDir} is not a directory.`;
+    } else {
+        output = dirEnt.error;
     }
     if (output) {
         paintReadOnly(output);
@@ -139,8 +147,21 @@ const execute_cd = ({command}) => {
     paintInputNew();
 }
 
-const execute_cat = (info) => {
-
+const execute_cat = ({command}) => {
+    const files = command.args;
+    let output;
+    for(let index in files) {
+        const dirEnt = fsTree.getEntFromPath(files[index]);
+        if (dirEnt.type == 'file') {
+            output = dirEnt.data;
+        } else if (dirEnt.type == 'directory') {
+            output = `ERROR: ${dirEnt.name} is not a file.`;
+        } else {
+            output = dirEnt.error;
+        }
+        paintReadOnly(output);
+    }
+    paintInputNew();
 }
 
 //======================command confs==============================
@@ -168,15 +189,21 @@ export const commands = [
 
 export const executeCommand = (_currentState) => {
     currentState = _currentState;
+    if(!currentState.prevLoggedIn) {
+        currentState.prevLoggedIn = true;
+        paintReadOnly(`You are now logged in as ${currentState.username}`);
+        paintInputNew();
+        return;
+    }
     const {commandTokens} = _currentState; 
     const [command] = commands.filter(({command}) => command == commandTokens[0]['str'])
     const {isValid, info} = isValidCommand(commandTokens, command);
-    info.command = getCommandObj(commandTokens);
     if (isValid) {
         //TODO : Execute corresponding operations and return output by appending data key to info
+        info.command = getCommandObj(commandTokens);
         console.log(info);
         command.executor(info);
     } else {
-        return {...info, error: true, data: undefined};
+        handleError({...info, error: true, data: undefined});
     }
 }

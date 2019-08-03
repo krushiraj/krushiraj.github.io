@@ -1,6 +1,6 @@
 <template>
     <span id="terminal-input">
-        <TerminalPWDUser :pwd="pwd"/>
+        <TerminalPWDUser :username="username" :pwd="pwd"/>
         <TerminalEditableWrapper :cursorIndex="cursorIndex" :editableText="editableText"/>
     </span>
 </template>
@@ -25,6 +25,10 @@ export default {
             required: true
         },
         pwd: {
+            type: String,
+            required: true
+        },
+        username: {
             type: String,
             required: true
         }

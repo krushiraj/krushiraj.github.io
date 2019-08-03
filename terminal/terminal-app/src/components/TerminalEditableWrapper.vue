@@ -38,7 +38,7 @@ export default {
       	this.appendChild(arr, TerminalCursorTabWrapper, { charBeneath });
     },
     appendChildrenFromText(arr, text, index) {
-		const tokens = text.match(/([a-zA-Z0-9-]+)|(\s+)/g);
+		const tokens = text.match(/([\/a-zA-z0-9_.()`!@#$%^&*\-=+,<>?'";|:\[\]{}]+)|(\s+)/g);
 		if (text.length == 1 && index == 1) {
 			this.appendCursorChild(arr, text);
 		} else {

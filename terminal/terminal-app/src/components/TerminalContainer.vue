@@ -5,7 +5,7 @@
 		:style="{'--font-size': fontSize + 'rem'}"
 		v-on:keydown="handleInput"
 	>
-		<TerminalLogin v-if="!isLoggedIn" />
+		<TerminalLogin :isLoggedIn="isLoggedIn"/>
 		<template v-for="({child, props}, index) in children">
 			<component :is="child" v-bind="props" :key="index"></component>
 		</template>
@@ -32,23 +32,22 @@ export default {
 		return {
 			editableText: "",
 			cursorIndex: 0,
-			pwd: '/',
+			pwd: 'Username',
 			childrenData: [],
-			history: []
+			history: [],
+			username: 'Guest',
+			prevLoggedIn: false,
+			loggedIn: false
 		}
 	},
 	props: {
-		name: {
-			type: String,
-			default: "Guest"
-		},
 		fontSize: {
 			type: Number,
 			default: 1
 		},
-		isLoggedIn: {
-			type: Boolean,
-			default: false
+		maxSessionTime: {
+			type: Number,
+			default: 86400000
 		}
 	},
 	methods: {
@@ -59,7 +58,7 @@ export default {
 			return shiftKey;
 		},
 		isPunctuationOrSymbol(char) {
-			return !!char.match(/[\.,';:"?\s-]/);
+			return !!char.match(/[\/\.,';:"?\s-]/);
 		},
 		isAlNum(char) {
 			return !!char.match(/[a-zA-Z0-9]/) && char.length == 1;
@@ -231,15 +230,29 @@ export default {
 			this.childrenData.pop();
 			this.childrenData.push(readonly);
 		},
+		loginUser() {
+			document.cookie = `username=${this.editableText};max-age=${this.maxSessionTime};path=/`;
+			if(document.cookie) {
+				this.loggedIn = true;
+				this.username = this.editableText;
+				this.pwd = '/';
+			}
+		},
 		processCommand() {
 			this.paintEditableAsReadOnly();
+			if(!this.isLoggedIn) {
+				this.loginUser();
+			}
 			executeCommand(this);
 		},
 		updateChanges() {
-			const {editableText, cursorIndex, pwd} = this;
-			this.childrenData[this.childrenData.length-1].props = {
-				editableText, cursorIndex, pwd
-			};
+			const {editableText, cursorIndex, pwd, username} = this;
+			const index = this.childrenData.length-1;
+			if(this.childrenData[index].child.name == 'TerminalInput') {
+				this.childrenData[index].props = {
+					editableText, cursorIndex, pwd, username
+				};
+			}
 		},
 		handleInput(e) {
 			const {
@@ -270,7 +283,7 @@ export default {
 	computed: {
 		commandTokens({editableText}) {
 			const getTokenType = this.getTokenType;
-			let _tokens = editableText.match(/([a-zA-Z0-9-]+)|(\s+)/g);
+			let _tokens = editableText.match(/([\/a-zA-z0-9_.()`!@#$%^&*\-=+,<>?'";|:\[\]{}]+)|(\s+)/g);
 			let tokens = [], start = 0, end = 0;
 			for(let index in _tokens) {
 				end = start + _tokens[index].length - 1;
@@ -323,15 +336,23 @@ export default {
 
 			return os;
 		},
-		children({pwd, cursorIndex, editableText, childrenData}) {
+		isLoggedIn() {
+			const cookie = document.cookie;
+			if (cookie) {
+				this.loggedIn = true;
+				this.pwd = '/';
+				this.username = cookie.split('=')[1];
+			}
+			return this.loggedIn;
+		},
+		children({pwd, username, cursorIndex, editableText, childrenData, isLoggedIn}) {
 			if (childrenData && childrenData.length != 0) {
 				return childrenData;
 			} else {
+				let props = {pwd, username, cursorIndex, editableText};
 				childrenData.push({
 					child: TerminalInput,
-					props: {
-						pwd, cursorIndex, editableText
-					}
+					props
 				});
 				return childrenData;
 			}
