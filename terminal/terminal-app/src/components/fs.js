@@ -107,12 +107,12 @@ export default class FSTree {
         ).match(/([a-zA-z0-9_.()`!@#$%^&*\-=+,<>?'";|:\[\]{}]+)|([\/]+)/g);
     }
 
-    getNodeFromToken(token) {
+    getNodeFromToken(token, pathTokens, index) {
         if (token == '/') {
             return {type:'continue'};
         } else if (
                 (this._currDir.hasOwnProperty('data') && this._currDir.data.hasOwnProperty(token)) || 
-                this._currDir.hasOwnProperty('parent')
+                (token == 'parent' && this._currDir.hasOwnProperty('parent'))
             ) {
             return token == 'parent' ? this._currDir.parent : this._currDir.data[token];
         } else {
@@ -141,7 +141,7 @@ export default class FSTree {
         const pathTokens = this.getPathTokens(path);
         for(let index in pathTokens) {
             let token = pathTokens[index];
-            temp = this.getNodeFromToken(token);
+            temp = this.getNodeFromToken(token, pathTokens, index);
             switch (temp.type) {
                 case 'error': 
                     return temp;

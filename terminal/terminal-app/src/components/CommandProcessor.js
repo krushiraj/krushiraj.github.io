@@ -86,7 +86,7 @@ const getCommandObj = (commandTokens) => {
 }
 
 const paintReadOnly = (output) => {
-    currentState.children.push({
+    currentState.childrenData.push({
         child: TerminalReadOnly,
         props: {
             readOnlyText: output,
@@ -96,7 +96,7 @@ const paintReadOnly = (output) => {
 }
 
 const paintInput = (pwd, cursorIndex, editableText) => {
-    currentState.children.push({
+    currentState.childrenData.push({
         child: TerminalInput,
         props: {
             pwd, cursorIndex, editableText
@@ -162,6 +162,11 @@ const execute_cat = ({command}) => {
     paintInputNew();
 }
 
+const execute_clear = () => {
+    currentState.childrenData = [];
+    paintInputNew();
+}
+
 //======================command confs==============================
 
 export const commands = [
@@ -182,6 +187,12 @@ export const commands = [
         options: [],
         args: Infinity,
         executor: execute_cat,
+    },
+    {
+        command: 'clear',
+        options: [],
+        args: 0,
+        executor: execute_clear
     }
 ];
 
@@ -193,13 +204,17 @@ export const executeCommand = (_currentState) => {
         paintInputNew();
         return;
     }
-    const {commandTokens} = _currentState; 
-    const [command] = commands.filter(({command}) => command == commandTokens[0]['str'])
-    const {isValid, info} = isValidCommand(commandTokens, command);
-    if (isValid) {
-        info.command = getCommandObj(commandTokens);
-        command.executor(info);
+    const {commandTokens} = _currentState;
+    if (commandTokens.length) {
+        const [command] = commands.filter(({command}) => command == commandTokens[0]['str'])
+        const {isValid, info} = isValidCommand(commandTokens, command);
+        if (isValid) {
+            info.command = getCommandObj(commandTokens);
+            command.executor(info);
+        } else {
+            handleError({...info, error: true, data: undefined});
+        }
     } else {
-        handleError({...info, error: true, data: undefined});
+        paintInputNew();
     }
 }

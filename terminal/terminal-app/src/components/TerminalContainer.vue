@@ -337,6 +337,7 @@ export default {
 		isLoggedIn() {
 			const cookie = document.cookie;
 			if (cookie) {
+				this.prevLoggedIn = true;
 				this.loggedIn = true;
 				this.pwd = '/';
 				this.username = cookie.split('=')[1];
