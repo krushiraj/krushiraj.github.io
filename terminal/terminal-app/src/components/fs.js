@@ -136,7 +136,6 @@ export default class FSTree {
     }
 
     getEntFromPath(path, cd) {
-        console.log(this);
         let temp = this.handleBaseEdgeConditions(path);
         if (temp) return temp;
         const pathTokens = this.getPathTokens(path);
@@ -159,7 +158,6 @@ export default class FSTree {
                 if(cd) {
                     this.changeDirectory();
                 }
-                console.log(this);
                 return temp.type == 'file' ? this._currFile : this._currDir;
             }
         }

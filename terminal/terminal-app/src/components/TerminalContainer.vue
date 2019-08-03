@@ -262,7 +262,6 @@ export default {
 				isArrow, isLastCharPunc
 			} = this.getRequiredData(e);
 			if (isEnter){
-				console.log('TODO: Command processing');
 				this.processCommand();
 			}
 			else if (isTab) {
@@ -298,7 +297,6 @@ export default {
 			return tokens;
 		},
 		punctuationIndices({commandTokens}) {
-			console.log(commandTokens);
 			const filtered = commandTokens.filter(
 				({str}) => this.isPunctuationOrSymbol(str)
 			);

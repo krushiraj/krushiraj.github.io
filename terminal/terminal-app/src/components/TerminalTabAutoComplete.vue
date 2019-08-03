@@ -27,7 +27,7 @@ export default {
     padding: 0;
     margin: 0;
     position: absolute;
-    top: var(--test-var); /*TODO: calc size by font size relatively*/
+    top: var(--test-var); 
     left: 0;
     float: left;
 }

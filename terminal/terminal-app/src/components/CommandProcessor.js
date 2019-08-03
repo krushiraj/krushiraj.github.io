@@ -5,8 +5,6 @@ import TerminalInput from './TerminalInput.vue';
 
 let currentState = {};
 const fsTree = new FSTree();
-//Add new code on top of this function
-//Add new funcs here
 
 const compare = (actual, expected) => {
     return actual == expected || expected.indexOf(actual) != -1;
@@ -199,9 +197,7 @@ export const executeCommand = (_currentState) => {
     const [command] = commands.filter(({command}) => command == commandTokens[0]['str'])
     const {isValid, info} = isValidCommand(commandTokens, command);
     if (isValid) {
-        //TODO : Execute corresponding operations and return output by appending data key to info
         info.command = getCommandObj(commandTokens);
-        console.log(info);
         command.executor(info);
     } else {
         handleError({...info, error: true, data: undefined});
