@@ -11,6 +11,9 @@ const compare = (actual, expected) => {
 }
 
 const checkOptKey = (str, ref, context) => {
+    if (context['command'] == 'help') {
+        return true;
+    }
     if(context.hasOwnProperty('options')) {
         context['options'] += 1;
     } else {
@@ -167,31 +170,48 @@ const execute_clear = () => {
     paintInputNew();
 }
 
+const execute_help = () => {
+    //TODO: Write help logic. Extract help for command and each of the options.
+}
+
 //======================command confs==============================
 
 export const commands = [
     {
-        command: 'ls',
-        options: ['opt1', 'acl'],
+        command: 'help',
+        options: {},
         args: 1,
+        help: `Usage: help <command name> <?options for command> \nDisplays help text for each of the command supported in this terminal and also provides help for each of the option for each commad.`,
+        executor: execute_help
+    },
+    {
+        command: 'ls',
+        options: {},
+        args: 1,
+        help: `Usage: ls <dir> \nList all files and directories in a given directory or current directory if no argument is provided.`,
         executor: execute_ls,
     },
     {
         command: 'cd',
-        options: ['opt'],
+        options: {},
         args: 1,
+        help: `Usage: cd <dir> \nChanges present working directory to the given directory.`,
         executor: execute_cd,
     },
     {
         command: 'cat',
-        options: [],
+        options: {
+            'n': `Prints the line numbers before each line.`
+        },
         args: Infinity,
+        help: `Usage: cat <?...options> <file1> <...more files> \nConcatenates file contents and displays it.`,
         executor: execute_cat,
     },
     {
         command: 'clear',
         options: [],
         args: 0,
+        help: `Usage: clear \nClears all output text present from terminal.`,
         executor: execute_clear
     }
 ];
