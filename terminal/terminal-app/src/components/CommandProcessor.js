@@ -3,6 +3,7 @@ import FSTree from './fs.js';
 import TerminalReadOnly from './TerminalReadOnly.vue';
 import TerminalInput from './TerminalInput.vue';
 
+const versio = 'Mini Terminal v1.0.190804 Beta';
 let currentState = {};
 const fsTree = new FSTree();
 
@@ -123,6 +124,11 @@ const handleError = ({message}) => {
     paintReadOnly(message);
     paintInputNew();
 }
+
+const handlePermissionDenied = () => {
+    const {username, sysname, pwd, commandTokens} = currentState;
+    handleError({message: `ERROR: ${username}@${sysname}:${pwd}: Permission denied. Cannot ${commandTokens[0].str}`});
+}
 //======================command executors==========================
 
 const execute_ls = ({command}) => {
@@ -154,9 +160,17 @@ const execute_cd = ({command}) => {
 }
 
 const execute_cat = ({command}) => {
-    const files = command.args;
+    let files = command.args;
     const lineNo = command.options['n'];
     let output;
+    if (files[0] == '*') {
+        files = [];
+        const currDir = fsTree.getEntFromPath('.');
+        for(let key in currDir.data) {
+            if(currDir.data[key].type == 'file')
+                files.push(currDir.data[key].name);
+        }
+    }
     for(let index in files) {
         const dirEnt = fsTree.getEntFromPath(files[index]);
         if (dirEnt.type == 'file') {
@@ -166,7 +180,6 @@ const execute_cat = ({command}) => {
         } else {
             output = dirEnt.error;
         }
-        debugger
         paintReadOnly(
             (lineNo ?
             (
@@ -213,6 +226,40 @@ const execute_logout = () => {
     currentState.loggedIn = false;
     paintReadOnly('You have been logged out successfully');
     paintInputNew();
+}
+
+const execute_ver = () => {
+    paintReadOnly(version);
+    paintInputNew();
+};
+
+const execute_fontsize = ({command:{args}}) => {
+    const fontsize = args[0] || 1;
+    let output;
+    if(fontsize < 1) {
+        output = `ERROR: Font-size should always be greater than 0.`;
+    } else {
+        currentState.fontsize = fontsize;
+        output = `Terminal font-size has been changed to ${fontsize} unit(s).`
+    }
+    paintReadOnly(output);
+    paintInputNew();
+}
+
+const execute_pwd = () => {
+    paintReadOnly(`Present working directory: '${currentState.pwd}'`)
+}
+
+const execute_mkdir = () => {
+    handlePermissionDenied();
+}
+
+const execute_rm = () => {
+    handlePermissionDenied();
+}
+
+const execute_mv = () => {
+    handlePermissionDenied();
 }
 
 //======================command confs==============================
@@ -267,9 +314,10 @@ export const commands = [
         options: {},
         args: 0,
         help: `Usage: ver \nPrints the current version of the terminal.`,
-        executor: execute_logout
+        executor: execute_ver
     },
     {
+        //TODO: After auto completion and command history
         command: 'color',
         options: {},
         args: 0,
@@ -281,14 +329,14 @@ export const commands = [
         options: {},
         args: 1,
         help: `Usage: fontsize <size> \nSets the font-size of the text in terminal.\nIf no argument is provided, font-size falls back to default value.\nArgument size should always be greater than 0.`,
-        executor: execute_logout
+        executor: execute_fontsize
     },
     {
         commad: 'mv',
         options: {},
         args: 2,
         help: `Usage: mv <old-path> <new-path> \nMoves files/directories or renames them.`,
-        executor: execute_logout
+        executor: execute_mv
     },
     {
         commad: 'rm',
@@ -297,30 +345,41 @@ export const commands = [
         },
         args: Infinity,
         help: `Usage: rm <file1> <?...files> \nRemoves files/directories from the disk.`,
-        executor: execute_logout
+        executor: execute_rm
     },
     {
         commad: 'mkdir',
         options: {},
         args: 1,
         help: `Usage: mkdir <directory-name> \nCreates new directory in the path specified.`,
-        executor: execute_logout
+        executor: execute_mkdir
     },
     {
         command: 'pwd',
         options: {},
         args: 0,
         help: `Usage: pwd \nUsed to print the present working directory.`,
-        executor: execute_logout
+        executor: execute_pwd
     },
     {
         command: 'sudo',
         options: {},
         args: 0,
         help: `Usage: logout \nExecute a command with root user privileges.`,
-        executor: execute_logout
+        executor: undefined
     }
 ];
+
+const handleValidCommand = (commandTokens) => {
+    const [command] = commands.filter(({command}) => command == commandTokens[0]['str'])
+    const {isValid, info} = isValidCommand(commandTokens, command);
+    if (isValid) {
+        info.command = getCommandObj(commandTokens);
+        command.executor(info);
+    } else {
+        handleError({...info, error: true, data: undefined});
+    }
+}
 
 export const executeCommand = (_currentState) => {
     currentState = _currentState;
@@ -331,15 +390,10 @@ export const executeCommand = (_currentState) => {
         return;
     }
     const {commandTokens} = _currentState;
-    if (commandTokens.length) {
-        const [command] = commands.filter(({command}) => command == commandTokens[0]['str'])
-        const {isValid, info} = isValidCommand(commandTokens, command);
-        if (isValid) {
-            info.command = getCommandObj(commandTokens);
-            command.executor(info);
-        } else {
-            handleError({...info, error: true, data: undefined});
-        }
+    if(commandTokens[0].str == 'sudo') {
+        handlePermissionDenied();
+    } else if (commandTokens.length) {
+        handleValidCommand(commandTokens);
     } else {
         paintInputNew();
     }

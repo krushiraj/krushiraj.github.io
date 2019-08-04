@@ -21,6 +21,7 @@ import {executeCommand, commands} from './CommandProcessor.js';
 import TerminalReadOnly from './TerminalReadOnly.vue';
 
 //TODO: Allow user settings for color, font and font-sizes
+//TODO: command history on up down keys
 
 export default {
 	name: "TerminalContainer",
@@ -35,20 +36,22 @@ export default {
 			pwd: 'Username',
 			childrenData: [],
 			history: [],
+			hIndex: 0,
 			username: 'Guest',
 			prevLoggedIn: false,
-			loggedIn: false
+			loggedIn: false,
+			fontsize: 1
 		}
 	},
 	props: {
-		fontSize: {
-			type: Number,
-			default: 1
-		},
 		maxSessionTime: {
 			type: Number,
 			default: 86400000
-		}
+		},
+		sysname: {
+            type: String,
+            default: 'MiniTerminal'
+        },
 	},
 	methods: {
 		isBackspace(char) {
@@ -58,7 +61,7 @@ export default {
 			return shiftKey;
 		},
 		isPunctuationOrSymbol(char) {
-			return !!char.match(/[\/\.,';:"?\s-]/);
+			return !!char.match(/[\/\.,';:"?\s\-*]/);
 		},
 		isAlNum(char) {
 			return !!char.match(/[a-zA-Z0-9]/) && char.length == 1;
@@ -167,12 +170,39 @@ export default {
 					this.moveCursorCtrl(0) :
 					this.moveCursor(0)
 				);
-			} else if (direction == "Right") {
+			} else {
 				this.cursorIndex = (
 					ctrl ? 
 					this.moveCursorCtrl(1) : 
 					this.moveCursor(1)
 				);
+			}
+		},
+		setHistoryAsCurrent(index) {
+			const {history} = this;
+			const {editableText, cursorIndex} = history[index];
+			this.hIndex = index;
+			this.editableText = editableText;
+			this.cursorIndex = cursorIndex;
+		},
+		handleVerticalArrows(direction) {
+			const {hIndex} = this;
+			if (direction == "Up") {
+				if (hIndex == 0) {
+					return
+				} else {
+					this.setHistoryAsCurrent(hIndex-1);
+				}
+			} else {
+				if (hIndex == this.history.length) {
+					return
+				} else if (hIndex == this.history.length-1) {
+					this.hIndex = hIndex+1;
+					this.editableText = '';
+					this.cursorIndex = 0;
+				} else {
+					this.setHistoryAsCurrent(hIndex+1);
+				}
 			}
 		},
 		mutateText(ctrl, char) {
@@ -241,7 +271,17 @@ export default {
 				document.cookie = `username=${this.editableText};expires=${expiry.toUTCString()};path=/`;
 			}
 		},
+		appendToHistory() {
+			const {cursorIndex, editableText} = this;
+			if (this.history.length == 10) {
+				this.history.slice(1);
+				this.hIndex -= 1;
+			}
+			this.history.push({editableText, cursorIndex});
+			this.hIndex += 1;
+		},
 		processCommand() {
+			this.appendToHistory();
 			this.paintEditableAsReadOnly();
 			if(!this.isLoggedIn) {
 				this.loginUser();
@@ -274,7 +314,12 @@ export default {
 				this.handleBackspace(ctrl);
 			}
 			else if (isArrow.check) {
-				this.handleSideArrows(isArrow.direction, ctrl);
+				const dir = isArrow.direction; 
+				if (dir == 'Left' || dir == 'Right') {
+					this.handleSideArrows(isArrow.direction, ctrl);
+				} else {
+					this.handleVerticalArrows(isArrow.direction);
+				}
 			}
 			else if(alnum || punctuation){
 				this.mutateText(ctrl, char);
@@ -283,6 +328,9 @@ export default {
 		}
 	},
 	computed: {
+		fontSize({fontsize}) {
+			return fontsize;
+		},
 		commandTokens({editableText}) {
 			const getTokenType = this.getTokenType;
 			let _tokens = editableText.match(/([\/a-zA-z0-9_.()`!@#$%^&*\-=+,<>?'";|:\[\]{}]+)|(\s+)/g);
@@ -358,6 +406,9 @@ export default {
 				});
 				return childrenData;
 			}
+		},
+		historyIndex({hIndex}) {
+			return hIndex;
 		}
 	}
 };
