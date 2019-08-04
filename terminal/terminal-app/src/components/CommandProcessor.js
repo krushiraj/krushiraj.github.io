@@ -5,7 +5,7 @@ import TerminalInput from './TerminalInput.vue';
 
 const versio = 'Mini Terminal v1.0.190804 Beta';
 let currentState = {};
-const fsTree = new FSTree();
+export const fsTree = new FSTree();
 
 const compare = (actual, expected) => {
     return actual == expected || expected.hasOwnProperty(actual);
@@ -203,15 +203,15 @@ const execute_help = ({command:{args, options}}) => {
     if (args.length != 1 || options.length > 1) {
         output = [`ERROR: Help command expects exactly one command name as argument and optionally followed by exactly one option in that command.`]
     } else {
-        const commadObj = commands.filter((arg) => arg.command == args[0])[0];
-        output = [commadObj.help];
+        const commandObj = commands.filter((arg) => arg.command == args[0])[0];
+        output = [commandObj.help];
         if (!options.length) {
-            for(let key in commadObj.options) {
-                output.push(`${tab}--${key} - ${commadObj.options[key]}`);
+            for(let key in commandObj.options) {
+                output.push(`${tab}--${key} - ${commandObj.options[key]}`);
             }
         } else {
             let key = options[0];
-            output.push(`${tab}--${key} - ${commadObj.options[key]}`);
+            output.push(`${tab}--${key} - ${commandObj.options[key]}`);
         }
     }
     paintReadOnly(output.join('\n'), true, false);
@@ -269,7 +269,7 @@ export const commands = [
         command: 'help',
         options: {},
         args: 1,
-        help: `Usage: help <command name> <?options for command> \nDisplays help text for each of the command supported in this terminal and also provides help for each of the option for each commad.`,
+        help: `Usage: help <command name> <?options for command> \nDisplays help text for each of the command supported in this terminal and also provides help for each of the option for each command.`,
         executor: execute_help
     },
     {
@@ -332,14 +332,14 @@ export const commands = [
         executor: execute_fontsize
     },
     {
-        commad: 'mv',
+        command: 'mv',
         options: {},
         args: 2,
         help: `Usage: mv <old-path> <new-path> \nMoves files/directories or renames them.`,
         executor: execute_mv
     },
     {
-        commad: 'rm',
+        command: 'rm',
         options: {
             'r': 'Recursively deletion in a directory.'
         },
@@ -348,7 +348,7 @@ export const commands = [
         executor: execute_rm
     },
     {
-        commad: 'mkdir',
+        command: 'mkdir',
         options: {},
         args: 1,
         help: `Usage: mkdir <directory-name> \nCreates new directory in the path specified.`,

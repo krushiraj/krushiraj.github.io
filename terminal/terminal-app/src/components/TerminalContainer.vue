@@ -17,11 +17,10 @@
 
 import TerminalInput from './TerminalInput.vue';
 import TerminalLogin from "./TerminalLogin.vue";
-import {executeCommand, commands} from './CommandProcessor.js';
+import {executeCommand, commands, fsTree} from './CommandProcessor.js';
 import TerminalReadOnly from './TerminalReadOnly.vue';
 
 //TODO: Allow user settings for color, font and font-sizes
-//TODO: command history on up down keys
 
 export default {
 	name: "TerminalContainer",
@@ -51,7 +50,11 @@ export default {
 		sysname: {
             type: String,
             default: 'MiniTerminal'
-        },
+		},
+		commands: {
+			type: Array,
+			default: () => commands
+		}
 	},
 	methods: {
 		isBackspace(char) {
@@ -61,7 +64,7 @@ export default {
 			return shiftKey;
 		},
 		isPunctuationOrSymbol(char) {
-			return !!char.match(/[\/\.,';:"?\s\-*]/);
+			return !!char.match(/[\/\.,';:"?\s*\-]/);
 		},
 		isAlNum(char) {
 			return !!char.match(/[a-zA-Z0-9]/) && char.length == 1;
@@ -228,8 +231,48 @@ export default {
 				),
 			}
 		},
+		getSuggestions() {
+			const {commandTokens, commands} = this;
+			const current = commandTokens[commandTokens.length-1] || {};
+			let str;
+			let possibilities = [];
+			console.log(commandTokens);
+			if (current.type == undefined) {
+				return [];
+			} else if (current.type == 'command') {
+				str = current.str;
+				possibilities = (
+					commands.map((arg)=>arg.command)
+					.filter((argf) => argf.startsWith(str))
+					.map((filtered) => filtered.slice(str.length))
+				);
+			} else if (current.type == 'optkey' && current.str.length > 1) {
+				str = current.str.slice(2);
+				possibilities = (
+					Object.getOwnPropertyNames(
+						commands.filter((arg) => arg.command == commandTokens[0].str)[0].options
+					).filter((opts) => opts.startsWith(str) && opts != '__ob__')
+					.map((filtered) => filtered.slice(str.length))
+				);
+			} else if (current.type == 'argument') {
+				str = current.str;
+				const currDir = fsTree.getEntFromPath('.');
+				let currFiles = [];
+				for(let key in currDir.data) {
+					currFiles.push(currDir.data[key].name);
+				}
+				possibilities = (
+					currFiles.filter(
+						(arg) => arg.startsWith(str)
+					)
+					.map((filtered) => filtered.slice(str.length))
+				);
+			}
+			return possibilities;
+		},
 		autoComplete() {
 			//TODO Autocomplete
+			
 		},
 		getTokenType(token, context) {
 			const hasContext = context.length != 0;
@@ -289,11 +332,11 @@ export default {
 			executeCommand(this);
 		},
 		updateChanges() {
-			const {editableText, cursorIndex, pwd, username} = this;
+			const {editableText, cursorIndex, pwd, username, suggestions} = this;
 			const index = this.childrenData.length-1;
 			if(this.childrenData[index].child.name == 'TerminalInput') {
 				this.childrenData[index].props = {
-					editableText, cursorIndex, pwd, username
+					editableText, cursorIndex, pwd, username, suggestions
 				};
 			}
 		},
@@ -309,6 +352,7 @@ export default {
 			}
 			else if (isTab) {
 				console.log('TODO: Autocompletion');
+				this.autoComplete();
 			}
 			else if (this.isBackspace(char)) {
 				this.handleBackspace(ctrl);
@@ -395,11 +439,11 @@ export default {
 			}
 			return this.loggedIn;
 		},
-		children({pwd, username, cursorIndex, editableText, childrenData, isLoggedIn}) {
+		children({pwd, username, cursorIndex, editableText, childrenData, isLoggedIn, suggestions}) {
 			if (childrenData && childrenData.length != 0) {
 				return childrenData;
 			} else {
-				let props = {pwd, username, cursorIndex, editableText};
+				let props = {pwd, username, cursorIndex, editableText, suggestions};
 				childrenData.push({
 					child: TerminalInput,
 					props
@@ -409,6 +453,9 @@ export default {
 		},
 		historyIndex({hIndex}) {
 			return hIndex;
+		},
+		suggestions() {
+			return this.getSuggestions();
 		}
 	}
 };
@@ -422,4 +469,5 @@ export default {
 	height: auto;
 	width: auto;
 }
+#terminal-container:focus {outline:0;}
 </style>

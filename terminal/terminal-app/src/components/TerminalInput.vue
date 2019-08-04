@@ -1,7 +1,7 @@
 <template>
     <span id="terminal-input">
         <TerminalPWDUser :username="username" :pwd="pwd"/>
-        <TerminalEditableWrapper :cursorIndex="cursorIndex" :editableText="editableText"/>
+        <TerminalEditableWrapper :suggestions="suggestions" :cursorIndex="cursorIndex" :editableText="editableText"/>
     </span>
 </template>
 
@@ -30,6 +30,10 @@ export default {
         },
         username: {
             type: String,
+            required: true
+        },
+        suggestions: {
+            type: Array,
             required: true
         }
     }

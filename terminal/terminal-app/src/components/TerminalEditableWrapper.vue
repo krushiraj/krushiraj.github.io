@@ -25,7 +25,11 @@ export default {
     cursorIndex: {
 		type: Number,
 		required: true
-    }
+    },
+	suggestions: {
+		type: Array,
+		required: true
+	}
   },
   methods: {
     appendChild(childrenArr, child, props) {
@@ -34,13 +38,13 @@ export default {
     appendEditableChild(arr, editableText) {
     	this.appendChild(arr, TerminalEditable, { editableText });
     },
-    appendCursorChild(arr, charBeneath) {
-      	this.appendChild(arr, TerminalCursorTabWrapper, { charBeneath });
+    appendCursorChild(arr, charBeneath, suggestions) {
+      	this.appendChild(arr, TerminalCursorTabWrapper, { charBeneath, suggestions });
     },
     appendChildrenFromText(arr, text, index) {
 		const tokens = text.match(/([\/a-zA-z0-9_.()`!@#$%^&*\-=+,<>?'";|:\[\]{}]+)|(\s+)/g);
 		if (text.length == 1 && index == 1) {
-			this.appendCursorChild(arr, text);
+			this.appendCursorChild(arr, text, this.suggestions);
 		} else {
 			for (let index in tokens) {
 				this.appendEditableChild(arr, tokens[index]);
