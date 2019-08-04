@@ -261,6 +261,64 @@ export const commands = [
         args: 0,
         help: `Usage: logout \nCloses the session to terminal.`,
         executor: execute_logout
+    },
+    {
+        command: 'ver',
+        options: {},
+        args: 0,
+        help: `Usage: ver \nPrints the current version of the terminal.`,
+        executor: execute_logout
+    },
+    {
+        command: 'color',
+        options: {},
+        args: 0,
+        help: `Usage: color <?...options>\nSets the colors of the elements in terminal according to the options provided.`,
+        executor: execute_logout
+    },
+    {
+        command: 'fontsize',
+        options: {},
+        args: 1,
+        help: `Usage: fontsize <size> \nSets the font-size of the text in terminal.\nIf no argument is provided, font-size falls back to default value.\nArgument size should always be greater than 0.`,
+        executor: execute_logout
+    },
+    {
+        commad: 'mv',
+        options: {},
+        args: 2,
+        help: `Usage: mv <old-path> <new-path> \nMoves files/directories or renames them.`,
+        executor: execute_logout
+    },
+    {
+        commad: 'rm',
+        options: {
+            'r': 'Recursively deletion in a directory.'
+        },
+        args: Infinity,
+        help: `Usage: rm <file1> <?...files> \nRemoves files/directories from the disk.`,
+        executor: execute_logout
+    },
+    {
+        commad: 'mkdir',
+        options: {},
+        args: 1,
+        help: `Usage: mkdir <directory-name> \nCreates new directory in the path specified.`,
+        executor: execute_logout
+    },
+    {
+        command: 'pwd',
+        options: {},
+        args: 0,
+        help: `Usage: pwd \nUsed to print the present working directory.`,
+        executor: execute_logout
+    },
+    {
+        command: 'sudo',
+        options: {},
+        args: 0,
+        help: `Usage: logout \nExecute a command with root user privileges.`,
+        executor: execute_logout
     }
 ];
 
