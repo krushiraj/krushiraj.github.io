@@ -8,6 +8,7 @@
 </template>
 
 <script>
+/*es;int-disable*/
 export default {
     name: 'TerminalReadOnly',
     props: {
@@ -19,6 +20,10 @@ export default {
             type: Boolean,
             default: false
         },
+        trimLine: {
+            type: Boolean,
+            default: true
+        },
         simulateTyping: {
             type: Boolean,
             default: false
@@ -29,11 +34,11 @@ export default {
         }
     },
     computed: {
-        finalTexts: ({breakOnNewLine, readOnlyText}) => {
+        finalTexts: ({breakOnNewLine, readOnlyText, trimLine}) => {
             if (breakOnNewLine) {
                 let lines = readOnlyText.split('\n');
                 return lines.map(
-                    line => line.trim()
+                    line => (trimLine ? line.trim() : line)
                 ).filter(
                     trimmedLine => trimmedLine != ''
                 )

@@ -19,7 +19,11 @@ const fs = {
             },
             'file1' : {
                 type: 'file',
-                data: 'Hello from file1.'
+                data: 'Hello from file1.\nSecond line.\n Third line here.'
+            },
+            'file2' : {
+                type: 'file',
+                data: 'Hello from file2!'
             }
         }
     }

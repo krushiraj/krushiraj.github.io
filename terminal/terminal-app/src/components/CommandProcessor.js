@@ -7,7 +7,7 @@ let currentState = {};
 const fsTree = new FSTree();
 
 const compare = (actual, expected) => {
-    return actual == expected || expected.indexOf(actual) != -1;
+    return actual == expected || expected.hasOwnProperty(actual);
 }
 
 const checkOptKey = (str, ref, context) => {
@@ -19,7 +19,7 @@ const checkOptKey = (str, ref, context) => {
     } else {
         context['options'] = 1;
     }
-    const optLen = (context['options'] <= ref['options'].length);
+    const optLen = (context['options'] <= Object.getOwnPropertyNames(ref.options).length);
     const isValidOpt = compare(str.slice(2), ref['options']);
     const check = isValidOpt && optLen;
     if(!check) {
@@ -75,8 +75,8 @@ const getCommandObj = (commandTokens) => {
                 obj.command = commandTokens[index].str; 
                 break;
             case 'optkey': 
-                obj.options[commandTokens[index].slice(2)] = (
-                    commandTokens[index+2].str
+                obj.options[commandTokens[index].str.slice(2)] = (
+                    commandTokens[parseInt(index)+2+''].str
                 );
                 break;
             case 'argument':
@@ -88,17 +88,18 @@ const getCommandObj = (commandTokens) => {
     return obj;
 }
 
-const paintReadOnly = (output) => {
+const paintReadOnly = (output, breakOnNewLine=true, trimLine=true) => {
     currentState.childrenData.push({
         child: TerminalReadOnly,
         props: {
             readOnlyText: output,
-            breakOnNewLine: true
+            breakOnNewLine,
+            trimLine
         }
     });
 }
 
-const paintInput = (pwd, cursorIndex, editableText) => {
+const paintInput = (pwd, cursorIndex, editableText, username) => {
     currentState.childrenData.push({
         child: TerminalInput,
         props: {
@@ -110,8 +111,12 @@ const paintInput = (pwd, cursorIndex, editableText) => {
 const paintInputNew = () => {
     currentState.cursorIndex = 0;
     currentState.editableText = '';
-    const {pwd, cursorIndex, editableText} = currentState;
-    paintInput(pwd, cursorIndex, editableText);
+    if(!currentState.loggedIn) {
+        currentState.pwd = 'Username';
+        currentState.username = 'Guest';
+    }
+    const {pwd, cursorIndex, editableText, username} = currentState;
+    paintInput(pwd, cursorIndex, editableText, username);
 }
 
 const handleError = ({message}) => {
@@ -150,6 +155,7 @@ const execute_cd = ({command}) => {
 
 const execute_cat = ({command}) => {
     const files = command.args;
+    const lineNo = command.options['n'];
     let output;
     for(let index in files) {
         const dirEnt = fsTree.getEntFromPath(files[index]);
@@ -160,7 +166,16 @@ const execute_cat = ({command}) => {
         } else {
             output = dirEnt.error;
         }
-        paintReadOnly(output);
+        debugger
+        paintReadOnly(
+            (lineNo ?
+            (
+                output.split('\n')
+                .map((line, index) => `${index+1}) ${line}`)
+                .join('\n')
+            ) :
+            output) + '\nEOF'
+        );
     }
     paintInputNew();
 }
@@ -170,8 +185,34 @@ const execute_clear = () => {
     paintInputNew();
 }
 
-const execute_help = () => {
-    //TODO: Write help logic. Extract help for command and each of the options.
+const execute_help = ({command:{args, options}}) => {
+    let output, tab = '\u00a0\u00a0\u00a0\u00a0';
+    if (args.length != 1 || options.length > 1) {
+        output = [`ERROR: Help command expects exactly one command name as argument and optionally followed by exactly one option in that command.`]
+    } else {
+        const commadObj = commands.filter((arg) => arg.command == args[0])[0];
+        output = [commadObj.help];
+        if (!options.length) {
+            for(let key in commadObj.options) {
+                output.push(`${tab}--${key} - ${commadObj.options[key]}`);
+            }
+        } else {
+            let key = options[0];
+            output.push(`${tab}--${key} - ${commadObj.options[key]}`);
+        }
+    }
+    paintReadOnly(output.join('\n'), true, false);
+    paintInputNew();
+}
+
+const execute_logout = () => {
+    const expiry = new Date();
+    expiry.setMinutes(expiry.getMinutes()-1);
+    document.cookie = `username=;expires=${expiry.toUTCString()};path=/`;
+    currentState.prevLoggedIn = false;
+    currentState.loggedIn = false;
+    paintReadOnly('You have been logged out successfully');
+    paintInputNew();
 }
 
 //======================command confs==============================
@@ -209,10 +250,17 @@ export const commands = [
     },
     {
         command: 'clear',
-        options: [],
+        options: {},
         args: 0,
         help: `Usage: clear \nClears all output text present from terminal.`,
         executor: execute_clear
+    },
+    {
+        command: 'logout',
+        options: {},
+        args: 0,
+        help: `Usage: logout \nCloses the session to terminal.`,
+        executor: execute_logout
     }
 ];
 

@@ -231,11 +231,14 @@ export default {
 			this.childrenData.push(readonly);
 		},
 		loginUser() {
-			document.cookie = `username=${this.editableText};max-age=${this.maxSessionTime};path=/`;
+			const expiry = new Date();
+			expiry.setDate(expiry.getDate()+1);
+			document.cookie = `username=${this.editableText};expires=${expiry.toUTCString()};path=/`;
 			if(document.cookie) {
 				this.loggedIn = true;
 				this.username = this.editableText;
 				this.pwd = '/';
+				document.cookie = `username=${this.editableText};expires=${expiry.toUTCString()};path=/`;
 			}
 		},
 		processCommand() {
