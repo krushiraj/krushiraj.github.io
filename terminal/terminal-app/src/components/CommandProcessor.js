@@ -317,7 +317,6 @@ export const commands = [
         executor: execute_ver
     },
     {
-        //TODO: After auto completion and command history
         command: 'color',
         options: {},
         args: 0,
@@ -396,5 +395,146 @@ export const executeCommand = (_currentState) => {
         handleValidCommand(commandTokens);
     } else {
         paintInputNew();
+    }
+}
+
+//============================trie building for commmands and options===========================
+
+export class COTrie {
+    constructor() {
+        this.comTrie = {links:0};
+        this.optTrie = {links:0};
+        this.fileTrie = {links:0};
+        this.commandList = [];
+        this.buildCommandTrie();
+        this.buildOptionsTrie();
+    }
+
+    insertInTrie (root, str, index) {
+        if (index == str.length) {
+            return;
+        } else {
+            const char = str[index];
+            if (!root.hasOwnProperty(char)) {
+                root[char] = {links:0}
+            }
+            root.links += 1;
+            return this.insertInTrie(root[char], str, index+1);
+        }
+    }
+
+    buildTrieForFiles (currDir) {
+        this.fileTrie = {links:0};
+        for(let key in currDir.data) {
+            this.insertInTrie(this.fileTrie, currDir.data[key].name, 0);
+        }
+    }
+
+    buildCommandTrie () {
+        this.commandList = commands.map((arg) => arg.command)
+        const commandList = this.commandList;
+        for(let index in commandList) {
+            this.insertInTrie(this.comTrie, commandList[index], 0);
+        }
+    }
+
+    buildOptionsTrie () {
+        const commandList = this.commandList;
+        for(let index in commandList) {
+            const options = (
+                Object.getOwnPropertyNames(
+                    commands.filter(arg => arg.command == commandList[index])[0]
+                    .options
+                )
+            )
+            this.optTrie[commandList[index]] = {links:0};
+            for(let optIndex in options) {
+                this.insertInTrie(
+                    this.optTrie[commandList[index]],
+                    options[optIndex],
+                    0
+                )
+            }
+        }
+    }
+
+    getCommandTrie (command) {
+        let root = this.comTrie;
+        for(let index in command) {
+            root = root[command[index]];
+        }
+        return root;
+    }
+
+    getOptionsTrie (command, option) {
+        let root = this.optTrie[command];
+        for(let index in option) {
+            root = root[option[index]];
+        }
+        return root;
+    }
+
+    getFilesTrie (filename) {
+        let root = this.fileTrie;
+        for(let index in filename) {
+            root = root[filename[index]];
+        }
+        return root;
+    }
+
+    getStringsFromTrie(root, list, curr) {
+        let str = curr;
+        if (root.links == 0) {
+            list.push(str);
+            return 
+        } else {
+            for(let key in root) {
+                if (key == 'links')
+                    continue;
+                this.getStringsFromTrie(root[key], list, str+key);
+            }
+        }
+    }
+
+    getSuggestions (command, option, forCommand) {
+        let suggestions = [];
+        if (command == '') {
+            return suggestions
+        } else if (command.length > 0 && !forCommand) {
+            this.getStringsFromTrie(this.getCommandTrie(command), suggestions, '');
+        } else if (command.length > 0 && forCommand && typeof(option) != 'string') {
+            this.buildTrieForFiles(option);
+            this.getStringsFromTrie(this.getFilesTrie(command), suggestions, '');
+        } else if (option.length > -1 && forCommand) {
+            this.getStringsFromTrie(this.getOptionsTrie(command, option), suggestions, '');
+        } 
+        return suggestions;
+    }
+
+    getCommonSubStr (root, substr) {
+        let completion = substr;
+        const keys = Object.getOwnPropertyNames(root);
+        if (keys.length == 2) {
+            const index = keys.indexOf('links') ? 0 : 1;
+            const key = keys[index];
+            return this.getCommonSubStr(root[key], completion+key);
+        } else {
+            return completion;
+        }
+    }
+
+    autoComplete (command, option, forCommand) {
+        let substr = '';
+        if (command == '') {
+            return substr
+        } else if (command.length > 0 && !forCommand) {
+            substr = this.getCommonSubStr(this.getCommandTrie(command), '');
+        } else if (command.length > 0 && forCommand && typeof(option) != 'string') {
+            this.buildTrieForFiles(option)
+            substr = this.getCommonSubStr(this.getFilesTrie(command), '');
+        } else if (option.length > -1 && forCommand) {
+            substr = this.getCommonSubStr(this.getOptionsTrie(command, option), '');
+        }
+        return substr;
     }
 }
