@@ -3,7 +3,7 @@ import FSTree from './fs.js';
 import TerminalReadOnly from './TerminalReadOnly.vue';
 import TerminalInput from './TerminalInput.vue';
 
-const versio = 'Mini Terminal v1.0.190804 Beta';
+const version = 'Mini Terminal v1.0.190806 Beta';
 let currentState = {};
 export const fsTree = new FSTree();
 
