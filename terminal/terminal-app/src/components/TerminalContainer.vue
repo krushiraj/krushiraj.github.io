@@ -248,7 +248,10 @@ export default {
 					true
 				);
 			} else if (currTok.type == 'argument' && !currTok.str.startsWith('-')) {
-				const currDir = fsTree.getEntFromPath('.');
+				let currDir = fsTree.getEntFromPath(currTok.str);
+				if (currDir.error || currDir.type == 'file') {
+					currDir = fsTree.getEntFromPath('.');
+				}
 				completion = coTrie.autoComplete(
 					currTok.str,
 					currDir,
@@ -450,7 +453,10 @@ export default {
 					true
 				);
 			} else if (currTok.type == 'argument' && !currTok.str.startsWith('-')) {
-				const currDir = fsTree.getEntFromPath('.');
+				let currDir = fsTree.getEntFromPath(currTok.str);
+				if (currDir.error || currDir.type == 'file') {
+					currDir = fsTree.getEntFromPath('.');
+				}
 				return coTrie.getSuggestions(
 					currTok.str,
 					currDir,

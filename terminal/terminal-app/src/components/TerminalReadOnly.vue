@@ -54,6 +54,5 @@ export default {
 span {
     word-break: break-all;
     hyphens: auto;
-    color: green;
 }
 </style>

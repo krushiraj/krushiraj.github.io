@@ -22,12 +22,14 @@ export default {
 
 <style>
 html, body {
+  --bg-color: #000;
+  --font-color: #fff;
   padding: 0;
   margin: 0;
   height: 100%;
   width: 100%;
-  background-color: #000;
-  color: green;
+  background-color: var(--bg-color);
+  color: var(--font-color);
 }
 #app {
   font-family: monospace ;

@@ -106,9 +106,10 @@ export default class FSTree {
     }
 
     getPathTokens(path) {
-        return path.replace(
-            /\.\./g, 'parent'
-        ).match(/([a-zA-z0-9_.()`!@#$%^&*\-=+,<>?'";|:\[\]{}]+)|([\/]+)/g);
+        if (path)
+            return path.replace(
+                /\.\./g, 'parent'
+            ).match(/([a-zA-z0-9_.()`!@#$%^&*\-=+,<>?'";|:\[\]{}]+)|([\/]+)/g);
     }
 
     getNodeFromToken(token, pathTokens, index) {

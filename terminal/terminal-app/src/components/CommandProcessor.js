@@ -3,7 +3,7 @@ import FSTree from './fs.js';
 import TerminalReadOnly from './TerminalReadOnly.vue';
 import TerminalInput from './TerminalInput.vue';
 
-const version = 'Mini Terminal v1.0.190806 Beta';
+const version = 'Mini Terminal v1.0.190806';
 let currentState = {};
 export const fsTree = new FSTree();
 
@@ -12,7 +12,7 @@ const compare = (actual, expected) => {
 }
 
 const checkOptKey = (str, ref, context) => {
-    if (context['command'] == 'help') {
+    if (ref['command'] == 'help') {
         return true;
     }
     if(context.hasOwnProperty('options')) {
@@ -76,8 +76,10 @@ const getCommandObj = (commandTokens) => {
                 obj.command = commandTokens[index].str; 
                 break;
             case 'optkey': 
+                const newIndex = parseInt(index)+2+'';
                 obj.options[commandTokens[index].str.slice(2)] = (
-                    commandTokens[parseInt(index)+2+''].str
+                    newIndex < commandTokens.length ?
+                    commandTokens[newIndex].str : ''
                 );
                 break;
             case 'argument':
@@ -205,11 +207,12 @@ const execute_clear = () => {
 
 const execute_help = ({command:{args, options}}) => {
     let output, tab = '\u00a0\u00a0\u00a0\u00a0';
-    if (!args.length && !options.length) {
+    const optList = Object.getOwnPropertyNames(options);
+    if (!args.length && !optList.length) {
         output = commands.map(
             arg => `[${arg.command}] - ${arg.help}`.replace(/\n/g, '\n'+tab)
         );
-    } else if (args.length != 1 || options.length > 1) {
+    } else if (args.length != 1 || optList.length > 1) {
         output = [`ERROR: Help command expects exactly one command name as argument and optionally followed by exactly one option in that command.`]
     } else {
         const commandObj = commands.filter((arg) => arg.command == args[0])[0];
@@ -219,7 +222,7 @@ const execute_help = ({command:{args, options}}) => {
                 output.push(`${tab}--${key} - ${commandObj.options[key]}`);
             }
         } else {
-            let key = options[0];
+            let key = optList[0];
             output.push(`${tab}--${key} - ${commandObj.options[key]}`);
         }
     }
@@ -269,6 +272,25 @@ const execute_rm = () => {
 
 const execute_mv = () => {
     handlePermissionDenied();
+}
+
+const execute_color = ({command:{options}}) => {
+    const body = document.getElementsByTagName('body')[0];
+    const hasOpts = Object.getOwnPropertyNames(options).length;
+    let output = [];
+    if (!hasOpts) {
+        options = {
+            'font': 'fff',
+            'bg': '000'
+        }
+        output.push(`No values provided, will fallback to default values`);
+    }
+    for(let key in options) {
+        body.style.setProperty(`--${key}-color`, `#${options[key]}`);
+        output.push(`Changed ${key} color to #${options[key]}`);
+    }
+    paintReadOnly(output.join('\n'));
+    paintInputNew();
 }
 
 //======================command confs==============================
@@ -329,10 +351,13 @@ export const commands = [
     },
     {
         command: 'color',
-        options: {},
+        options: {
+            'font': 'Sets the color for font in terminal.',
+            'bg': 'Sets the color for background of terminal.'
+        },
         args: 0,
-        help: `Usage: color <?...options>\nSets the colors of the elements in terminal according to the options provided.\nThis command is currently unavailable in this version.`,
-        executor: execute_logout
+        help: `Usage: color <?...options>\nSets the colors of the elements in terminal according to the options provided.\nAll colors should be provided as 3 or 6 digited hex color codes, whithout '#' sign in the beginning.\nEx:000, fff, fafafa, 020202.`,
+        executor: execute_color
     },
     {
         command: 'fontsize',
@@ -400,7 +425,9 @@ export const executeCommand = (_currentState) => {
         return;
     }
     const {commandTokens} = _currentState;
-    if(commandTokens[0].str == 'sudo') {
+    if (commandTokens[0].str.trim() == '') {
+        paintInputNew();
+    } else if(commandTokens[0].str == 'sudo') {
         handlePermissionDenied();
     } else if (commandTokens.length) {
         handleValidCommand(commandTokens);
