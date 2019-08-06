@@ -134,9 +134,14 @@ const handlePermissionDenied = () => {
 const execute_ls = ({command}) => {
     const whichDir = command.args[0] || '.';
     const dirEnt = fsTree.getEntFromPath(whichDir);
-    let output = ['.', '..'];
-    for(let key in dirEnt.data) {
-        output.push(dirEnt.data[key].name);
+    let output;
+    if (dirEnt.type == 'file') {
+        output = [`ERROR: Expected a directory name/path, but found file name/path.`];
+    } else {
+        output = ['.', '..'];
+        for(let key in dirEnt.data) {
+            output.push(dirEnt.data[key].name);
+        }
     }
     paintReadOnly(output.join('\n'));
     paintInputNew();
