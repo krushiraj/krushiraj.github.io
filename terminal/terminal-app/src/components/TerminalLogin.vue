@@ -21,7 +21,7 @@ export default {
             //TODO - make this configurable with text and template which can accept data
             return ( 
             `Welcome to Mini Terminal. Here you can checkout the profile of Krushi Raj Tula.
-                Copyright (c) 2019, Krushi Raj Tula.
+                Copyright (c) 2019, Everyone - as this is an open-source site :P.
             ` + (isLoggedIn ? '' : `Please enter your username to establish a session. Guest is default username.`)
             )
         }
