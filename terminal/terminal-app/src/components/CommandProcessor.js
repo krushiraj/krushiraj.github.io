@@ -3,7 +3,7 @@ import FSTree from './fs.js';
 import TerminalReadOnly from './TerminalReadOnly.vue';
 import TerminalInput from './TerminalInput.vue';
 
-const version = 'Mini Terminal v1.0.190806';
+const version = 'Mini Terminal v1.0.190807';
 let currentState = {};
 export const fsTree = new FSTree();
 
@@ -91,7 +91,7 @@ const getCommandObj = (commandTokens) => {
     return obj;
 }
 
-const paintReadOnly = (output, breakOnNewLine=true, trimLine=true) => {
+export const paintReadOnly = (output, breakOnNewLine=true, trimLine=true) => {
     currentState.childrenData.push({
         child: TerminalReadOnly,
         props: {
@@ -111,7 +111,7 @@ const paintInput = (pwd, cursorIndex, editableText, username) => {
     });
 }
 
-const paintInputNew = () => {
+export const paintInputNew = () => {
     currentState.cursorIndex = 0;
     currentState.editableText = '';
     if(!currentState.loggedIn) {

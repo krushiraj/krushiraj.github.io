@@ -17,7 +17,12 @@
 
 import TerminalInput from './TerminalInput.vue';
 import TerminalLogin from "./TerminalLogin.vue";
-import {executeCommand, commands, fsTree, COTrie} from './CommandProcessor.js';
+import {
+	executeCommand, commands, 
+	fsTree, 
+	COTrie,
+	paintReadOnly, paintInputNew
+} from './CommandProcessor.js';
 import TerminalReadOnly from './TerminalReadOnly.vue';
 
 //TODO: Allow user settings for color, font 
@@ -234,32 +239,34 @@ export default {
 			}
 		},
 		autoComplete() {
-			let completion = '';
-			const {commandTokens} = this;
-			const currTok = commandTokens[commandTokens.length-1];
-			if (!currTok) {
-				return;
-			} else if(currTok.type == 'command') {
-				completion = coTrie.autoComplete(currTok.str, '', false);
-			} else if (currTok.type == 'optkey' && currTok.str.length > 1) {
-				completion = coTrie.autoComplete(
-					commandTokens[0].str,
-					currTok.str.slice(2),
-					true
-				);
-			} else if (currTok.type == 'argument' && !currTok.str.startsWith('-')) {
-				let currDir = fsTree.getEntFromPath(currTok.str);
-				if (currDir.error || currDir.type == 'file') {
-					currDir = fsTree.getEntFromPath('.');
-				}
-				completion = coTrie.autoComplete(
-					currTok.str,
-					currDir,
-					true
-				);
-			} 
-			this.editableText = this.editableText + completion;
-			this.cursorIndex = this.cursorIndex + completion.length;
+			if (this.loggedIn) {
+				let completion = '';
+				const {commandTokens} = this;
+				const currTok = commandTokens[commandTokens.length-1];
+				if (!currTok) {
+					return;
+				} else if(currTok.type == 'command') {
+					completion = coTrie.autoComplete(currTok.str, '', false);
+				} else if (currTok.type == 'optkey' && currTok.str.length > 1) {
+					completion = coTrie.autoComplete(
+						commandTokens[0].str,
+						currTok.str.slice(2),
+						true
+					);
+				} else if (currTok.type == 'argument' && !currTok.str.startsWith('-')) {
+					let currDir = fsTree.getEntFromPath(currTok.str);
+					if (currDir.error || currDir.type == 'file') {
+						currDir = fsTree.getEntFromPath('.');
+					}
+					completion = coTrie.autoComplete(
+						currTok.str,
+						currDir,
+						true
+					);
+				} 
+				this.editableText = this.editableText + completion;
+				this.cursorIndex = this.cursorIndex + completion.length;
+			}
 		},
 		getTokenType(token, context) {
 			const hasContext = context.length != 0;
@@ -440,31 +447,33 @@ export default {
 		historyIndex({hIndex}) {
 			return hIndex;
 		},
-		suggestions({commandTokens}) {
-			const currTok = commandTokens[commandTokens.length-1];
-			if (!currTok) {
-				return [];
-			} else if(currTok.type == 'command') {
-				return coTrie.getSuggestions(currTok.str, '', false);
-			} else if (currTok.type == 'optkey' && currTok.str.length > 1) {
-				return coTrie.getSuggestions(
-					commandTokens[0].str,
-					currTok.str.slice(2),
-					true
-				);
-			} else if (currTok.type == 'argument' && !currTok.str.startsWith('-')) {
-				let currDir = fsTree.getEntFromPath(currTok.str);
-				if (currDir.error || currDir.type == 'file') {
-					currDir = fsTree.getEntFromPath('.');
+		suggestions({commandTokens, loggedIn}) {
+			if (loggedIn) {
+				const currTok = commandTokens[commandTokens.length-1];
+				if (!currTok) {
+					return [];
+				} else if(currTok.type == 'command') {
+					return coTrie.getSuggestions(currTok.str, '', false);
+				} else if (currTok.type == 'optkey' && currTok.str.length > 1) {
+					return coTrie.getSuggestions(
+						commandTokens[0].str,
+						currTok.str.slice(2),
+						true
+					);
+				} else if (currTok.type == 'argument' && !currTok.str.startsWith('-')) {
+					let currDir = fsTree.getEntFromPath(currTok.str);
+					if (currDir.error || currDir.type == 'file') {
+						currDir = fsTree.getEntFromPath('.');
+					}
+					return coTrie.getSuggestions(
+						currTok.str,
+						currDir,
+						true
+					);
+				} else {
+					return [];
 				}
-				return coTrie.getSuggestions(
-					currTok.str,
-					currDir,
-					true
-				);
-			} else {
-				return [];
-			}
+			} else return [];
 		}
 	}
 };
