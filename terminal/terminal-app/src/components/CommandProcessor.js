@@ -200,7 +200,11 @@ const execute_clear = () => {
 
 const execute_help = ({command:{args, options}}) => {
     let output, tab = '\u00a0\u00a0\u00a0\u00a0';
-    if (args.length != 1 || options.length > 1) {
+    if (!args.length && !options.length) {
+        output = commands.map(
+            arg => `[${arg.command}] - ${arg.help}`.replace(/\n/g, '\n'+tab)
+        );
+    } else if (args.length != 1 || options.length > 1) {
         output = [`ERROR: Help command expects exactly one command name as argument and optionally followed by exactly one option in that command.`]
     } else {
         const commandObj = commands.filter((arg) => arg.command == args[0])[0];
@@ -264,6 +268,8 @@ const execute_mv = () => {
 
 //======================command confs==============================
 
+//TODO: help w/o args should show all available commands.
+
 export const commands = [
     {
         command: 'help',
@@ -320,7 +326,7 @@ export const commands = [
         command: 'color',
         options: {},
         args: 0,
-        help: `Usage: color <?...options>\nSets the colors of the elements in terminal according to the options provided.`,
+        help: `Usage: color <?...options>\nSets the colors of the elements in terminal according to the options provided.\nThis command is currently unavailable in this version.`,
         executor: execute_logout
     },
     {
@@ -461,7 +467,9 @@ export class COTrie {
     getCommandTrie (command) {
         let root = this.comTrie;
         for(let index in command) {
-            root = root[command[index]];
+            if (root.hasOwnProperty(command[index]))
+                root = root[command[index]];
+            else return undefined;
         }
         return root;
     }
@@ -469,7 +477,9 @@ export class COTrie {
     getOptionsTrie (command, option) {
         let root = this.optTrie[command];
         for(let index in option) {
-            root = root[option[index]];
+            if (root.hasOwnProperty(option[index]))
+                root = root[option[index]];
+            else return undefined;
         }
         return root;
     }
@@ -477,16 +487,21 @@ export class COTrie {
     getFilesTrie (filename) {
         let root = this.fileTrie;
         for(let index in filename) {
-            root = root[filename[index]];
+            if (root.hasOwnProperty(filename[index]))
+                root = root[filename[index]];
+            else return undefined;
         }
         return root;
     }
 
     getStringsFromTrie(root, list, curr) {
+        if (!root) {
+            return;
+        }
         let str = curr;
         if (root.links == 0) {
             list.push(str);
-            return 
+            return;
         } else {
             for(let key in root) {
                 if (key == 'links')
@@ -512,6 +527,9 @@ export class COTrie {
     }
 
     getCommonSubStr (root, substr) {
+        if (!root) {
+            return;
+        }
         let completion = substr;
         const keys = Object.getOwnPropertyNames(root);
         if (keys.length == 2) {
