@@ -51,3 +51,5 @@ backspace - clear 1 char
     ctrl - clear upto last found punctuation preceeded by char
 left/right - move cursor by 1 char
     ctrl - move to last found punctuation preceeded by char
+    
+TODO: Do something
