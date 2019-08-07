@@ -54,5 +54,3 @@ left/right - move cursor by 1 char
 
 TODO: Allow user to copy content to clipboard and also paste into terminal
 TODO: use ::selection property to change colors when text is selected
-    
-TODO: Do something

@@ -131,6 +131,12 @@ const handlePermissionDenied = () => {
     const {username, sysname, pwd, commandTokens} = currentState;
     handleError({message: `ERROR: ${username}@${sysname}:${pwd}: Permission denied. Cannot ${commandTokens[0].str}`});
 }
+
+const isColor = (strColor) => {
+    var s = new Option().style;
+    s.color = strColor;
+    return s.color == strColor;
+}
 //======================command executors==========================
 
 const execute_ls = ({command}) => {
@@ -286,8 +292,9 @@ const execute_color = ({command:{options}}) => {
         output.push(`No values provided, will fallback to default values`);
     }
     for(let key in options) {
-        body.style.setProperty(`--${key}-color`, `#${options[key]}`);
-        output.push(`Changed ${key} color to #${options[key]}`);
+        const _isColor = isColor(options[key]);
+        body.style.setProperty(`--${key}-color`, (_isColor ? '' : '#') + `${options[key]}`);
+        output.push(`Changed ${key} color to ` + (_isColor ? '' : '#') + `${options[key]}`);
     }
     paintReadOnly(output.join('\n'));
     paintInputNew();
@@ -356,7 +363,7 @@ export const commands = [
             'bg': 'Sets the color for background of terminal.'
         },
         args: 0,
-        help: `Usage: color <?...options>\nSets the colors of the elements in terminal according to the options provided.\nAll colors should be provided as 3 or 6 digited hex color codes, whithout '#' sign in the beginning.\nEx:000, fff, fafafa, 020202.`,
+        help: `Usage: color <?...options>\nSets the colors of the elements in terminal according to the options provided.\nAll colors should be provided as valid color name according to css (or) 3 or 6 digited hex color codes, whithout '#' sign in the beginning.\nEx:000, fff, fafafa, 020202.`,
         executor: execute_color
     },
     {
