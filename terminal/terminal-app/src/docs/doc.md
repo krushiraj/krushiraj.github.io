@@ -51,7 +51,6 @@ backspace - clear 1 char
     ctrl - clear upto last found punctuation preceeded by char
 left/right - move cursor by 1 char
     ctrl - move to last found punctuation preceeded by char
-<<<<<<< HEAD
 
 TODO: Allow user to copy content to clipboard and also paste into terminal
 TODO: use ::selection property to change colors when text is selected
