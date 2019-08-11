@@ -50,10 +50,6 @@ export default {
 		}
 	},
 	props: {
-		maxSessionTime: {
-			type: Number,
-			default: 86400000
-		},
 		sysname: {
             type: String,
             default: 'MiniTerminal'
@@ -334,6 +330,18 @@ export default {
 				};
 			}
 		},
+		copySelection() {
+			navigator.clipboard.writeText(
+				document.getSelection().toString()
+			);
+		},
+		pasteContent() {
+			navigator.clipboard.readText().then(text => {
+				this.editableText = text;
+				this.cursorIndex = text.length;
+				this.updateChanges();
+			});
+		},
 		handleInput(e) {
 			const {
 				char, ctrl, shift,
@@ -343,8 +351,11 @@ export default {
 			} = this.getRequiredData(e);
 			if (isEnter){
 				this.processCommand();
-			}
-			else if (isTab) {
+			} else if (ctrl && char.toLowerCase() == 'c') {
+				this.copySelection();
+			} else if (ctrl && char.toLowerCase() == 'v') {
+				this.pasteContent();
+			} else if (isTab) {
 				this.autoComplete();
 			}
 			else if (this.isBackspace(char)) {
@@ -487,5 +498,11 @@ export default {
 	height: auto;
 	width: auto;
 }
-#terminal-container:focus {outline:0;}
+#terminal-container:focus {
+	outline:0;
+}
+span ::selection {
+	color: var(--bg-color);
+	background-color: var(--font-color);
+}
 </style>
