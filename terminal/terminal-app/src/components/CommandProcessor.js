@@ -265,7 +265,8 @@ const execute_fontsize = ({command:{args}}) => {
 }
 
 const execute_pwd = () => {
-    paintReadOnly(`Present working directory: '${currentState.pwd}'`)
+    paintReadOnly(`Present working directory: '${currentState.pwd}'`);
+    paintInputNew();
 }
 
 const execute_mkdir = () => {
