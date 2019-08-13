@@ -6,4 +6,22 @@
 
 module.exports = {
   /* Your site config here */
+  siteMetadata: {
+    title: `Krushi Raj Tula`,
+    titleTemplate: `%s's portfolio`,
+    url: `https://krushiraj.github.io`,
+    image: `/tkrlogo.png`,
+    description: `Portfolio of Krushi Raj Tula`,
+    twitterUsername: `krushiraj123`
+  },
+  plugins: [
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `writings`,
+        path: `${__dirname}/src/writings`,
+      },
+    },
+    `gatsby-transformer-remark`,
+  ]
 }
