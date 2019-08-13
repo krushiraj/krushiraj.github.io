@@ -8,7 +8,7 @@ module.exports = {
   /* Your site config here */
   siteMetadata: {
     title: `Krushi Raj Tula`,
-    /*titleTemplate: `%s - Krushi's portfolio`,*/
+    titleTemplate: `%s's portfolio`,
     url: `https://krushiraj.github.io`,
     image: `/tkrlogo.png`,
     description: `Portfolio of Krushi Raj Tula`,

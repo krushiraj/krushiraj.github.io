@@ -10,8 +10,7 @@
     "format": "prettier --write \"**/*.{js,jsx,json,md}\"",
     "start": "npm run develop",
     "serve": "gatsby serve",
-    "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\"",
-    "deploy": "cd ../terminal/terminal-app && npm run build && cd ../../portfolio && gatsby build && gh-pages -d public -b master"
+    "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\""
   },
   "dependencies": {
     "gatsby": "^2.13.57",
@@ -22,7 +21,6 @@
     "react-helmet": "^5.2.1"
   },
   "devDependencies": {
-    "gh-pages": "^2.1.1",
     "prettier": "1.18.2"
   },
   "repository": {

@@ -9,7 +9,6 @@ export default class IndexPage extends React.Component {
             <div>
                 Here is my portfolio
             </div>
-            <a href="https://krushiraj.github.io/mini-terminal/">Click here to open Mini-Terminal</a>
         </>
         )
     }
