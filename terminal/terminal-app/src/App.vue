@@ -36,4 +36,8 @@ html, body {
   height: 100%;
   width: 100%;
 }
+span ::selection {
+	color: var(--bg-color);
+	background-color: var(--font-color);
+}
 </style>

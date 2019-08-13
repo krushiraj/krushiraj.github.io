@@ -501,8 +501,4 @@ export default {
 #terminal-container:focus {
 	outline:0;
 }
-span ::selection {
-	color: var(--bg-color);
-	background-color: var(--font-color);
-}
 </style>
