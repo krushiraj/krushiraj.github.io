@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build --mode production --dest ../../mini-terminal --target app --modern",
+    "build": "vue-cli-service build --mode production --dest ../../portfolio/public --target app --modern",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
