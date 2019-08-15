@@ -1,13 +1,16 @@
 import React from "react"
 
-export default ({ height, width }) => {
+export default ({ size }) => {
   return (
     <img
-      style={{ borderRadius: "50%" }}
       alt="Krushi Raj"
       src="/krushi.jpg"
-      height={height}
-      width={width}
+      height={`${size}px`}
+      width="auto"
+      id="logo"
+      style={{
+        borderRadius: "50%",
+      }}
     />
   )
 }

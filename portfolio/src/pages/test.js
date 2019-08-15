@@ -1,8 +1,7 @@
 import React from "react"
 import SEO from "../components/SEO"
-import CircularImage from "../components/CircularImage"
 import ListItem from "../components/ListItem"
-// import MiniTerminalLink from "../components/MiniTerminalLink"
+import CircularImage from "../components/CircularImage"
 
 const items = [
   { name: "about-me" },
@@ -19,45 +18,33 @@ export default class IndexPage extends React.Component {
     return (
       <>
         <SEO />
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            height: "100vh",
-          }}
-        >
+        <div>
           <div
             id="nav"
             style={{
               width: "100%",
-              padding: "0",
-              textAlign: "center",
-              alignSelf: "center",
+              height: "30px",
+              padding: "10px 0",
             }}
           >
-            <a href="/">
-              <CircularImage size="200" />
+            <a href="/" style={{ padding: "0 10px" }}>
+              <CircularImage size="30" />
             </a>
-            <p
-              style={{
-                textDecoration: "underline",
-                textDecorationColor: "#e10000",
-                fontSize: "2rem",
-              }}
-            >
-              Krushi Raj Tula
-            </p>
             <div
               style={{
-                width: "100%",
+                height: "30px",
+                width: "calc(100% - 50px)",
+                overflow: "hidden",
+                float: "right",
               }}
             >
               <ul
                 style={{
                   listStyle: "none",
+                  textAlign: "right",
                   margin: 0,
                   padding: 0,
+                  whiteSpace: "nowrap",
                   width: "100%",
                   overflow: "auto",
                 }}
