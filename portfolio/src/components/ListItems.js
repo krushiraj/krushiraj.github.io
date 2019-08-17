@@ -1,5 +1,4 @@
 import React from "react"
-import NavUnderLine from "./NavUnderLine"
 import ListItem from "./ListItem"
 
 const navTopStyles = {
@@ -20,20 +19,41 @@ const navCenterStyles = {
   overflow: "auto",
 }
 
-export default ({ items, top }) => {
-  return (
-    <ul style={top ? navTopStyles : navCenterStyles}>
-      {items.map((props, key) => (
-        <ListItem
-          {...props}
-          key={key}
-          clickHandler={(e, self = this) => {
-            debugger
-            console.log({ target: e.target.parentNode, self })
+export default class ListItems extends React.Component {
+  constructor(props) {
+    super(props)
+    this.underLine = React.createRef()
+  }
+
+  render() {
+    const { top, items } = this.props
+    return (
+      <ul style={top ? navTopStyles : navCenterStyles}>
+        {items.map((props, key) => (
+          <ListItem
+            {...props}
+            key={key}
+            clickHandler={(e, self = this) => {
+              console.log({
+                target: e.target.parentNode,
+                underline: this.underLine.current,
+              })
+            }}
+          />
+        ))}
+        <hr
+          style={{
+            margin: 0,
+            background: "red",
+            height: "0px",
+            position: "relative",
+            top: "-3px",
+            border: "none",
+            width: "100px",
           }}
+          ref={this.underLine}
         />
-      ))}
-      <NavUnderLine />
-    </ul>
-  )
+      </ul>
+    )
+  }
 }
