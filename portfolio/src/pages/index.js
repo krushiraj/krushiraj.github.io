@@ -1,7 +1,7 @@
 import React from "react"
 import SEO from "../components/SEO"
 import CircularImage from "../components/CircularImage"
-import ListItem from "../components/ListItem"
+import ListItems from "../components/ListItems"
 // import MiniTerminalLink from "../components/MiniTerminalLink"
 
 const items = [
@@ -53,19 +53,7 @@ export default class IndexPage extends React.Component {
                 width: "100%",
               }}
             >
-              <ul
-                style={{
-                  listStyle: "none",
-                  margin: 0,
-                  padding: 0,
-                  width: "100%",
-                  overflow: "auto",
-                }}
-              >
-                {items.map((props, key) => (
-                  <ListItem {...props} key={key} />
-                ))}
-              </ul>
+              <ListItems items={items} top={false} />
             </div>
           </div>
         </div>
