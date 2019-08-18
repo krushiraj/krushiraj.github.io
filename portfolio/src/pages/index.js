@@ -2,7 +2,7 @@ import React from "react"
 import SEO from "../components/SEO"
 import CircularImage from "../components/CircularImage"
 import ListItems from "../components/ListItems"
-// import MiniTerminalLink from "../components/MiniTerminalLink"
+import MiniTerminalLink from "../components/MiniTerminalLink"
 
 const items = [
   { name: "about-me" },
@@ -54,6 +54,7 @@ export default class IndexPage extends React.Component {
               }}
             >
               <ListItems items={items} top={false} />
+              <MiniTerminalLink />
             </div>
           </div>
         </div>
