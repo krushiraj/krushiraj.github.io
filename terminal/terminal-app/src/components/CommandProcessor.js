@@ -48,7 +48,6 @@ const checkArg = (ref, context) => {
 };
 
 const checkTokens = (commandTokens, ref, index, context) => {
-    debugger
     if (index == commandTokens.length) return true;
     const { str, type } = commandTokens[index];
     let check = false;
