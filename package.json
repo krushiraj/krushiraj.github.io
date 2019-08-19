@@ -1,0 +1,23 @@
+{
+  "name": "krushiraj.github.io",
+  "version": "1.0.0",
+  "description": "krushiraj portfolio on github pages",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "cd portfolio && gatsby build && cd ../terminal-app && npm run build",
+    "deploy": "cd portfolio && gatsby build && cd ../terminal-app && npm run build && cd ../portfolio && gh-pages -d public -b master -m \"Deploying to master branch\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/krushiraj/krushiraj.github.io.git"
+  },
+  "keywords": [
+    "krushiraj"
+  ],
+  "author": "Krushi Raj Tula",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/krushiraj/krushiraj.github.io/issues"
+  },
+  "homepage": "https://github.com/krushiraj/krushiraj.github.io#readme"
+}
