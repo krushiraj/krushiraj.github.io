@@ -9,6 +9,7 @@ const navTopStyles = {
   whiteSpace: "nowrap",
   width: "100%",
   overflow: "auto",
+  height: "60px"
 }
 
 const navCenterStyles = {
@@ -23,6 +24,7 @@ export default class ListItems extends React.Component {
   constructor(props) {
     super(props)
     this.underLine = React.createRef()
+    this.state = { selected: undefined }
   }
 
   componentDidMount() {
@@ -49,12 +51,17 @@ export default class ListItems extends React.Component {
     const selectedLi = e.target.parentNode
     const listItems = document.querySelectorAll("#nav ul li")
     const target = self.underLine.current
+    target.style.display = "initial"
+
     if (!selectedLi.classList.contains("active")) {
       for (let i = 0; i < listItems.length; i++) {
-        if (listItems[i].classList.contains("active"))
+        if (listItems[i].classList.contains("active")) {
           listItems[i].classList.remove("active")
+          listItems[i].firstChild.style.borderBottom = "none"
+        }
       }
       selectedLi.classList.add("active")
+      this.setState({ selected: selectedLi })
 
       const width = selectedLi.getBoundingClientRect().width
       const height = selectedLi.getBoundingClientRect().height
@@ -64,7 +71,7 @@ export default class ListItems extends React.Component {
       target.style.width = `${width}px`
       target.style.height = `${height}px`
       target.style.left = `${left}px`
-      target.style.top = `${top - 2}px`
+      target.style.top = `${top}px`
       target.style.transform = "none"
     }
     console.log({
@@ -72,6 +79,13 @@ export default class ListItems extends React.Component {
       underline: self.underLine.current,
       lis: listItems,
     })
+  }
+
+  transitionEndHandler = (e, self = this) => {
+    const { underLine: { current }, state: { selected: { firstChild } } } = self;
+    console.log({ current, firstChild })
+    firstChild.style.borderBottom = "2px solid #e10000";
+    current.style.display = "none";
   }
 
   render() {
@@ -90,6 +104,7 @@ export default class ListItems extends React.Component {
             borderBottom: "2px solid #e10000",
             transition: "all 0.3s ease-in-out",
           }}
+          onTransitionEnd={this.transitionEndHandler}
         />
       </>
     )

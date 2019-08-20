@@ -2,7 +2,6 @@ import React from "react"
 import SEO from "../components/SEO"
 import ListItems from "../components/ListItems"
 import CircularImage from "../components/CircularImage"
-import { target } from "../components/listitem.module.css"
 
 const items = [
   { name: "about-me" },
@@ -24,7 +23,7 @@ export default class IndexPage extends React.Component {
             id="nav"
             style={{
               width: "100%",
-              height: "50px",
+              height: "40px",
               padding: "10px 0",
             }}
           >
@@ -34,7 +33,7 @@ export default class IndexPage extends React.Component {
             <div
               id="#nav"
               style={{
-                height: "30px",
+                height: "40px",
                 width: "calc(100% - 50px)",
                 overflow: "hidden",
                 float: "right",
@@ -42,7 +41,6 @@ export default class IndexPage extends React.Component {
             >
               <ListItems items={items} top={true} />
             </div>
-            <span className={target}></span>
           </div>
         </div>
       </>

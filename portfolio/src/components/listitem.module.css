@@ -9,7 +9,7 @@
 
 .alink:after {
   background: none repeat scroll 0 0 transparent;
-  bottom: 0;
+  bottom: -2px;
   content: "";
   display: block;
   height: 2px;
@@ -34,16 +34,4 @@
 
 .alink:visited {
   color: #ffffff;
-}
-
-.target {
-  position: absolute;
-  border-bottom: 4px solid transparent;
-  z-index: -1;
-  transform: translateX(-60px);
-}
-
-.alink,
-.target {
-  transition: all 0.35s ease-in-out;
 }
