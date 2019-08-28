@@ -17,7 +17,7 @@ const navCenterStyles = {
   margin: 0,
   padding: 0,
   width: "100%",
-  overflow: "auto",
+  height: "100%"
 }
 
 export default class ListItems extends React.Component {
@@ -32,11 +32,9 @@ export default class ListItems extends React.Component {
   }
 
   resizeFunc = (e, self = this) => {
-    console.log(self)
     const active = document.querySelector("#nav ul li.active")
     const target = self.underLine.current
 
-    console.log(active, target)
 
     if (active) {
       const left = active.getBoundingClientRect().left + window.pageXOffset
@@ -48,25 +46,25 @@ export default class ListItems extends React.Component {
   }
 
   clickHandler = (e, self = this) => {
-    const selectedLi = e.target.parentNode
-    const listItems = document.querySelectorAll("#nav ul li")
+    const selected = e.target
+    const listItems = document.querySelectorAll("#nav ul li a")
     const target = self.underLine.current
     target.style.display = "initial"
 
-    if (!selectedLi.classList.contains("active")) {
+    if (!selected.classList.contains("active")) {
       for (let i = 0; i < listItems.length; i++) {
         if (listItems[i].classList.contains("active")) {
           listItems[i].classList.remove("active")
-          listItems[i].firstChild.style.borderBottom = "none"
+          listItems[i].style.borderBottom = "none"
         }
       }
-      selectedLi.classList.add("active")
-      this.setState({ selected: selectedLi })
+      selected.classList.add("active")
+      this.setState({ selected })
 
-      const width = selectedLi.getBoundingClientRect().width
-      const height = selectedLi.getBoundingClientRect().height
-      const left = selectedLi.getBoundingClientRect().left + window.pageXOffset
-      const top = selectedLi.getBoundingClientRect().top + window.pageYOffset
+      const width = selected.getBoundingClientRect().width
+      const height = selected.getBoundingClientRect().height
+      const left = selected.getBoundingClientRect().left + window.pageXOffset
+      const top = selected.getBoundingClientRect().top + window.pageYOffset
 
       target.style.width = `${width}px`
       target.style.height = `${height}px`
@@ -74,17 +72,12 @@ export default class ListItems extends React.Component {
       target.style.top = `${top}px`
       target.style.transform = "none"
     }
-    console.log({
-      target: e.target.parentNode,
-      underline: self.underLine.current,
-      lis: listItems,
-    })
   }
 
   transitionEndHandler = (e, self = this) => {
-    const { underLine: { current }, state: { selected: { firstChild } } } = self;
-    console.log({ current, firstChild })
-    firstChild.style.borderBottom = "2px solid #e10000";
+    const { underLine: { current }, state: { selected } } = self;
+    console.log({ current, selected })
+    selected.style.borderBottom = "2px solid #e10000";
     current.style.display = "none";
   }
 
@@ -103,6 +96,9 @@ export default class ListItems extends React.Component {
             position: "absolute",
             borderBottom: "2px solid #e10000",
             transition: "all 0.3s ease-in-out",
+            margin: 0,
+            padding: 0,
+            zIndex: -1
           }}
           onTransitionEnd={this.transitionEndHandler}
         />

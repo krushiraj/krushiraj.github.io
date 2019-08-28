@@ -1,12 +1,18 @@
 <!-- AUTO-GENERATED-CONTENT:START (STARTER) -->
 <p align="center">
-  <a href="https://www.gatsbyjs.org">
-    <img alt="Gatsby" src="https://www.gatsbyjs.org/monogram.svg" width="60" />
+  <a >
+    <img alt="Krushi Raj Tula - Portfolio" src="static/tkrlogo.png">
   </a>
+  <h1 align="center">
+    Krushi Raj Tula - Portfolio
+  </h1>
+  <p align="center">
+  <a href="https://www.gatsbyjs.org" color="#bbb" font-size="5px">
+    <img alt="Gatsby" src="https://www.gatsbyjs.org/monogram.svg" width="15" />
+    Made with Gatsby
+  </a>
+  </p>
 </p>
-<h1 align="center">
-  Gatsby's hello-world starter
-</h1>
 
 Kick off your project with this hello-world boilerplate. This starter ships with the main Gatsby configuration files you might need to get up and running blazing fast with the blazing fast app generator for React.
 

@@ -14,6 +14,53 @@ const items = [
   { name: "resume" },
 ]
 
+const NameTag = ({ name }) => {
+  return (
+    <p
+      style={{
+        textDecoration: "underline",
+        textDecorationColor: "#e10000",
+        fontSize: "2rem",
+      }}
+    >
+      {name}
+    </p>
+  )
+}
+
+const CircularImageWrapper = () => {
+  return (
+    <a href="/">
+      <CircularImage size="200" />
+    </a>
+  )
+}
+
+const NavigationItems = () => {
+  return (
+    <div
+      id="nav"
+      style={{
+        width: "100%",
+        padding: "0",
+        textAlign: "center",
+        alignSelf: "center",
+      }}
+    >
+      <CircularImageWrapper />
+      <NameTag name="Krushi Raj Tula" />
+      <div
+        style={{
+          width: "100%",
+        }}
+      >
+        <ListItems items={items} top={false} />
+        <MiniTerminalLink />
+      </div>
+    </div>
+  )
+}
+
 export default class IndexPage extends React.Component {
   render() {
     return (
@@ -27,36 +74,7 @@ export default class IndexPage extends React.Component {
             height: "100vh",
           }}
         >
-          <div
-            id="nav"
-            style={{
-              width: "100%",
-              padding: "0",
-              textAlign: "center",
-              alignSelf: "center",
-            }}
-          >
-            <a href="/">
-              <CircularImage size="200" />
-            </a>
-            <p
-              style={{
-                textDecoration: "underline",
-                textDecorationColor: "#e10000",
-                fontSize: "2rem",
-              }}
-            >
-              Krushi Raj Tula
-            </p>
-            <div
-              style={{
-                width: "100%",
-              }}
-            >
-              <ListItems items={items} top={false} />
-              <MiniTerminalLink />
-            </div>
-          </div>
+          <NavigationItems />
         </div>
       </>
     )
