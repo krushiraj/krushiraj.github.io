@@ -148,7 +148,7 @@ export const StyledLayout = styled.div`
   margin-left: auto;
   margin-right: auto;
   max-width: ${rhythm(24)};
-  padding: 0;
+  padding: 0 ${rhythm(1 / 2)};
 `
 
 export const StyledCrumb = styled.h2`
