@@ -1,12 +1,21 @@
-import styled from 'styled-components';
-import { rhythm, scale } from '../../utils/typography';
-import { colors } from '../../utils/theme';
+import styled from "styled-components"
+import { rhythm, scale } from "../../utils/typography"
+// import { colors } from "../../utils/theme"
 
-export const StyledIndex = styled.div`
+export const StyledIndexDiv = styled.div`
   display: flex;
   height: 100vh;
   align-items: center;
   justify-content: center;
+
+  a {
+    color: rgba(255, 255, 255, 0.7);
+    text-transform: uppercase;
+
+    &:hover {
+      color: rgba(255, 255, 255, 1);
+    }
+  }
 
   h1 {
     ${scale(1.5)}
@@ -29,4 +38,4 @@ export const StyledIndex = styled.div`
     align-items: center;
     justify-content: space-around;
   }
-`;
+`

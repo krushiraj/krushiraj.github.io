@@ -1,15 +1,23 @@
 import React from "react"
-import ListItemStyles from "./listitem.module.css"
+import styled from "styled-components"
+import { rhythm } from "../utils/typography"
 
-export default ({ name, clickHandler }) => {
+const StyledListItem = styled.li`
+  display: inline-block;
+  padding: 0 15px;
+
+  a:after {
+    bottom: -2px;
+  }
+`
+
+export default ({ name, title, clickHandler, top }) => {
   return (
-    <li
+    <StyledListItem
       onClick={clickHandler}
-      style={{ display: "inline-block", padding: "0 5px" }}
+      style={{ margin: top ? 0 : rhythm(0.5) }}
     >
-      <a className={ListItemStyles.alink} href={`#${name}`}>
-        {name}
-      </a>
-    </li>
+      <a href={`#${name}`}>{title}</a>
+    </StyledListItem>
   )
 }

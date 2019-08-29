@@ -9,7 +9,8 @@ const navTopStyles = {
   whiteSpace: "nowrap",
   width: "100%",
   overflow: "auto",
-  height: "60px"
+  height: "60px",
+  transition: "all 0.3s linear",
 }
 
 const navCenterStyles = {
@@ -17,7 +18,8 @@ const navCenterStyles = {
   margin: 0,
   padding: 0,
   width: "100%",
-  height: "100%"
+  height: "100%",
+  transition: "all 0.3s linear",
 }
 
 export default class ListItems extends React.Component {
@@ -34,7 +36,6 @@ export default class ListItems extends React.Component {
   resizeFunc = (e, self = this) => {
     const active = document.querySelector("#nav ul li.active")
     const target = self.underLine.current
-
 
     if (active) {
       const left = active.getBoundingClientRect().left + window.pageXOffset
@@ -69,16 +70,18 @@ export default class ListItems extends React.Component {
       target.style.width = `${width}px`
       target.style.height = `${height}px`
       target.style.left = `${left}px`
-      target.style.top = `${top}px`
+      target.style.top = `${top + 2}px`
       target.style.transform = "none"
     }
   }
 
   transitionEndHandler = (e, self = this) => {
-    const { underLine: { current }, state: { selected } } = self;
-    console.log({ current, selected })
-    selected.style.borderBottom = "2px solid #e10000";
-    current.style.display = "none";
+    const {
+      underLine: { current },
+      state: { selected },
+    } = self
+    selected.style.borderBottom = "2px solid #e10000"
+    current.style.display = "none"
   }
 
   render() {
@@ -87,7 +90,12 @@ export default class ListItems extends React.Component {
       <>
         <ul style={top ? navTopStyles : navCenterStyles}>
           {items.map((props, key) => (
-            <ListItem {...props} key={key} clickHandler={this.clickHandler} />
+            <ListItem
+              {...props}
+              top={top}
+              key={key}
+              clickHandler={this.clickHandler}
+            />
           ))}
         </ul>
         <span
@@ -95,10 +103,10 @@ export default class ListItems extends React.Component {
           style={{
             position: "absolute",
             borderBottom: "2px solid #e10000",
-            transition: "all 0.3s ease-in-out",
+            transition: "all 0.3s linear",
             margin: 0,
             padding: 0,
-            zIndex: -1
+            zIndex: -1,
           }}
           onTransitionEnd={this.transitionEndHandler}
         />

@@ -4,7 +4,8 @@ import { MDXProvider } from "@mdx-js/react"
 
 import Footer from "../Footer"
 import mdxComponents from "../Mdx"
-import { StyledLayout, StyledCrumb, GlobalStyle } from "./styles"
+import { GlobalStyle } from "../../utils/theme"
+import { StyledLayout, StyledCrumb } from "./styles"
 
 const Layout = ({ children, location }) => (
   <StaticQuery
