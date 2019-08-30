@@ -8,7 +8,7 @@ const StyledTerminalLink = styled.div`
   height: 40px;
   position: absolute;
   left: -160px;
-  top: 20vh;
+  top: 10vh;
   background: rgba(255, 255, 255, 0.7);
   transition: left 0.3s ease;
   animation-name: bounce;
@@ -39,6 +39,7 @@ const StyledTerminalLink = styled.div`
 
     a {
       color: black;
+      margin: 0 0 0 10px;
 
       &:hover {
         color: black;
@@ -67,7 +68,10 @@ export default () => {
     <StyledTerminalLink>
       <p>
         <a href="https://krushiraj.github.io/mini-terminal/">Mini-Terminal</a>{" "}
-        <FontAwesomeIcon icon={faTerminal} style={{ color: "black" }} />
+        <FontAwesomeIcon
+          icon={faTerminal}
+          style={{ color: "black", margin: "0 0 0 15px" }}
+        />
       </p>
     </StyledTerminalLink>
   )

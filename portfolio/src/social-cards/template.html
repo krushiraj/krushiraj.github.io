@@ -16,7 +16,13 @@
       .card {
         height: 100vh;
         width: 100vw;
-        background: #151515;
+        background-image: linear-gradient(
+          135deg,
+          rgba(10, 10, 10, 1) 0%,
+          rgba(10, 10, 10, 1) 51%,
+          rgba(55, 55, 55, 1) 51%,
+          rgba(55, 55, 55, 1) 100%
+        );
         color: #ffffff;
         border-radius: 6vw;
       }
@@ -28,7 +34,7 @@
         padding: 5%;
       }
       .card .wrapper h1 {
-        font-family: "Montserrat", sans-serif;
+        font-family: "Fira Code", "Montserrat", sans-serif;
         font-size: 5vw;
       }
       .card .wrapper footer {
@@ -42,13 +48,17 @@
       .card .wrapper .rects .rect1 {
         height: 32px;
         width: 20%;
-        background: #656565;
+        font-family: "Fira Code", "Montserrat", sans-serif;
+        color: #808080;
+        font-size: 2vw;
         margin-bottom: 4%;
       }
       .card .wrapper .rects .rect2 {
         height: 32px;
         width: 100%;
-        background: #a2a2a2;
+        font-family: "Fira Code", "Montserrat", sans-serif;
+        color: #b9b9b9;
+        font-size: 2vw;
         margin-bottom: 4%;
       }
     </style>
@@ -56,10 +66,12 @@
   <body>
     <div class="card">
       <div class="wrapper">
-        <h1>Heading for my post - Krushi Raj Tula</h1>
+        <h1>Heading for my post - Krushi</h1>
         <div class="rects">
-          <div class="rect1"></div>
-          <div class="rect2"></div>
+          <div class="rect1">20th Aug 2019</div>
+          <div class="rect2">
+            There is a description going on here. ambsdaasd ads as da ajsdas
+          </div>
         </div>
         <footer>krushiraj.github.io</footer>
       </div>

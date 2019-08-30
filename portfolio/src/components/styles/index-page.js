@@ -12,6 +12,10 @@ export const StyledIndexDiv = styled.div`
     color: rgba(255, 255, 255, 0.7);
     text-transform: uppercase;
 
+    &.active {
+      border-bottom: 2px solid #e10000;
+    }
+
     &:hover {
       color: rgba(255, 255, 255, 1);
     }

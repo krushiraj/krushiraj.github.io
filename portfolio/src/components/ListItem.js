@@ -1,5 +1,6 @@
 import React from "react"
 import styled from "styled-components"
+
 import { rhythm } from "../utils/typography"
 
 const StyledListItem = styled.li`
@@ -17,7 +18,9 @@ export default ({ name, title, clickHandler, top }) => {
       onClick={clickHandler}
       style={{ margin: top ? 0 : rhythm(0.5) }}
     >
-      <a href={`#${name}`}>{title}</a>
+      <a name={name} id={`${name}${top ? `top` : ``}`} href={`#${name}`}>
+        {title}
+      </a>
     </StyledListItem>
   )
 }

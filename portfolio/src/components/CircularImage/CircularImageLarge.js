@@ -2,7 +2,7 @@ import React from "react"
 import { StaticQuery, graphql } from "gatsby"
 import Img from "gatsby-image"
 
-import { rhythm } from "../utils/typography"
+import { rhythm } from "../../utils/typography"
 
 const query = graphql`
   query {
@@ -16,7 +16,7 @@ const query = graphql`
   }
 `
 
-export const CircularImageLarge = () => (
+const CircularImageLarge = () => (
   <StaticQuery
     query={query}
     render={data => (
@@ -35,21 +35,4 @@ export const CircularImageLarge = () => (
   />
 )
 
-export const CircularImageTop = () => (
-  <StaticQuery
-    query={query}
-    render={data => (
-      <Img
-        fluid={data.file.childImageSharp.fluid}
-        style={{
-          display: "flex",
-          textAlign: "center",
-          margin: "0 auto",
-          borderRadius: "50%",
-          height: rhythm(1),
-          width: rhythm(1),
-        }}
-      />
-    )}
-  />
-)
+export default CircularImageLarge

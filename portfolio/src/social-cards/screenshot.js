@@ -2,7 +2,7 @@ const fs = require("fs")
 const { resolve } = require("path")
 const { createHash } = require("crypto")
 
-const getHtml = title => `
+const getHtml = ({ title, date, description, banner }) => `
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -21,8 +21,15 @@ const getHtml = title => `
       .card {
         height: 100vh;
         width: 100vw;
-        background: #151515;
+        background: linear-gradient(
+          135deg,
+          rgba(10, 10, 10, 1) 0%,
+          rgba(10, 10, 10, 1) 51%,
+          rgba(55, 55, 55, 1) 51%,
+          rgba(55, 55, 55, 1) 100%
+        );
         color: #ffffff;
+        border-radius: 6vw;
       }
       .card .wrapper {
         height: -webkit-fill-available;
@@ -32,12 +39,12 @@ const getHtml = title => `
         padding: 5%;
       }
       .card .wrapper h1 {
-        font-family: 'Montserrat', sans-serif;
+        font-family: "Fira Code", "Montserrat", sans-serif;
         font-size: 5vw;
       }
       .card .wrapper footer {
         text-align: right;
-        font-family: 'Inconsolata', monospace;
+        font-family: "Inconsolata", monospace;
         font-size: 1.8vw;
       }
       .card .wrapper .rects {
@@ -46,13 +53,17 @@ const getHtml = title => `
       .card .wrapper .rects .rect1 {
         height: 32px;
         width: 20%;
-        background: #656565;
+        font-family: "Fira Code", "Montserrat", sans-serif;
+        color: #808080;
+        font-size: 2vw;
         margin-bottom: 4%;
       }
       .card .wrapper .rects .rect2 {
         height: 32px;
         width: 100%;
-        background: #a2a2a2;
+        font-family: "Fira Code", "Montserrat", sans-serif;
+        color: #b9b9b9;
+        font-size: 2vw;
         margin-bottom: 4%;
       }
     </style>
@@ -60,10 +71,10 @@ const getHtml = title => `
   <body>
     <div class="card">
       <div class="wrapper">
-        <h1>${title}</h1>
+        <h1>${title.slice(0, 29)}</h1>
         <div class="rects">
-          <div class="rect1"></div>
-          <div class="rect2"></div>
+          <div class="rect1">${date}</div>
+          <div class="rect2">${description.slice(0, 64) + `...`}</div>
         </div>
         <footer>krushiraj.github.io</footer>
       </div>
@@ -87,7 +98,7 @@ const writeCachedFile = async (CACHE_DIR, key, contents, extension) => {
   return absolutePath
 }
 
-const imageFromHtml = async (CACHE_DIR, browser, title) => {
+const imageFromHtml = async (CACHE_DIR, browser, data) => {
   const page = await browser.newPage()
   page._emulationManager._client.send(
     "Emulation.setDefaultBackgroundColorOverride",
@@ -96,17 +107,17 @@ const imageFromHtml = async (CACHE_DIR, browser, title) => {
     }
   )
   await page.setViewport({ width: 2400, height: 1254 })
-  await page.setContent(getHtml(title))
+  await page.setContent(getHtml(data))
   await page.evaluateHandle("document.fonts.ready")
 
   const file = await page.screenshot({ type: "png" })
 
-  return writeCachedFile(CACHE_DIR, title, file, "png")
+  return writeCachedFile(CACHE_DIR, data.title, file, "png")
 }
 
 const postToImage = async (CACHE_DIR, browser, post) => {
-  const title = post.frontmatter.title
-  return imageFromHtml(CACHE_DIR, browser, title)
+  const data = post.frontmatter
+  return imageFromHtml(CACHE_DIR, browser, data)
 }
 
 module.exports = postToImage

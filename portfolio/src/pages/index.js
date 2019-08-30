@@ -1,5 +1,6 @@
 import React from "react"
 import styled from "styled-components"
+import { Events } from "react-scroll"
 
 import SEO from "../components/SEO"
 import { StyledIndexDiv } from "../components/styles/index-page"
@@ -22,13 +23,13 @@ import {
 } from "../components"
 
 const items = [
-  { name: "about-me", title: "About me", children: <AboutMe /> },
-  { name: "my-works", title: "My Works", children: <MyWorks /> },
-  { name: "experience", title: "Experience", children: <Experience /> },
-  { name: "writings", title: "Writings", children: <Writings /> },
-  { name: "skills", title: "Skills", children: <Skills /> },
-  { name: "contact", title: "Contact", children: <Contact /> },
-  { name: "resume", title: "Resume", children: <Resume /> },
+  { name: "about-me", title: "About me", children: AboutMe },
+  { name: "my-works", title: "My Works", children: MyWorks },
+  { name: "experience", title: "Experience", children: Experience },
+  { name: "writings", title: "Writings", children: Writings },
+  { name: "skills", title: "Skills", children: Skills },
+  { name: "contact", title: "Contact", children: Contact },
+  { name: "resume", title: "Resume", children: Resume },
 ]
 
 const NameTag = ({ name, top }) => {
@@ -60,6 +61,7 @@ const ImageWithName = ({ name, top }) => {
     cursor: "pointer",
     width: rhythm(11),
     margin: "0 auto",
+    borderRadius: "50%",
     transition: "all 0.3s ease",
   }
   return (
@@ -73,7 +75,7 @@ const ImageWithName = ({ name, top }) => {
   )
 }
 
-const NavigationItems = ({ title, top }) => {
+const NavigationItems = ({ title, top, updateTop }) => {
   const fullScreenStyles = {
     width: "100%",
     padding: "0",
@@ -103,35 +105,162 @@ const NavigationItems = ({ title, top }) => {
     transition: "all 0.3s ease",
   }
   return (
-    <div id="nav" style={top ? topNavStyles : fullScreenStyles}>
+    <div
+      id={`nav${top ? `top` : ``}`}
+      style={top ? topNavStyles : fullScreenStyles}
+    >
       <ImageWithName name={title} top={top} />
       <div style={top ? topNavInnerStyles : fullScreenInnerStyles}>
-        <ListItems items={items} top={top} />
+        <ListItems updateTop={updateTop} items={items} top={top} />
       </div>
     </div>
   )
 }
 
 const PageSection = styled.section`
-  height: auto;
-  width: "100%";
+  height: 100vh;
+  width: 100%;
+  padding: ${rhythm(2)} 0;
 `
 
-const PageSections = () => {
+const PageSections = ({ top }) => {
   return (
-    <>
+    <div
+      style={{
+        height: "auto",
+        width: "100%",
+        zIndex: -1,
+      }}
+    >
       {items.map((props, key) => (
-        <PageSection key={key} {...props} />
+        <PageSection key={key}>
+          <props.children name={props.name} />
+        </PageSection>
       ))}
-    </>
+    </div>
+  )
+}
+
+const StyledIndexTopEntry = styled.div`
+  position: absolute;
+  bottom: 0;
+  right: 50%;
+  transform: translate(50%, 0);
+  display: flex;
+  width: auto;
+  height: 50px;
+  margin: 0 auto;
+  text-align: center;
+
+  .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+  }
+`
+
+const StyledAnimDownArrow = styled.span`
+  --base: 0.3rem;
+
+  .chevron {
+    position: absolute;
+    width: calc(var(--base) * 3.5);
+    height: calc(var(--base) * 0.8);
+    opacity: 0;
+    transform: scale(0.3);
+    animation: move-chevron 3s ease-out infinite;
+  }
+
+  .chevron:first-child {
+    animation: move-chevron 3s ease-out 1s infinite;
+  }
+
+  .chevron:nth-child(2) {
+    animation: move-chevron 3s ease-out 2s infinite;
+  }
+
+  .chevron:before,
+  .chevron:after {
+    content: "";
+    position: absolute;
+    top: -35px;
+    height: 100%;
+    width: 50%;
+    background: #fff;
+  }
+
+  .chevron:before {
+    left: 0;
+    transform: skewY(30deg);
+  }
+
+  .chevron:after {
+    right: 0;
+    width: 50%;
+    transform: skewY(-30deg);
+  }
+
+  @keyframes move-chevron {
+    25% {
+      opacity: 1;
+    }
+    33.3% {
+      opacity: 1;
+      transform: translateY(calc(var(--base) * 3.8));
+    }
+    66.6% {
+      opacity: 1;
+      transform: translateY(calc(var(--base) * 5.2));
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(calc(var(--base) * 8)) scale(0.5);
+    }
+  }
+`
+
+const TopEntryButton = ({ updateTop }) => {
+  return (
+    <StyledIndexTopEntry onClick={() => updateTop({ top: true })}>
+      {" "}
+      <StyledAnimDownArrow className="container">
+        <div className="chevron"></div>
+        <div className="chevron"></div>
+        <div className="chevron"></div>
+      </StyledAnimDownArrow>
+      <span> Click here </span>
+      <StyledAnimDownArrow className="container">
+        <div className="chevron"></div>
+        <div className="chevron"></div>
+        <div className="chevron"></div>
+      </StyledAnimDownArrow>{" "}
+    </StyledIndexTopEntry>
   )
 }
 
 class AnimatedIndexDiv extends React.Component {
   constructor(props) {
     super(props)
-    this.state = { top: false }
+    this.state = { top: false, selected: null }
   }
+
+  componentDidMount() {
+    Events.scrollEvent.register("begin", function() {
+      console.log("begin", arguments)
+    })
+
+    Events.scrollEvent.register("end", function() {
+      console.log("end", arguments)
+    })
+  }
+
+  componentWillUnmount() {
+    Events.scrollEvent.remove("begin")
+    Events.scrollEvent.remove("end")
+  }
+
+  updateTop = top => this.setState({ top })
 
   render() {
     const styledIndexTopHidden = {
@@ -149,7 +278,7 @@ class AnimatedIndexDiv extends React.Component {
       width: "100%",
       margin: "0",
       transition: "all 0.3s ease",
-      position: "sticky",
+      position: "fixed",
       top: "0",
       opacity: 1,
     }
@@ -175,22 +304,34 @@ class AnimatedIndexDiv extends React.Component {
       position: "absolute",
       top: 0,
     }
+
     const top = this.state.top
     const title = this.props.title
     return (
       <React.Fragment>
         <StyledIndexDiv
           style={top ? styledIndexFullHidden : styledIndexFullVisible}
-          onClick={() => this.setState({ top: !top })}
         >
-          <NavigationItems title={title} top={false} />
+          <NavigationItems
+            updateTop={this.updateTop}
+            title={title}
+            top={false}
+          />
         </StyledIndexDiv>
         <StyledIndexDiv
           style={top ? styledIndexTopVisible : styledIndexTopHidden}
-          onClick={() => this.setState({ top: !top })}
         >
-          <NavigationItems title={title} top={true} />
+          <NavigationItems
+            updateTop={this.updateTop}
+            title={title}
+            top={true}
+          />
         </StyledIndexDiv>
+        {top ? (
+          <PageSections top={top} />
+        ) : (
+          <TopEntryButton updateTop={this.updateTop} />
+        )}
       </React.Fragment>
     )
   }
@@ -202,7 +343,6 @@ export default props => (
     <SEO />
     <AnimatedIndexDiv title={props.data.site.siteMetadata.title} />
     <MiniTerminalLink />
-    <PageSections />
   </React.Fragment>
 )
 

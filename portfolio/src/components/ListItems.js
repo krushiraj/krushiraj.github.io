@@ -1,4 +1,6 @@
 import React from "react"
+import { scroller } from "react-scroll"
+
 import ListItem from "./ListItem"
 
 const navTopStyles = {
@@ -46,43 +48,57 @@ export default class ListItems extends React.Component {
     }
   }
 
-  clickHandler = (e, self = this) => {
-    const selected = e.target
-    const listItems = document.querySelectorAll("#nav ul li a")
-    const target = self.underLine.current
-    target.style.display = "initial"
-
-    if (!selected.classList.contains("active")) {
-      for (let i = 0; i < listItems.length; i++) {
-        if (listItems[i].classList.contains("active")) {
-          listItems[i].classList.remove("active")
-          listItems[i].style.borderBottom = "none"
-        }
-      }
-      selected.classList.add("active")
+  clickHandler = (e, self = this, top = false) => {
+    const selected = !e.target.id.match("top")
+      ? document.getElementById(e.target.id + "top")
+      : e.target
+    // const listItems = document.querySelectorAll("#navtop ul li a")
+    // const target =
+    //   self.underLine.current || document.getElementById("underline-span")
+    if (this.props.top === false && top === false) {
+      this.props.updateTop({ top: true })
       this.setState({ selected })
-
-      const width = selected.getBoundingClientRect().width
-      const height = selected.getBoundingClientRect().height
-      const left = selected.getBoundingClientRect().left + window.pageXOffset
-      const top = selected.getBoundingClientRect().top + window.pageYOffset
-
-      target.style.width = `${width}px`
-      target.style.height = `${height}px`
-      target.style.left = `${left}px`
-      target.style.top = `${top + 2}px`
-      target.style.transform = "none"
     }
+    // target.style.display = "initial"
+    // if (!selected.classList.contains("active")) {
+    //   for (let i = 0; i < listItems.length; i++) {
+    //     if (listItems[i].classList.contains("active")) {
+    //       listItems[i].classList.remove("active")
+    //     }
+    //   }
+    const prevActive = document.querySelector("a.active")
+    if (prevActive) prevActive.classList.remove("active")
+    selected.classList.add("active")
+    this.setState({ selected })
+
+    // const width = selected.getBoundingClientRect().width
+    // const height = selected.getBoundingClientRect().height
+    // const left = selected.getBoundingClientRect().left + window.pageXOffset
+    // const top = selected.getBoundingClientRect().top + window.pageYOffset
+
+    // target.style.width = `${width}px`
+    // target.style.height = `${height}px`
+    // target.style.left = `${left}px`
+    // target.style.top = `${top + 2}px`
+    // target.style.transform = "none"
+
+    scroller.scrollTo(selected.name, {
+      duration: 500,
+      smooth: "easeInOutQuart",
+    })
   }
 
-  transitionEndHandler = (e, self = this) => {
-    const {
-      underLine: { current },
-      state: { selected },
-    } = self
-    selected.style.borderBottom = "2px solid #e10000"
-    current.style.display = "none"
-  }
+  // transitionEndHandler = (e, self = this) => {
+  //   const {
+  //     state: { selected },
+  //   } = self
+  //   const current =
+  //     self.underLine.current || document.getElementById("underline-span")
+  //   if (!selected.classList.contains("active")) selected.classList.add("active")
+  //   selected.style.borderBottom = "2px solid #e10000"
+  //   current.style.display = "none"
+  //   console.log(selected)
+  // }
 
   render() {
     const { top, items } = this.props
@@ -98,18 +114,6 @@ export default class ListItems extends React.Component {
             />
           ))}
         </ul>
-        <span
-          ref={this.underLine}
-          style={{
-            position: "absolute",
-            borderBottom: "2px solid #e10000",
-            transition: "all 0.3s linear",
-            margin: 0,
-            padding: 0,
-            zIndex: -1,
-          }}
-          onTransitionEnd={this.transitionEndHandler}
-        />
       </>
     )
   }
