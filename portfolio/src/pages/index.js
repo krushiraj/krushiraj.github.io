@@ -52,6 +52,7 @@ const NameTag = ({ name, top }) => {
 
 const ImageWithName = ({ name, top }) => {
   const topNavStyles = {
+    cursor: "pointer",
     padding: "0 10px",
     width: rhythm(1),
     display: "inline-block",
@@ -120,7 +121,7 @@ const NavigationItems = ({ title, top, updateTop }) => {
 const PageSection = styled.section`
   height: 100vh;
   width: 100%;
-  padding: ${rhythm(2)} 0;
+  padding: ${rhythm(2)};
 `
 
 const PageSections = ({ top }) => {
@@ -151,6 +152,7 @@ const StyledIndexTopEntry = styled.div`
   height: 50px;
   margin: 0 auto;
   text-align: center;
+  overflow: hidden;
 
   .container {
     display: flex;
@@ -162,6 +164,8 @@ const StyledIndexTopEntry = styled.div`
 
 const StyledAnimDownArrow = styled.span`
   --base: 0.3rem;
+
+  cursor: pointer;
 
   .chevron {
     position: absolute;
@@ -229,7 +233,14 @@ const TopEntryButton = ({ updateTop }) => {
         <div className="chevron"></div>
         <div className="chevron"></div>
       </StyledAnimDownArrow>
-      <span> Click here </span>
+      <span
+        style={{
+          cursor: "pointer",
+        }}
+      >
+        {" "}
+        Click here{" "}
+      </span>
       <StyledAnimDownArrow className="container">
         <div className="chevron"></div>
         <div className="chevron"></div>

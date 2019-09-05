@@ -13,7 +13,8 @@ export default ({ name }) => (
   >
     <div>
       <Element name={name} id={name}>
-        Hello there
+        Hello there. I'm Krushi Raj Tula, who is a geek and loves to solve
+        problems by myself.
       </Element>
     </div>
   </Waypoint>
