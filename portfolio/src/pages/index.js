@@ -313,7 +313,7 @@ class AnimatedIndexDiv extends React.Component {
       transition: "all 0.3s ease, transform 0ms",
       opacity: 0,
       position: "absolute",
-      top: 0,
+      top: "-100vh",
     }
 
     const top = this.state.top

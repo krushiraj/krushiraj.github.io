@@ -71,10 +71,10 @@ const getHtml = ({ title, date, description, banner }) => `
   <body>
     <div class="card">
       <div class="wrapper">
-        <h1>${title.slice(0, 29)}</h1>
+        <h1 style="margin: 0">${title.slice(0, 54) + `...`}</h1>
         <div class="rects">
           <div class="rect1">${date}</div>
-          <div class="rect2">${description.slice(0, 64) + `...`}</div>
+          <div class="rect2">${description.slice(0, 269) + `...`}</div>
         </div>
         <footer>krushiraj.github.io</footer>
       </div>
