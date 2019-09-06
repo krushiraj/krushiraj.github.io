@@ -1,6 +1,7 @@
 import React from "react"
 import styled from "styled-components"
-import { Events } from "react-scroll"
+import { Events, Element } from "react-scroll"
+import { Waypoint } from "react-waypoint"
 
 import SEO from "../components/SEO"
 import { StyledIndexDiv } from "../components/styles/index-page"
@@ -23,7 +24,12 @@ import {
 } from "../components"
 
 const items = [
-  { name: "about-me", title: "About me", children: AboutMe },
+  {
+    name: "about-me",
+    title: "About me",
+    children: AboutMe,
+    style: { height: "100%" },
+  },
   { name: "my-works", title: "My Works", children: MyWorks },
   { name: "experience", title: "Experience", children: Experience },
   { name: "writings", title: "Writings", children: Writings },
@@ -50,7 +56,7 @@ const NameTag = ({ name, top }) => {
   )
 }
 
-const ImageWithName = ({ name, top }) => {
+const ImageWithName = ({ name, top, updateTop }) => {
   const topNavStyles = {
     cursor: "pointer",
     padding: "0 10px",
@@ -68,7 +74,7 @@ const ImageWithName = ({ name, top }) => {
   return (
     <div
       style={top ? topNavStyles : fullScreenStyles}
-      onClick={() => (window.location = "/")}
+      onClick={() => updateTop(!top)}
     >
       {top ? <CircularImageTop /> : <CircularImageLarge />}
       <NameTag name={name} top={top} />
@@ -110,7 +116,7 @@ const NavigationItems = ({ title, top, updateTop }) => {
       id={`nav${top ? `top` : ``}`}
       style={top ? topNavStyles : fullScreenStyles}
     >
-      <ImageWithName name={title} top={top} />
+      <ImageWithName name={title} top={top} updateTop={updateTop} />
       <div style={top ? topNavInnerStyles : fullScreenInnerStyles}>
         <ListItems updateTop={updateTop} items={items} top={top} />
       </div>
@@ -124,20 +130,60 @@ const PageSection = styled.section`
   padding: ${rhythm(2)};
 `
 
+const StyledContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  //height: 100%;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+  transition-delay: 0.4s;
+  margin: 0 auto;
+  max-width: ${rhythm(24)};
+  text-align: center;
+`
+
 const PageSections = ({ top }) => {
   return (
     <div
       style={{
         height: "auto",
         width: "100%",
-        zIndex: -1,
+        zIndex: -10,
+        opacity: top ? 1 : 0,
+        overflow: top ? "visible" : "hidden",
       }}
     >
-      {items.map((props, key) => (
-        <PageSection key={key}>
-          <props.children name={props.name} />
-        </PageSection>
-      ))}
+      {items.map((props, key) => {
+        const { name, style } = props
+        return (
+          <React.Fragment key={`fragment-${key}`}>
+            <PageSection key={key}>
+              <Waypoint
+                onEnter={() => {
+                  document.getElementById(`${name}top`).classList.add("active")
+                  const section = document.querySelector(`.section.${name}`)
+                  section.style.opacity = 1
+                }}
+                onLeave={() => {
+                  document
+                    .getElementById(`${name}top`)
+                    .classList.remove("active")
+                  const section = document.querySelector(`.section.${name}`)
+                  section.style.opacity = 0
+                }}
+              >
+                <StyledContainer className={`section ${name}`} style={style}>
+                  <Element name={name} id={name}>
+                    <props.children />
+                  </Element>
+                </StyledContainer>
+              </Waypoint>
+            </PageSection>
+            <div key={`div-${key}`} style={{ height: "50px" }}></div>
+          </React.Fragment>
+        )
+      })}
     </div>
   )
 }
@@ -338,11 +384,8 @@ class AnimatedIndexDiv extends React.Component {
             top={true}
           />
         </StyledIndexDiv>
-        {top ? (
-          <PageSections top={top} />
-        ) : (
-          <TopEntryButton updateTop={this.updateTop} />
-        )}
+        <PageSections top={top} />
+        {top && <TopEntryButton updateTop={this.updateTop} />}
       </React.Fragment>
     )
   }

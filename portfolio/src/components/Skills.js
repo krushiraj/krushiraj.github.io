@@ -1,20 +1,20 @@
 import React from "react"
-import { Element } from "react-scroll"
-import { Waypoint } from "react-waypoint"
 
-export default ({ name }) => (
-  <Waypoint
-    onEnter={() =>
-      document.getElementById(`${name}top`).classList.add("active")
-    }
-    onLeave={() =>
-      document.getElementById(`${name}top`).classList.remove("active")
-    }
-  >
-    <div>
-      <Element name={name} id={name}>
-        Hello there
-      </Element>
-    </div>
-  </Waypoint>
+export default () => (
+  <div>
+    <ul>
+      <li>
+        <ul>
+          <li>skill1 - 1</li>
+          <li>skill1 - 1</li>
+        </ul>
+      </li>
+      <li>
+        <ul>
+          <li>skill1 - 2</li>
+          <li>skill1 - 1</li>
+        </ul>
+      </li>
+    </ul>
+  </div>
 )

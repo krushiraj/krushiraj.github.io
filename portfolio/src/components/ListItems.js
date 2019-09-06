@@ -48,14 +48,14 @@ export default class ListItems extends React.Component {
     }
   }
 
-  clickHandler = (e, self = this, top = false) => {
+  clickHandler = (e, self = this) => {
     const selected = !e.target.id.match("top")
       ? document.getElementById(e.target.id + "top")
       : e.target
     // const listItems = document.querySelectorAll("#navtop ul li a")
     // const target =
     //   self.underLine.current || document.getElementById("underline-span")
-    if (this.props.top === false && top === false) {
+    if (this.props.top === false) {
       this.props.updateTop({ top: true })
       this.setState({ selected })
     }
@@ -66,10 +66,12 @@ export default class ListItems extends React.Component {
     //       listItems[i].classList.remove("active")
     //     }
     //   }
-    const prevActive = document.querySelector("a.active")
-    if (prevActive) prevActive.classList.remove("active")
-    selected.classList.add("active")
-    this.setState({ selected })
+    else {
+      const prevActive = document.querySelector("a.active")
+      if (prevActive) prevActive.classList.remove("active")
+      selected.classList.add("active")
+      this.setState({ selected })
+    }
 
     // const width = selected.getBoundingClientRect().width
     // const height = selected.getBoundingClientRect().height
@@ -82,8 +84,11 @@ export default class ListItems extends React.Component {
     // target.style.top = `${top + 2}px`
     // target.style.transform = "none"
 
+    console.log(selected)
+
     scroller.scrollTo(selected.name, {
       duration: 500,
+      offset: -100,
       smooth: "easeInOutQuart",
     })
   }
