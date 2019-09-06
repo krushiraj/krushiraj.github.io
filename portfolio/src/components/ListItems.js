@@ -56,7 +56,7 @@ export default class ListItems extends React.Component {
     // const target =
     //   self.underLine.current || document.getElementById("underline-span")
     if (this.props.top === false) {
-      this.props.updateTop({ top: true })
+      this.props.updateTop(true)
       this.setState({ selected })
     }
     // target.style.display = "initial"
@@ -86,9 +86,14 @@ export default class ListItems extends React.Component {
 
     console.log(selected)
 
+    const viewportHeight =
+      selected.name === "about-me"
+        ? -window.innerHeight
+        : (this.props.top ? 0 : -window.innerHeight) - 100
+
     scroller.scrollTo(selected.name, {
       duration: 500,
-      offset: -100,
+      offset: viewportHeight,
       smooth: "easeInOutQuart",
     })
   }

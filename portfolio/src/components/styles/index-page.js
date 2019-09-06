@@ -1,12 +1,12 @@
 import styled from "styled-components"
 import { rhythm, scale } from "../../utils/typography"
-// import { colors } from "../../utils/theme"
 
 export const StyledIndexDiv = styled.div`
   display: flex;
   height: 100vh;
   align-items: center;
   justify-content: center;
+  z-index: 1;
 
   a {
     color: rgba(255, 255, 255, 0.7);

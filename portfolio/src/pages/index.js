@@ -1,6 +1,6 @@
 import React from "react"
 import styled from "styled-components"
-import { Events, Element } from "react-scroll"
+import { Events, Element, scroller } from "react-scroll"
 import { Waypoint } from "react-waypoint"
 
 import SEO from "../components/SEO"
@@ -74,7 +74,10 @@ const ImageWithName = ({ name, top, updateTop }) => {
   return (
     <div
       style={top ? topNavStyles : fullScreenStyles}
-      onClick={() => updateTop(!top)}
+      onClick={() => {
+        scroller.scrollTo("home")
+        updateTop(!top)
+      }}
     >
       {top ? <CircularImageTop /> : <CircularImageLarge />}
       <NameTag name={name} top={top} />
@@ -144,14 +147,26 @@ const StyledContainer = styled.div`
 `
 
 const PageSections = ({ top }) => {
+  const visibleStyles = {
+      height: "auto",
+      opacity: 1,
+      position: "inherit",
+      top: 0,
+    },
+    hiddenStyles = {
+      height: window.location.hash ? "auto" : 0,
+      opacity: 0,
+      top: "100vh",
+      position: "absolute",
+      overflow: "hidden",
+    }
+
   return (
     <div
       style={{
-        height: "auto",
+        ...(top ? visibleStyles : hiddenStyles),
         width: "100%",
-        zIndex: -10,
-        opacity: top ? 1 : 0,
-        overflow: top ? "visible" : "hidden",
+        transition: "all 0.3s ease",
       }}
     >
       {items.map((props, key) => {
@@ -199,6 +214,7 @@ const StyledIndexTopEntry = styled.div`
   margin: 0 auto;
   text-align: center;
   overflow: hidden;
+  z-index: 1;
 
   .container {
     display: flex;
@@ -272,7 +288,7 @@ const StyledAnimDownArrow = styled.span`
 
 const TopEntryButton = ({ updateTop }) => {
   return (
-    <StyledIndexTopEntry onClick={() => updateTop({ top: true })}>
+    <StyledIndexTopEntry onClick={() => updateTop(true)}>
       {" "}
       <StyledAnimDownArrow className="container">
         <div className="chevron"></div>
@@ -303,6 +319,17 @@ class AnimatedIndexDiv extends React.Component {
   }
 
   componentDidMount() {
+    let hash = window.location.hash.slice(1)
+    if (hash) {
+      this.setState({ top: true })
+      const viewportHeight = (this.props.top ? 0 : -window.innerHeight) - 100
+      scroller.scrollTo(hash === "about-me" ? "home" : hash, {
+        delay: 400,
+        duration: 500,
+        offset: viewportHeight,
+        smooth: "easeInOutQuart",
+      })
+    }
     Events.scrollEvent.register("begin", function() {
       console.log("begin", arguments)
     })
@@ -365,7 +392,7 @@ class AnimatedIndexDiv extends React.Component {
     const top = this.state.top
     const title = this.props.title
     return (
-      <React.Fragment>
+      <Element name="home">
         <StyledIndexDiv
           style={top ? styledIndexFullHidden : styledIndexFullVisible}
         >
@@ -385,8 +412,8 @@ class AnimatedIndexDiv extends React.Component {
           />
         </StyledIndexDiv>
         <PageSections top={top} />
-        {top && <TopEntryButton updateTop={this.updateTop} />}
-      </React.Fragment>
+        {!top && <TopEntryButton updateTop={this.updateTop} />}
+      </Element>
     )
   }
 }

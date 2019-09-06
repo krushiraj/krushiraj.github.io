@@ -1,8 +1,20 @@
 import React from "react"
 
+const ExperienceCard = () => (
+  <div style={{ display: "flex", flexDirection: "row" }}>
+    <div>Logo here</div>
+    <div>
+      <p>Company name</p>
+      <p>Role in team</p>
+      <p>Full time</p>
+      <p>From - To</p>
+    </div>
+  </div>
+)
+
 export default () => (
-  <div>
-    <p>
+  <>
+    {/* <p>
       I've worked on a number of projects, few on my own, few with peer groups,
       few in corporates, where I learnt a lot.
     </p>
@@ -12,6 +24,7 @@ export default () => (
         ServiceNow - Internship - Software Developer - 2019 Jan - 2019 Jun
       </li>
       <li>Verzeo Edutech - Internship - Web Developer - 2018 May - 2018 Jun</li>
-    </ul>
-  </div>
+    </ul> */}
+    <ExperienceCard />
+  </>
 )
