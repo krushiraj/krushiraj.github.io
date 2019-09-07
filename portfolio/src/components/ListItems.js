@@ -2,6 +2,7 @@ import React from "react"
 import { scroller } from "react-scroll"
 
 import ListItem from "./ListItem"
+import { colors } from "../utils/theme"
 
 const navTopStyles = {
   listStyle: "none",
@@ -12,6 +13,7 @@ const navTopStyles = {
   width: "100%",
   overflow: "auto",
   height: "60px",
+  background: colors.background,
   transition: "all 0.3s linear",
 }
 
@@ -21,6 +23,7 @@ const navCenterStyles = {
   padding: 0,
   width: "100%",
   height: "100%",
+  background: colors.background,
   transition: "all 0.3s linear",
 }
 
@@ -83,8 +86,6 @@ export default class ListItems extends React.Component {
     // target.style.left = `${left}px`
     // target.style.top = `${top + 2}px`
     // target.style.transform = "none"
-
-    console.log(selected)
 
     const viewportHeight =
       selected.name === "about-me"

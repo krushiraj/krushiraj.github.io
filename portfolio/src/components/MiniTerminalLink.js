@@ -6,7 +6,7 @@ import { faTerminal } from "@fortawesome/free-solid-svg-icons"
 const StyledTerminalLink = styled.div`
   width: 200px;
   height: 40px;
-  position: absolute;
+  position: fixed;
   left: -160px;
   top: 10vh;
   background: rgba(255, 255, 255, 0.7);

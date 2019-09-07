@@ -18,9 +18,12 @@ export default ({ name, title, clickHandler, top }) => {
       onClick={clickHandler}
       style={{ margin: top ? 0 : rhythm(0.5) }}
     >
-      <a name={name} id={`${name}${top ? `top` : ``}`} href={`#${name}`}>
-        {title}
-      </a>
+      {
+        //eslint-disable-next-line
+        <a name={name} id={`${name}${top ? `top` : ``}`}>
+          {title}
+        </a>
+      }
     </StyledListItem>
   )
 }

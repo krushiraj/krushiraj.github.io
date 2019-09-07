@@ -1,7 +1,6 @@
 import styled from "styled-components"
 import { rhythm, scale } from "../../utils/typography"
 import { colors } from "../../utils/theme"
-import { isMobile } from "react-device-detect"
 
 export const StyledDate = styled.p`
   ${scale(-1 / 5)};
@@ -42,7 +41,11 @@ export const StyledPost = styled.div`
   .gatsby-image-wrapper {
     position: "absolute";
     top: 0;
-    max-height: ${isMobile ? "40vh" : "33vh"};
+    max-height: 33vh;
+
+    @media only screen and (max-width: 768px) {
+      max-height: 40vh;
+    }
 
     img {
       object-fit: cover;

@@ -2,20 +2,27 @@ import React from "react"
 import styled from "styled-components"
 import { rhythm } from "../utils/typography"
 import { colors } from "../utils/theme"
-import { isMobile } from "react-device-detect"
 
 const StyledAboutMeText = styled.p`
-  font-size: ${isMobile ? rhythm(0.5) : rhythm(0.75)};
+  font-size: ${rhythm(0.75)};
   color: ${colors.text};
   margin: 0;
+
+  @media only screen and (max-width: 768px) {
+    font-size: ${rhythm(0.5)};
+  }
 `
 
 const StyledName = styled.p`
-  font-size: ${isMobile ? rhythm(1) : rhythm(2)};
+  font-size: ${rhythm(2)};
   color: ${colors.text};
   text-decoration: underline;
   text-decoration-color: ${colors.palered};
   margin: 0;
+
+  @media only screen and (max-width: 768px) {
+    font-size: ${rhythm(1)};
+  }
 `
 
 export default () => (

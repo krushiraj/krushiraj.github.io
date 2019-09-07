@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import styled from "styled-components"
 import { Events, Element, scroller } from "react-scroll"
 import { Waypoint } from "react-waypoint"
@@ -6,7 +6,7 @@ import { Waypoint } from "react-waypoint"
 import SEO from "../components/SEO"
 import { StyledIndexDiv } from "../components/styles/index-page"
 
-import { GlobalStyle } from "../utils/theme"
+import { GlobalStyle, colors } from "../utils/theme"
 import { graphql } from "gatsby"
 import { rhythm } from "../utils/typography"
 import {
@@ -28,14 +28,14 @@ const items = [
     name: "about-me",
     title: "About me",
     children: AboutMe,
-    style: { height: "100%" },
+    style: { height: "100%", margin: "50% 0" },
   },
-  { name: "my-works", title: "My Works", children: MyWorks },
   { name: "experience", title: "Experience", children: Experience },
-  { name: "writings", title: "Writings", children: Writings },
   { name: "skills", title: "Skills", children: Skills },
-  { name: "contact", title: "Contact", children: Contact },
+  { name: "my-works", title: "My Works", children: MyWorks },
+  { name: "writings", title: "Writings", children: Writings },
   { name: "resume", title: "Resume", children: Resume },
+  { name: "contact", title: "Contact", children: Contact },
 ]
 
 const NameTag = ({ name, top }) => {
@@ -99,6 +99,7 @@ const NavigationItems = ({ title, top, updateTop }) => {
     padding: "10px 0",
     display: "inline",
     transition: "all 0.3s ease",
+    background: colors.background,
   }
 
   const fullScreenInnerStyles = {
@@ -128,7 +129,7 @@ const NavigationItems = ({ title, top, updateTop }) => {
 }
 
 const PageSection = styled.section`
-  height: 100vh;
+  min-height: 100vh;
   width: 100%;
   padding: ${rhythm(2)};
 `
@@ -154,12 +155,14 @@ const PageSections = ({ top }) => {
       top: 0,
     },
     hiddenStyles = {
-      height: window.location.hash ? "auto" : 0,
+      height: 0,
       opacity: 0,
       top: "100vh",
       position: "absolute",
       overflow: "hidden",
     }
+
+  const [showBar, setShowBar] = useState(false)
 
   return (
     <div
@@ -172,13 +175,14 @@ const PageSections = ({ top }) => {
       {items.map((props, key) => {
         const { name, style } = props
         return (
-          <React.Fragment key={`fragment-${key}`}>
-            <PageSection key={key}>
+          <React.Fragment key={key}>
+            <PageSection key={`page-section-${key}`}>
               <Waypoint
                 onEnter={() => {
                   document.getElementById(`${name}top`).classList.add("active")
                   const section = document.querySelector(`.section.${name}`)
                   section.style.opacity = 1
+                  setShowBar(true)
                 }}
                 onLeave={() => {
                   document
@@ -186,11 +190,12 @@ const PageSections = ({ top }) => {
                     .classList.remove("active")
                   const section = document.querySelector(`.section.${name}`)
                   section.style.opacity = 0
+                  setShowBar(false)
                 }}
               >
                 <StyledContainer className={`section ${name}`} style={style}>
-                  <Element name={name} id={name}>
-                    <props.children />
+                  <Element name={name} id={name} style={{ width: "100%" }}>
+                    <props.children showBar={showBar} />
                   </Element>
                 </StyledContainer>
               </Waypoint>
@@ -319,17 +324,6 @@ class AnimatedIndexDiv extends React.Component {
   }
 
   componentDidMount() {
-    let hash = window.location.hash.slice(1)
-    if (hash) {
-      this.setState({ top: true })
-      const viewportHeight = (this.props.top ? 0 : -window.innerHeight) - 100
-      scroller.scrollTo(hash === "about-me" ? "home" : hash, {
-        delay: 400,
-        duration: 500,
-        offset: viewportHeight,
-        smooth: "easeInOutQuart",
-      })
-    }
     Events.scrollEvent.register("begin", function() {
       console.log("begin", arguments)
     })
