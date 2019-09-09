@@ -28,14 +28,19 @@ const items = [
     name: "about-me",
     title: "About me",
     children: AboutMe,
-    style: { height: "100%", margin: "50% 0" },
+    style: { height: `calc(100vh - ${rhythm(2)})` },
   },
   { name: "experience", title: "Experience", children: Experience },
   { name: "skills", title: "Skills", children: Skills },
   { name: "my-works", title: "My Works", children: MyWorks },
   { name: "writings", title: "Writings", children: Writings },
   { name: "resume", title: "Resume", children: Resume },
-  { name: "contact", title: "Contact", children: Contact },
+  {
+    name: "contact",
+    title: "Contact",
+    children: Contact,
+    style: { height: `calc(100vh - ${rhythm(2)})` },
+  },
 ]
 
 const NameTag = ({ name, top }) => {
@@ -132,13 +137,21 @@ const PageSection = styled.section`
   min-height: 100vh;
   width: 100%;
   padding: ${rhythm(2)};
+
+  .section > div {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+  }
 `
 
 const StyledContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  //height: 100%;
+  // height: 100%;
   opacity: 0;
   transition: opacity 0.8s ease;
   transition-delay: 0.4s;
@@ -194,13 +207,15 @@ const PageSections = ({ top }) => {
                 }}
               >
                 <StyledContainer className={`section ${name}`} style={style}>
-                  <Element name={name} id={name} style={{ width: "100%" }}>
+                  <Element name={name} id={name}>
                     <props.children showBar={showBar} />
                   </Element>
                 </StyledContainer>
               </Waypoint>
             </PageSection>
-            <div key={`div-${key}`} style={{ height: "50px" }}></div>
+            {name !== "contact" && (
+              <div key={`div-${key}`} style={{ height: "50px" }} />
+            )}
           </React.Fragment>
         )
       })}

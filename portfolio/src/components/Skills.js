@@ -3,41 +3,30 @@ import styled from "styled-components"
 import { rhythm } from "../utils/typography"
 
 const skills = [
-  {
-    programming: [
-      { name: "py", level: 9 },
-      { name: "py", level: 8 },
-      { name: "py", level: 5 },
-    ],
-  },
-  {
-    scripting: [
-      { name: "py", level: 3 },
-      { name: "py", level: 10 },
-      { name: "py", level: 5.5 },
-    ],
-  },
-  {
-    programming: [
-      { name: "py", level: 9 },
-      { name: "py", level: 8 },
-      { name: "py", level: 5 },
-    ],
-  },
-  {
-    scripting: [
-      { name: "py", level: 3 },
-      { name: "py", level: 10 },
-      { name: "py", level: 5.5 },
-    ],
-  },
+  { name: "Python", level: 9, src: "/python.svg" },
+  { name: "C", level: 9, src: "/c.svg" },
+  { name: "JavaScript", level: 8, src: "/javascript.svg" },
+  { name: "C++", level: 8.5, src: "/c++.svg" },
+  { name: "C#", level: 7, src: "/c-sharp.svg" },
+  { name: "Java", level: 7, src: "/java.svg" },
+  { name: "HTML", level: 8, src: "/html-5.svg" },
+  { name: "CSS", level: 7.5, src: "/css-3.svg" },
+  { name: "SASS", level: 7, src: "/sass.svg" },
+  { name: "Less", level: 7, src: "/less.svg" },
+  { name: "Tailwind", level: 6, src: "/tailwindcss.svg" },
+  { name: "Django", level: 8, src: "/django.svg" },
+  { name: "Node.js", level: 7.5, src: "/nodejs.svg" },
+  { name: "React", level: 7.5, src: "/react.svg" },
+  { name: "Vue", level: 8, src: "/vue.svg" },
+  { name: "PostgreSQL", level: 7, src: "/postgresql.svg" },
+  { name: "MySQL", level: 7.5, src: "/mysql.svg" },
+  { name: "SQLite", level: 7, src: "/sqlite.svg" },
+  { name: "Selenium", level: 7, src: "/selenium.svg" },
+  { name: "Mocha", level: 7, src: "/mocha.svg" },
+  { name: "Jest", level: 7, src: "/jest.svg" },
 ]
 
 const StyledSkillContainer = styled.div`
-  .category {
-    text-transform: uppercase;
-  }
-
   .items {
     display: flex;
     flex-direction: row;
@@ -51,22 +40,24 @@ const StyledSkillContainer = styled.div`
     height: ${rhythm(2)};
     margin: 5px;
 
-    @media only screen and (max-width: 768px) {
-      width: calc(100% - 10px);
-    }
-
     .skill {
       display: flex;
       flex-direction: row;
-      font-size: ${rhythm(0.75)};
       padding: 0;
       margin: 5px;
       text-align: center;
       align-items: center;
+      font-size: ${rhythm(0.75)};
+
+      @media only screen and (max-width: 768px) {
+        font-size: ${rhythm(0.5)};
+      }
 
       div {
         display: flex;
         margin: 0 auto;
+        align-items: center;
+        align-content: center;
 
         p {
           padding: 0;
@@ -74,9 +65,9 @@ const StyledSkillContainer = styled.div`
         }
 
         img {
-          height: ${rhythm(1)};
+          height: ${rhythm(0.7)};
           padding: 0;
-          margin: 0 10px 0 0;
+          margin: ${rhythm(0.15)};
         }
       }
     }
@@ -92,53 +83,76 @@ const StyledSkillContainer = styled.div`
   }
 `
 
-const CategoryDiv = ({ showBar, category, items }) => {
-  const el = document.getElementById("skillstop")
-  const isActive = el !== null && el.classList.contains("active")
-  return (
-    <>
-      <div className="items-container">
-        <span className="category">{category}</span>
-        <div className="items">
-          {items.map(({ name, level }, key) => (
-            <div key={key} className="item">
-              <div className="skill">
-                <div>
-                  <img src="/krushi.jpg" alt={name} /> <p>{name}</p>
-                </div>
-              </div>
-              {isActive && (
-                <div
-                  className="skill-bar"
-                  style={{
-                    width: !showBar ? `calc(calc(${level} * 10%) - 10px)` : 0,
-                  }}
-                ></div>
-              )}
+const Skills = ({ showBar }) => (
+  <>
+    <div className="items">
+      {skills.map(({ name, level, src }, key) => (
+        <div key={key} className="item">
+          <div className="skill">
+            <div>
+              <img src={src} alt={name} /> <p>{name}</p>
             </div>
-          ))}
+          </div>
+          <div
+            className="skill-bar"
+            style={{
+              width: !showBar ? `calc(calc(${level} * 10%) - 10px)` : 0,
+            }}
+          ></div>
         </div>
-      </div>
-      <br />
-    </>
-  )
-}
+      ))}
+    </div>
+    <br />
+  </>
+)
+
+const tools = [
+  { title: "Visual Studio Code", src: "/vscode.svg" },
+  { title: "Unity3D", src: "/unity.svg" },
+  { title: "Brackets", src: "/brackets.svg" },
+  { title: "PyCharm", src: "/pycharm.svg" },
+  { title: "Git", src: "/git.svg" },
+  { title: "Jenkins", src: "/jenkins.svg" },
+]
+
+const ToolsContainer = styled.div`
+  div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+
+    img {
+      height: ${rhythm(1)};
+      width: ${rhythm(1)};
+      margin: auto;
+    }
+  }
+
+  p {
+    width: 100%;
+  }
+`
 
 export default ({ showBar }) => {
   return (
-    <StyledSkillContainer>
-      <p>Skill set that you can expect to be delivered.</p>
-      {skills.map((category, key) => {
-        const categoryName = Object.getOwnPropertyNames(category)[0]
-        return (
-          <CategoryDiv
-            key={key}
-            showBar={showBar}
-            category={categoryName}
-            items={category[categoryName]}
-          />
-        )
-      })}
-    </StyledSkillContainer>
+    <>
+      <StyledSkillContainer>
+        <p>Skill set that you can expect from me.</p>
+        <Skills showBar={showBar} />
+      </StyledSkillContainer>
+      <ToolsContainer>
+        <p>IDEs and tools that I use and those I'm familiar with.</p>
+        <div>
+          {tools.map(({ title, src }, key) => (
+            <img key={key} title={title} src={src} alt={title} />
+          ))}
+        </div>
+      </ToolsContainer>
+      <br />
+      <p>
+        You can read more about the skills(other than technical) that I
+        developed while working with people - <a href="/writings">here</a>
+      </p>
+    </>
   )
 }

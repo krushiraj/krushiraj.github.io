@@ -1,3 +1,142 @@
 import React from "react"
+import styled from "styled-components"
+import { StaticQuery, graphql } from "gatsby"
+import Img from "gatsby-image"
+import { rhythm } from "../utils/typography"
+import { StyledDate } from "./styles/post"
 
-export default () => <div>Hello there</div>
+const Card = ({
+  fields: { slug },
+  frontmatter: {
+    title,
+    date,
+    description,
+    banner: {
+      childImageSharp: { fluid },
+    },
+  },
+}) => {
+  return (
+    <div className="card">
+      <a href={slug}>
+        <Img fluid={fluid} />
+        <p className="title">{title}</p>
+        <StyledDate>{date}</StyledDate>
+        <div>
+          <p className="description">{description}</p>
+        </div>
+      </a>
+    </div>
+  )
+}
+
+const DisplayPostsContainer = styled.div`
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  overflow: hidden;
+
+  .card {
+    width: calc(50% - 20px);
+    height: ${rhythm(7)};
+    margin: 10px;
+
+    a {
+      :after {
+        height: 0;
+      }
+    }
+
+    &:hover {
+      .gatsby-image-wrapper {
+        filter: blur(5px);
+        opacity: 0.3;
+      }
+
+      .description {
+        opacity: 1;
+      }
+    }
+
+    .gatsby-image-wrapper {
+      img {
+        display: block;
+      }
+      height: ${rhythm(5)};
+      filter: blur(0);
+      opacity: 1;
+      transition: all 0.3s ease;
+    }
+
+    .title {
+      font-weight: bold;
+      width: 100%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      margin: 0;
+      padding: 0;
+    }
+
+    .description {
+      color: #fff;
+      position: relative;
+      top: calc(-${rhythm(7)} - 10px);
+      width: 100%;
+      height: ${rhythm(5)};
+      text-overflow: ellipsis;
+      overflow: hidden;
+      margin: 0;
+      padding: 0;
+      opacity: 0;
+    }
+
+    @media only screen and (max-width: 768px) {
+      width: calc(100% - 20px);
+    }
+  }
+`
+
+const Root = data => (
+  <DisplayPostsContainer>
+    {data.allMdx.edges.map((props, key) => (
+      <Card key={key} {...props.node} />
+    ))}
+  </DisplayPostsContainer>
+)
+
+const query = graphql`
+  query {
+    allMdx(
+      limit: 6
+      sort: { fields: [frontmatter___date], order: DESC }
+      filter: {
+        frontmatter: { published: { ne: false }, type: { eq: "article" } }
+      }
+    ) {
+      edges {
+        node {
+          fields {
+            slug
+          }
+          frontmatter {
+            title
+            date(formatString: "MMMM DD, YYYY")
+            description
+            banner {
+              childImageSharp {
+                fluid {
+                  ...GatsbyImageSharpFluid_withWebp_tracedSVG
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`
+
+export default () => <StaticQuery query={query} render={Root} />

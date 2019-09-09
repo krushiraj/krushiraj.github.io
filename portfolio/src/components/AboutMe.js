@@ -26,11 +26,11 @@ const StyledName = styled.p`
 `
 
 export default () => (
-  <>
+  <div style={{ margin: "auto 0" }}>
     <StyledName>Krushi Raj Tula</StyledName>
     <StyledAboutMeText className="text">
       A developer, geek, enthusiast, who loves to solve problems and fix things
       with technology.
     </StyledAboutMeText>
-  </>
+  </div>
 )
