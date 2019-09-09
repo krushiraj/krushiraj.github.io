@@ -1,4 +1,337 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Krushi Raj Tula - RSS Feed]]></title><description><![CDATA[Portfolio of Krushi Raj Tula]]></description><link>https://krushiraj.github.io</link><generator>GatsbyJS</generator><lastBuildDate>Sun, 08 Sep 2019 07:30:10 GMT</lastBuildDate><item><title><![CDATA[My First Post]]></title><description><![CDATA[There is the  fetch  API in Node, which allows us to make a HTTP request and get some information from the servers. We can use that to make…]]></description><link>https://krushiraj.github.io/writings/first-post/</link><guid isPermaLink="true">https://krushiraj.github.io/writings/first-post/</guid><pubDate>Sat, 20 Apr 2019 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;There is the &lt;code&gt;fetch&lt;/code&gt; API in Node, which allows us to make a HTTP request and get some information from the servers. We can use that to make REST calls, get HTML content of a webpage(if we are using node for scraping) and many more things.&lt;/p&gt;&lt;blockquote&gt;&lt;p&gt;This article is valid for any function that returns a promise.&lt;/p&gt;&lt;/blockquote&gt;&lt;p&gt;An example of such call goes like this&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot;&gt;fetch(&amp;quot;/url&amp;quot;)
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Krushi Raj Tula - RSS Feed]]></title><description><![CDATA[Portfolio of Krushi Raj Tula]]></description><link>https://krushiraj.github.io</link><generator>GatsbyJS</generator><lastBuildDate>Mon, 09 Sep 2019 05:46:49 GMT</lastBuildDate><item><title><![CDATA[My First Post]]></title><description><![CDATA[There is the  fetch  API in Node, which allows us to make a HTTP request and get some information from the servers. We can use that to make…]]></description><link>https://krushiraj.github.io/writings/first-post/</link><guid isPermaLink="true">https://krushiraj.github.io/writings/first-post/</guid><pubDate>Sat, 20 Apr 2019 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;There is the &lt;code&gt;fetch&lt;/code&gt; API in Node, which allows us to make a HTTP request and get some information from the servers. We can use that to make REST calls, get HTML content of a webpage(if we are using node for scraping) and many more things.&lt;/p&gt;&lt;blockquote&gt;&lt;p&gt;This article is valid for any function that returns a promise.&lt;/p&gt;&lt;/blockquote&gt;&lt;p&gt;An example of such call goes like this&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot;&gt;fetch(&amp;quot;/url&amp;quot;)
+  .then(res =&amp;gt; res.json())
+  .then(data =&amp;gt; console.log(data))
+&lt;/code&gt;&lt;/pre&gt;&lt;h2&gt;The Async way&lt;/h2&gt;&lt;p&gt;We could do the same thing, using async and await.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot;&gt;const result = await fetch(&amp;quot;/url&amp;quot;)
+const data = await result.json()
+
+console.log(data)
+
+// Or, a one-liner
+// const data = await (await fetch(&amp;#x27;/url&amp;#x27;)).json(); 😉
+&lt;/code&gt;&lt;/pre&gt;&lt;h2&gt;I have so many things to fetch!&lt;/h2&gt;&lt;p&gt;Okay fine. We can do that over a classic for loop. The synchronous nature will be preserved. I mean, we can fetch one after the other, synchronously.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot;&gt;const urls = [...];
+for(const url of urls) {
+    const result = await fetch(url);
+    const data = await result.json();
+
+    console.log(data);
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;But what if, the order does not matter? We can fetch them all at once. Yes, all at once, using the Promise API. After all, &lt;code&gt;fetch&lt;/code&gt; returns a promise and that’s why we &lt;code&gt;await&lt;/code&gt; for it to be resolved.&lt;/p&gt;&lt;p&gt;Promise API has this method &lt;code&gt;Promise.all()&lt;/code&gt; , which can be awaited on for all the promises that it accepts as an argument to be resolved.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot;&gt;const urls = [...];
+const promises = urls.map(url =&amp;gt; fetch(url));
+
+await Promise.all(promises);
+
+for (const promise of promises) {
+    const data = await promise.json();
+    console.log(data);
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;This will save us a lot of time. Imagine we want to parse many webpages, around 100, and each webpage takes 2 seconds to be fetched and scraped for information we need. If we fetch it one after the other, it will take us around 200 seconds, which is over 3 minutes. But if we fetch all at once, it will take under a minute.&lt;/p&gt;&lt;h1&gt;Like, really SO MANY!&lt;/h1&gt;&lt;p&gt;What is we have over 10000 urls to fetch. If we do the same thing as above, we will most probably not make it. We will have to face some weird socket hangup error. What can we do about it?&lt;/p&gt;&lt;p&gt;There is a node package called &lt;code&gt;Bluebird&lt;/code&gt; which has its own Promise API and it functions the same. It has this method called &lt;code&gt;map&lt;/code&gt;, which takes an extra options argument where we can set concurrency.&lt;/p&gt;&lt;p&gt;&lt;code&gt;Promise.map(urls =&amp;gt; fetch(url), { concurrency: 100 });&lt;/code&gt;&lt;/p&gt;&lt;p&gt;This will, as we can infer from the line, concurrently fetch 100 requests at a time. This will save a significant load on CPU.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot;&gt;const Promise = require(&amp;#x27;bluebird&amp;#x27;).Promise;
+const urls = [...];
+const promises = await Promise.map(
+    urls =&amp;gt; fetch(url),
+    { concurrency: 100 }
+);
+
+for (const promise of promises) {
+    const data = await promise.json();
+    console.log(data);
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Thanks for making it till the end.&lt;/p&gt;&lt;p&gt;Keep on Hacking! ✌&lt;/p&gt;&lt;p&gt;&lt;blockquote class=&quot;twitter-tweet&quot; data-dnt=&quot;true&quot;&gt;&lt;p lang=&quot;en&quot; dir=&quot;ltr&quot;&gt;Tesla’s mission is to accelerate the world’s transition to sustainable energy. &lt;br/&gt;&lt;br/&gt;🌞⚡🚗🔋 &lt;br/&gt;&lt;br/&gt;(a thread)&lt;/p&gt;— Tesla (@Tesla) &lt;a href=&quot;https://twitter.com/Tesla/status/1126575043281080323&quot;&gt;May 9, 2019&lt;/a&gt;&lt;/blockquote&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[My First Post]]></title><description><![CDATA[There is the  fetch  API in Node, which allows us to make a HTTP request and get some information from the servers. We can use that to make…]]></description><link>https://krushiraj.github.io/writings/first-post copy - Copy (3)/</link><guid isPermaLink="true">https://krushiraj.github.io/writings/first-post copy - Copy (3)/</guid><pubDate>Sat, 20 Apr 2019 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;There is the &lt;code&gt;fetch&lt;/code&gt; API in Node, which allows us to make a HTTP request and get some information from the servers. We can use that to make REST calls, get HTML content of a webpage(if we are using node for scraping) and many more things.&lt;/p&gt;&lt;blockquote&gt;&lt;p&gt;This article is valid for any function that returns a promise.&lt;/p&gt;&lt;/blockquote&gt;&lt;p&gt;An example of such call goes like this&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot;&gt;fetch(&amp;quot;/url&amp;quot;)
+  .then(res =&amp;gt; res.json())
+  .then(data =&amp;gt; console.log(data))
+&lt;/code&gt;&lt;/pre&gt;&lt;h2&gt;The Async way&lt;/h2&gt;&lt;p&gt;We could do the same thing, using async and await.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot;&gt;const result = await fetch(&amp;quot;/url&amp;quot;)
+const data = await result.json()
+
+console.log(data)
+
+// Or, a one-liner
+// const data = await (await fetch(&amp;#x27;/url&amp;#x27;)).json(); 😉
+&lt;/code&gt;&lt;/pre&gt;&lt;h2&gt;I have so many things to fetch!&lt;/h2&gt;&lt;p&gt;Okay fine. We can do that over a classic for loop. The synchronous nature will be preserved. I mean, we can fetch one after the other, synchronously.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot;&gt;const urls = [...];
+for(const url of urls) {
+    const result = await fetch(url);
+    const data = await result.json();
+
+    console.log(data);
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;But what if, the order does not matter? We can fetch them all at once. Yes, all at once, using the Promise API. After all, &lt;code&gt;fetch&lt;/code&gt; returns a promise and that’s why we &lt;code&gt;await&lt;/code&gt; for it to be resolved.&lt;/p&gt;&lt;p&gt;Promise API has this method &lt;code&gt;Promise.all()&lt;/code&gt; , which can be awaited on for all the promises that it accepts as an argument to be resolved.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot;&gt;const urls = [...];
+const promises = urls.map(url =&amp;gt; fetch(url));
+
+await Promise.all(promises);
+
+for (const promise of promises) {
+    const data = await promise.json();
+    console.log(data);
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;This will save us a lot of time. Imagine we want to parse many webpages, around 100, and each webpage takes 2 seconds to be fetched and scraped for information we need. If we fetch it one after the other, it will take us around 200 seconds, which is over 3 minutes. But if we fetch all at once, it will take under a minute.&lt;/p&gt;&lt;h1&gt;Like, really SO MANY!&lt;/h1&gt;&lt;p&gt;What is we have over 10000 urls to fetch. If we do the same thing as above, we will most probably not make it. We will have to face some weird socket hangup error. What can we do about it?&lt;/p&gt;&lt;p&gt;There is a node package called &lt;code&gt;Bluebird&lt;/code&gt; which has its own Promise API and it functions the same. It has this method called &lt;code&gt;map&lt;/code&gt;, which takes an extra options argument where we can set concurrency.&lt;/p&gt;&lt;p&gt;&lt;code&gt;Promise.map(urls =&amp;gt; fetch(url), { concurrency: 100 });&lt;/code&gt;&lt;/p&gt;&lt;p&gt;This will, as we can infer from the line, concurrently fetch 100 requests at a time. This will save a significant load on CPU.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot;&gt;const Promise = require(&amp;#x27;bluebird&amp;#x27;).Promise;
+const urls = [...];
+const promises = await Promise.map(
+    urls =&amp;gt; fetch(url),
+    { concurrency: 100 }
+);
+
+for (const promise of promises) {
+    const data = await promise.json();
+    console.log(data);
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Thanks for making it till the end.&lt;/p&gt;&lt;p&gt;Keep on Hacking! ✌&lt;/p&gt;&lt;p&gt;&lt;blockquote class=&quot;twitter-tweet&quot; data-dnt=&quot;true&quot;&gt;&lt;p lang=&quot;en&quot; dir=&quot;ltr&quot;&gt;Tesla’s mission is to accelerate the world’s transition to sustainable energy. &lt;br/&gt;&lt;br/&gt;🌞⚡🚗🔋 &lt;br/&gt;&lt;br/&gt;(a thread)&lt;/p&gt;— Tesla (@Tesla) &lt;a href=&quot;https://twitter.com/Tesla/status/1126575043281080323&quot;&gt;May 9, 2019&lt;/a&gt;&lt;/blockquote&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[My First Post]]></title><description><![CDATA[There is the  fetch  API in Node, which allows us to make a HTTP request and get some information from the servers. We can use that to make…]]></description><link>https://krushiraj.github.io/writings/first-post copy/</link><guid isPermaLink="true">https://krushiraj.github.io/writings/first-post copy/</guid><pubDate>Sat, 20 Apr 2019 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;There is the &lt;code&gt;fetch&lt;/code&gt; API in Node, which allows us to make a HTTP request and get some information from the servers. We can use that to make REST calls, get HTML content of a webpage(if we are using node for scraping) and many more things.&lt;/p&gt;&lt;blockquote&gt;&lt;p&gt;This article is valid for any function that returns a promise.&lt;/p&gt;&lt;/blockquote&gt;&lt;p&gt;An example of such call goes like this&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot;&gt;fetch(&amp;quot;/url&amp;quot;)
+  .then(res =&amp;gt; res.json())
+  .then(data =&amp;gt; console.log(data))
+&lt;/code&gt;&lt;/pre&gt;&lt;h2&gt;The Async way&lt;/h2&gt;&lt;p&gt;We could do the same thing, using async and await.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot;&gt;const result = await fetch(&amp;quot;/url&amp;quot;)
+const data = await result.json()
+
+console.log(data)
+
+// Or, a one-liner
+// const data = await (await fetch(&amp;#x27;/url&amp;#x27;)).json(); 😉
+&lt;/code&gt;&lt;/pre&gt;&lt;h2&gt;I have so many things to fetch!&lt;/h2&gt;&lt;p&gt;Okay fine. We can do that over a classic for loop. The synchronous nature will be preserved. I mean, we can fetch one after the other, synchronously.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot;&gt;const urls = [...];
+for(const url of urls) {
+    const result = await fetch(url);
+    const data = await result.json();
+
+    console.log(data);
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;But what if, the order does not matter? We can fetch them all at once. Yes, all at once, using the Promise API. After all, &lt;code&gt;fetch&lt;/code&gt; returns a promise and that’s why we &lt;code&gt;await&lt;/code&gt; for it to be resolved.&lt;/p&gt;&lt;p&gt;Promise API has this method &lt;code&gt;Promise.all()&lt;/code&gt; , which can be awaited on for all the promises that it accepts as an argument to be resolved.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot;&gt;const urls = [...];
+const promises = urls.map(url =&amp;gt; fetch(url));
+
+await Promise.all(promises);
+
+for (const promise of promises) {
+    const data = await promise.json();
+    console.log(data);
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;This will save us a lot of time. Imagine we want to parse many webpages, around 100, and each webpage takes 2 seconds to be fetched and scraped for information we need. If we fetch it one after the other, it will take us around 200 seconds, which is over 3 minutes. But if we fetch all at once, it will take under a minute.&lt;/p&gt;&lt;h1&gt;Like, really SO MANY!&lt;/h1&gt;&lt;p&gt;What is we have over 10000 urls to fetch. If we do the same thing as above, we will most probably not make it. We will have to face some weird socket hangup error. What can we do about it?&lt;/p&gt;&lt;p&gt;There is a node package called &lt;code&gt;Bluebird&lt;/code&gt; which has its own Promise API and it functions the same. It has this method called &lt;code&gt;map&lt;/code&gt;, which takes an extra options argument where we can set concurrency.&lt;/p&gt;&lt;p&gt;&lt;code&gt;Promise.map(urls =&amp;gt; fetch(url), { concurrency: 100 });&lt;/code&gt;&lt;/p&gt;&lt;p&gt;This will, as we can infer from the line, concurrently fetch 100 requests at a time. This will save a significant load on CPU.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot;&gt;const Promise = require(&amp;#x27;bluebird&amp;#x27;).Promise;
+const urls = [...];
+const promises = await Promise.map(
+    urls =&amp;gt; fetch(url),
+    { concurrency: 100 }
+);
+
+for (const promise of promises) {
+    const data = await promise.json();
+    console.log(data);
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Thanks for making it till the end.&lt;/p&gt;&lt;p&gt;Keep on Hacking! ✌&lt;/p&gt;&lt;p&gt;&lt;blockquote class=&quot;twitter-tweet&quot; data-dnt=&quot;true&quot;&gt;&lt;p lang=&quot;en&quot; dir=&quot;ltr&quot;&gt;Tesla’s mission is to accelerate the world’s transition to sustainable energy. &lt;br/&gt;&lt;br/&gt;🌞⚡🚗🔋 &lt;br/&gt;&lt;br/&gt;(a thread)&lt;/p&gt;— Tesla (@Tesla) &lt;a href=&quot;https://twitter.com/Tesla/status/1126575043281080323&quot;&gt;May 9, 2019&lt;/a&gt;&lt;/blockquote&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[My First Post]]></title><description><![CDATA[There is the  fetch  API in Node, which allows us to make a HTTP request and get some information from the servers. We can use that to make…]]></description><link>https://krushiraj.github.io/writings/first-post copy - Copy (6)/</link><guid isPermaLink="true">https://krushiraj.github.io/writings/first-post copy - Copy (6)/</guid><pubDate>Sat, 20 Apr 2019 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;There is the &lt;code&gt;fetch&lt;/code&gt; API in Node, which allows us to make a HTTP request and get some information from the servers. We can use that to make REST calls, get HTML content of a webpage(if we are using node for scraping) and many more things.&lt;/p&gt;&lt;blockquote&gt;&lt;p&gt;This article is valid for any function that returns a promise.&lt;/p&gt;&lt;/blockquote&gt;&lt;p&gt;An example of such call goes like this&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot;&gt;fetch(&amp;quot;/url&amp;quot;)
+  .then(res =&amp;gt; res.json())
+  .then(data =&amp;gt; console.log(data))
+&lt;/code&gt;&lt;/pre&gt;&lt;h2&gt;The Async way&lt;/h2&gt;&lt;p&gt;We could do the same thing, using async and await.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot;&gt;const result = await fetch(&amp;quot;/url&amp;quot;)
+const data = await result.json()
+
+console.log(data)
+
+// Or, a one-liner
+// const data = await (await fetch(&amp;#x27;/url&amp;#x27;)).json(); 😉
+&lt;/code&gt;&lt;/pre&gt;&lt;h2&gt;I have so many things to fetch!&lt;/h2&gt;&lt;p&gt;Okay fine. We can do that over a classic for loop. The synchronous nature will be preserved. I mean, we can fetch one after the other, synchronously.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot;&gt;const urls = [...];
+for(const url of urls) {
+    const result = await fetch(url);
+    const data = await result.json();
+
+    console.log(data);
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;But what if, the order does not matter? We can fetch them all at once. Yes, all at once, using the Promise API. After all, &lt;code&gt;fetch&lt;/code&gt; returns a promise and that’s why we &lt;code&gt;await&lt;/code&gt; for it to be resolved.&lt;/p&gt;&lt;p&gt;Promise API has this method &lt;code&gt;Promise.all()&lt;/code&gt; , which can be awaited on for all the promises that it accepts as an argument to be resolved.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot;&gt;const urls = [...];
+const promises = urls.map(url =&amp;gt; fetch(url));
+
+await Promise.all(promises);
+
+for (const promise of promises) {
+    const data = await promise.json();
+    console.log(data);
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;This will save us a lot of time. Imagine we want to parse many webpages, around 100, and each webpage takes 2 seconds to be fetched and scraped for information we need. If we fetch it one after the other, it will take us around 200 seconds, which is over 3 minutes. But if we fetch all at once, it will take under a minute.&lt;/p&gt;&lt;h1&gt;Like, really SO MANY!&lt;/h1&gt;&lt;p&gt;What is we have over 10000 urls to fetch. If we do the same thing as above, we will most probably not make it. We will have to face some weird socket hangup error. What can we do about it?&lt;/p&gt;&lt;p&gt;There is a node package called &lt;code&gt;Bluebird&lt;/code&gt; which has its own Promise API and it functions the same. It has this method called &lt;code&gt;map&lt;/code&gt;, which takes an extra options argument where we can set concurrency.&lt;/p&gt;&lt;p&gt;&lt;code&gt;Promise.map(urls =&amp;gt; fetch(url), { concurrency: 100 });&lt;/code&gt;&lt;/p&gt;&lt;p&gt;This will, as we can infer from the line, concurrently fetch 100 requests at a time. This will save a significant load on CPU.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot;&gt;const Promise = require(&amp;#x27;bluebird&amp;#x27;).Promise;
+const urls = [...];
+const promises = await Promise.map(
+    urls =&amp;gt; fetch(url),
+    { concurrency: 100 }
+);
+
+for (const promise of promises) {
+    const data = await promise.json();
+    console.log(data);
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Thanks for making it till the end.&lt;/p&gt;&lt;p&gt;Keep on Hacking! ✌&lt;/p&gt;&lt;p&gt;&lt;blockquote class=&quot;twitter-tweet&quot; data-dnt=&quot;true&quot;&gt;&lt;p lang=&quot;en&quot; dir=&quot;ltr&quot;&gt;Tesla’s mission is to accelerate the world’s transition to sustainable energy. &lt;br/&gt;&lt;br/&gt;🌞⚡🚗🔋 &lt;br/&gt;&lt;br/&gt;(a thread)&lt;/p&gt;— Tesla (@Tesla) &lt;a href=&quot;https://twitter.com/Tesla/status/1126575043281080323&quot;&gt;May 9, 2019&lt;/a&gt;&lt;/blockquote&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[My First Post]]></title><description><![CDATA[There is the  fetch  API in Node, which allows us to make a HTTP request and get some information from the servers. We can use that to make…]]></description><link>https://krushiraj.github.io/writings/first-post copy - Copy (5)/</link><guid isPermaLink="true">https://krushiraj.github.io/writings/first-post copy - Copy (5)/</guid><pubDate>Sat, 20 Apr 2019 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;There is the &lt;code&gt;fetch&lt;/code&gt; API in Node, which allows us to make a HTTP request and get some information from the servers. We can use that to make REST calls, get HTML content of a webpage(if we are using node for scraping) and many more things.&lt;/p&gt;&lt;blockquote&gt;&lt;p&gt;This article is valid for any function that returns a promise.&lt;/p&gt;&lt;/blockquote&gt;&lt;p&gt;An example of such call goes like this&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot;&gt;fetch(&amp;quot;/url&amp;quot;)
+  .then(res =&amp;gt; res.json())
+  .then(data =&amp;gt; console.log(data))
+&lt;/code&gt;&lt;/pre&gt;&lt;h2&gt;The Async way&lt;/h2&gt;&lt;p&gt;We could do the same thing, using async and await.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot;&gt;const result = await fetch(&amp;quot;/url&amp;quot;)
+const data = await result.json()
+
+console.log(data)
+
+// Or, a one-liner
+// const data = await (await fetch(&amp;#x27;/url&amp;#x27;)).json(); 😉
+&lt;/code&gt;&lt;/pre&gt;&lt;h2&gt;I have so many things to fetch!&lt;/h2&gt;&lt;p&gt;Okay fine. We can do that over a classic for loop. The synchronous nature will be preserved. I mean, we can fetch one after the other, synchronously.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot;&gt;const urls = [...];
+for(const url of urls) {
+    const result = await fetch(url);
+    const data = await result.json();
+
+    console.log(data);
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;But what if, the order does not matter? We can fetch them all at once. Yes, all at once, using the Promise API. After all, &lt;code&gt;fetch&lt;/code&gt; returns a promise and that’s why we &lt;code&gt;await&lt;/code&gt; for it to be resolved.&lt;/p&gt;&lt;p&gt;Promise API has this method &lt;code&gt;Promise.all()&lt;/code&gt; , which can be awaited on for all the promises that it accepts as an argument to be resolved.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot;&gt;const urls = [...];
+const promises = urls.map(url =&amp;gt; fetch(url));
+
+await Promise.all(promises);
+
+for (const promise of promises) {
+    const data = await promise.json();
+    console.log(data);
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;This will save us a lot of time. Imagine we want to parse many webpages, around 100, and each webpage takes 2 seconds to be fetched and scraped for information we need. If we fetch it one after the other, it will take us around 200 seconds, which is over 3 minutes. But if we fetch all at once, it will take under a minute.&lt;/p&gt;&lt;h1&gt;Like, really SO MANY!&lt;/h1&gt;&lt;p&gt;What is we have over 10000 urls to fetch. If we do the same thing as above, we will most probably not make it. We will have to face some weird socket hangup error. What can we do about it?&lt;/p&gt;&lt;p&gt;There is a node package called &lt;code&gt;Bluebird&lt;/code&gt; which has its own Promise API and it functions the same. It has this method called &lt;code&gt;map&lt;/code&gt;, which takes an extra options argument where we can set concurrency.&lt;/p&gt;&lt;p&gt;&lt;code&gt;Promise.map(urls =&amp;gt; fetch(url), { concurrency: 100 });&lt;/code&gt;&lt;/p&gt;&lt;p&gt;This will, as we can infer from the line, concurrently fetch 100 requests at a time. This will save a significant load on CPU.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot;&gt;const Promise = require(&amp;#x27;bluebird&amp;#x27;).Promise;
+const urls = [...];
+const promises = await Promise.map(
+    urls =&amp;gt; fetch(url),
+    { concurrency: 100 }
+);
+
+for (const promise of promises) {
+    const data = await promise.json();
+    console.log(data);
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Thanks for making it till the end.&lt;/p&gt;&lt;p&gt;Keep on Hacking! ✌&lt;/p&gt;&lt;p&gt;&lt;blockquote class=&quot;twitter-tweet&quot; data-dnt=&quot;true&quot;&gt;&lt;p lang=&quot;en&quot; dir=&quot;ltr&quot;&gt;Tesla’s mission is to accelerate the world’s transition to sustainable energy. &lt;br/&gt;&lt;br/&gt;🌞⚡🚗🔋 &lt;br/&gt;&lt;br/&gt;(a thread)&lt;/p&gt;— Tesla (@Tesla) &lt;a href=&quot;https://twitter.com/Tesla/status/1126575043281080323&quot;&gt;May 9, 2019&lt;/a&gt;&lt;/blockquote&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[My First Post]]></title><description><![CDATA[There is the  fetch  API in Node, which allows us to make a HTTP request and get some information from the servers. We can use that to make…]]></description><link>https://krushiraj.github.io/writings/first-post copy - Copy (2)/</link><guid isPermaLink="true">https://krushiraj.github.io/writings/first-post copy - Copy (2)/</guid><pubDate>Sat, 20 Apr 2019 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;There is the &lt;code&gt;fetch&lt;/code&gt; API in Node, which allows us to make a HTTP request and get some information from the servers. We can use that to make REST calls, get HTML content of a webpage(if we are using node for scraping) and many more things.&lt;/p&gt;&lt;blockquote&gt;&lt;p&gt;This article is valid for any function that returns a promise.&lt;/p&gt;&lt;/blockquote&gt;&lt;p&gt;An example of such call goes like this&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot;&gt;fetch(&amp;quot;/url&amp;quot;)
+  .then(res =&amp;gt; res.json())
+  .then(data =&amp;gt; console.log(data))
+&lt;/code&gt;&lt;/pre&gt;&lt;h2&gt;The Async way&lt;/h2&gt;&lt;p&gt;We could do the same thing, using async and await.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot;&gt;const result = await fetch(&amp;quot;/url&amp;quot;)
+const data = await result.json()
+
+console.log(data)
+
+// Or, a one-liner
+// const data = await (await fetch(&amp;#x27;/url&amp;#x27;)).json(); 😉
+&lt;/code&gt;&lt;/pre&gt;&lt;h2&gt;I have so many things to fetch!&lt;/h2&gt;&lt;p&gt;Okay fine. We can do that over a classic for loop. The synchronous nature will be preserved. I mean, we can fetch one after the other, synchronously.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot;&gt;const urls = [...];
+for(const url of urls) {
+    const result = await fetch(url);
+    const data = await result.json();
+
+    console.log(data);
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;But what if, the order does not matter? We can fetch them all at once. Yes, all at once, using the Promise API. After all, &lt;code&gt;fetch&lt;/code&gt; returns a promise and that’s why we &lt;code&gt;await&lt;/code&gt; for it to be resolved.&lt;/p&gt;&lt;p&gt;Promise API has this method &lt;code&gt;Promise.all()&lt;/code&gt; , which can be awaited on for all the promises that it accepts as an argument to be resolved.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot;&gt;const urls = [...];
+const promises = urls.map(url =&amp;gt; fetch(url));
+
+await Promise.all(promises);
+
+for (const promise of promises) {
+    const data = await promise.json();
+    console.log(data);
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;This will save us a lot of time. Imagine we want to parse many webpages, around 100, and each webpage takes 2 seconds to be fetched and scraped for information we need. If we fetch it one after the other, it will take us around 200 seconds, which is over 3 minutes. But if we fetch all at once, it will take under a minute.&lt;/p&gt;&lt;h1&gt;Like, really SO MANY!&lt;/h1&gt;&lt;p&gt;What is we have over 10000 urls to fetch. If we do the same thing as above, we will most probably not make it. We will have to face some weird socket hangup error. What can we do about it?&lt;/p&gt;&lt;p&gt;There is a node package called &lt;code&gt;Bluebird&lt;/code&gt; which has its own Promise API and it functions the same. It has this method called &lt;code&gt;map&lt;/code&gt;, which takes an extra options argument where we can set concurrency.&lt;/p&gt;&lt;p&gt;&lt;code&gt;Promise.map(urls =&amp;gt; fetch(url), { concurrency: 100 });&lt;/code&gt;&lt;/p&gt;&lt;p&gt;This will, as we can infer from the line, concurrently fetch 100 requests at a time. This will save a significant load on CPU.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot;&gt;const Promise = require(&amp;#x27;bluebird&amp;#x27;).Promise;
+const urls = [...];
+const promises = await Promise.map(
+    urls =&amp;gt; fetch(url),
+    { concurrency: 100 }
+);
+
+for (const promise of promises) {
+    const data = await promise.json();
+    console.log(data);
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Thanks for making it till the end.&lt;/p&gt;&lt;p&gt;Keep on Hacking! ✌&lt;/p&gt;&lt;p&gt;&lt;blockquote class=&quot;twitter-tweet&quot; data-dnt=&quot;true&quot;&gt;&lt;p lang=&quot;en&quot; dir=&quot;ltr&quot;&gt;Tesla’s mission is to accelerate the world’s transition to sustainable energy. &lt;br/&gt;&lt;br/&gt;🌞⚡🚗🔋 &lt;br/&gt;&lt;br/&gt;(a thread)&lt;/p&gt;— Tesla (@Tesla) &lt;a href=&quot;https://twitter.com/Tesla/status/1126575043281080323&quot;&gt;May 9, 2019&lt;/a&gt;&lt;/blockquote&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[My First Post]]></title><description><![CDATA[There is the  fetch  API in Node, which allows us to make a HTTP request and get some information from the servers. We can use that to make…]]></description><link>https://krushiraj.github.io/writings/first-post copy - Copy (8)/</link><guid isPermaLink="true">https://krushiraj.github.io/writings/first-post copy - Copy (8)/</guid><pubDate>Sat, 20 Apr 2019 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;There is the &lt;code&gt;fetch&lt;/code&gt; API in Node, which allows us to make a HTTP request and get some information from the servers. We can use that to make REST calls, get HTML content of a webpage(if we are using node for scraping) and many more things.&lt;/p&gt;&lt;blockquote&gt;&lt;p&gt;This article is valid for any function that returns a promise.&lt;/p&gt;&lt;/blockquote&gt;&lt;p&gt;An example of such call goes like this&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot;&gt;fetch(&amp;quot;/url&amp;quot;)
+  .then(res =&amp;gt; res.json())
+  .then(data =&amp;gt; console.log(data))
+&lt;/code&gt;&lt;/pre&gt;&lt;h2&gt;The Async way&lt;/h2&gt;&lt;p&gt;We could do the same thing, using async and await.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot;&gt;const result = await fetch(&amp;quot;/url&amp;quot;)
+const data = await result.json()
+
+console.log(data)
+
+// Or, a one-liner
+// const data = await (await fetch(&amp;#x27;/url&amp;#x27;)).json(); 😉
+&lt;/code&gt;&lt;/pre&gt;&lt;h2&gt;I have so many things to fetch!&lt;/h2&gt;&lt;p&gt;Okay fine. We can do that over a classic for loop. The synchronous nature will be preserved. I mean, we can fetch one after the other, synchronously.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot;&gt;const urls = [...];
+for(const url of urls) {
+    const result = await fetch(url);
+    const data = await result.json();
+
+    console.log(data);
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;But what if, the order does not matter? We can fetch them all at once. Yes, all at once, using the Promise API. After all, &lt;code&gt;fetch&lt;/code&gt; returns a promise and that’s why we &lt;code&gt;await&lt;/code&gt; for it to be resolved.&lt;/p&gt;&lt;p&gt;Promise API has this method &lt;code&gt;Promise.all()&lt;/code&gt; , which can be awaited on for all the promises that it accepts as an argument to be resolved.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot;&gt;const urls = [...];
+const promises = urls.map(url =&amp;gt; fetch(url));
+
+await Promise.all(promises);
+
+for (const promise of promises) {
+    const data = await promise.json();
+    console.log(data);
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;This will save us a lot of time. Imagine we want to parse many webpages, around 100, and each webpage takes 2 seconds to be fetched and scraped for information we need. If we fetch it one after the other, it will take us around 200 seconds, which is over 3 minutes. But if we fetch all at once, it will take under a minute.&lt;/p&gt;&lt;h1&gt;Like, really SO MANY!&lt;/h1&gt;&lt;p&gt;What is we have over 10000 urls to fetch. If we do the same thing as above, we will most probably not make it. We will have to face some weird socket hangup error. What can we do about it?&lt;/p&gt;&lt;p&gt;There is a node package called &lt;code&gt;Bluebird&lt;/code&gt; which has its own Promise API and it functions the same. It has this method called &lt;code&gt;map&lt;/code&gt;, which takes an extra options argument where we can set concurrency.&lt;/p&gt;&lt;p&gt;&lt;code&gt;Promise.map(urls =&amp;gt; fetch(url), { concurrency: 100 });&lt;/code&gt;&lt;/p&gt;&lt;p&gt;This will, as we can infer from the line, concurrently fetch 100 requests at a time. This will save a significant load on CPU.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot;&gt;const Promise = require(&amp;#x27;bluebird&amp;#x27;).Promise;
+const urls = [...];
+const promises = await Promise.map(
+    urls =&amp;gt; fetch(url),
+    { concurrency: 100 }
+);
+
+for (const promise of promises) {
+    const data = await promise.json();
+    console.log(data);
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Thanks for making it till the end.&lt;/p&gt;&lt;p&gt;Keep on Hacking! ✌&lt;/p&gt;&lt;p&gt;&lt;blockquote class=&quot;twitter-tweet&quot; data-dnt=&quot;true&quot;&gt;&lt;p lang=&quot;en&quot; dir=&quot;ltr&quot;&gt;Tesla’s mission is to accelerate the world’s transition to sustainable energy. &lt;br/&gt;&lt;br/&gt;🌞⚡🚗🔋 &lt;br/&gt;&lt;br/&gt;(a thread)&lt;/p&gt;— Tesla (@Tesla) &lt;a href=&quot;https://twitter.com/Tesla/status/1126575043281080323&quot;&gt;May 9, 2019&lt;/a&gt;&lt;/blockquote&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[My First Post]]></title><description><![CDATA[There is the  fetch  API in Node, which allows us to make a HTTP request and get some information from the servers. We can use that to make…]]></description><link>https://krushiraj.github.io/writings/first-post copy - Copy (4)/</link><guid isPermaLink="true">https://krushiraj.github.io/writings/first-post copy - Copy (4)/</guid><pubDate>Sat, 20 Apr 2019 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;There is the &lt;code&gt;fetch&lt;/code&gt; API in Node, which allows us to make a HTTP request and get some information from the servers. We can use that to make REST calls, get HTML content of a webpage(if we are using node for scraping) and many more things.&lt;/p&gt;&lt;blockquote&gt;&lt;p&gt;This article is valid for any function that returns a promise.&lt;/p&gt;&lt;/blockquote&gt;&lt;p&gt;An example of such call goes like this&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot;&gt;fetch(&amp;quot;/url&amp;quot;)
+  .then(res =&amp;gt; res.json())
+  .then(data =&amp;gt; console.log(data))
+&lt;/code&gt;&lt;/pre&gt;&lt;h2&gt;The Async way&lt;/h2&gt;&lt;p&gt;We could do the same thing, using async and await.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot;&gt;const result = await fetch(&amp;quot;/url&amp;quot;)
+const data = await result.json()
+
+console.log(data)
+
+// Or, a one-liner
+// const data = await (await fetch(&amp;#x27;/url&amp;#x27;)).json(); 😉
+&lt;/code&gt;&lt;/pre&gt;&lt;h2&gt;I have so many things to fetch!&lt;/h2&gt;&lt;p&gt;Okay fine. We can do that over a classic for loop. The synchronous nature will be preserved. I mean, we can fetch one after the other, synchronously.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot;&gt;const urls = [...];
+for(const url of urls) {
+    const result = await fetch(url);
+    const data = await result.json();
+
+    console.log(data);
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;But what if, the order does not matter? We can fetch them all at once. Yes, all at once, using the Promise API. After all, &lt;code&gt;fetch&lt;/code&gt; returns a promise and that’s why we &lt;code&gt;await&lt;/code&gt; for it to be resolved.&lt;/p&gt;&lt;p&gt;Promise API has this method &lt;code&gt;Promise.all()&lt;/code&gt; , which can be awaited on for all the promises that it accepts as an argument to be resolved.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot;&gt;const urls = [...];
+const promises = urls.map(url =&amp;gt; fetch(url));
+
+await Promise.all(promises);
+
+for (const promise of promises) {
+    const data = await promise.json();
+    console.log(data);
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;This will save us a lot of time. Imagine we want to parse many webpages, around 100, and each webpage takes 2 seconds to be fetched and scraped for information we need. If we fetch it one after the other, it will take us around 200 seconds, which is over 3 minutes. But if we fetch all at once, it will take under a minute.&lt;/p&gt;&lt;h1&gt;Like, really SO MANY!&lt;/h1&gt;&lt;p&gt;What is we have over 10000 urls to fetch. If we do the same thing as above, we will most probably not make it. We will have to face some weird socket hangup error. What can we do about it?&lt;/p&gt;&lt;p&gt;There is a node package called &lt;code&gt;Bluebird&lt;/code&gt; which has its own Promise API and it functions the same. It has this method called &lt;code&gt;map&lt;/code&gt;, which takes an extra options argument where we can set concurrency.&lt;/p&gt;&lt;p&gt;&lt;code&gt;Promise.map(urls =&amp;gt; fetch(url), { concurrency: 100 });&lt;/code&gt;&lt;/p&gt;&lt;p&gt;This will, as we can infer from the line, concurrently fetch 100 requests at a time. This will save a significant load on CPU.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot;&gt;const Promise = require(&amp;#x27;bluebird&amp;#x27;).Promise;
+const urls = [...];
+const promises = await Promise.map(
+    urls =&amp;gt; fetch(url),
+    { concurrency: 100 }
+);
+
+for (const promise of promises) {
+    const data = await promise.json();
+    console.log(data);
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Thanks for making it till the end.&lt;/p&gt;&lt;p&gt;Keep on Hacking! ✌&lt;/p&gt;&lt;p&gt;&lt;blockquote class=&quot;twitter-tweet&quot; data-dnt=&quot;true&quot;&gt;&lt;p lang=&quot;en&quot; dir=&quot;ltr&quot;&gt;Tesla’s mission is to accelerate the world’s transition to sustainable energy. &lt;br/&gt;&lt;br/&gt;🌞⚡🚗🔋 &lt;br/&gt;&lt;br/&gt;(a thread)&lt;/p&gt;— Tesla (@Tesla) &lt;a href=&quot;https://twitter.com/Tesla/status/1126575043281080323&quot;&gt;May 9, 2019&lt;/a&gt;&lt;/blockquote&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[My First Post]]></title><description><![CDATA[There is the  fetch  API in Node, which allows us to make a HTTP request and get some information from the servers. We can use that to make…]]></description><link>https://krushiraj.github.io/writings/first-post copy - Copy/</link><guid isPermaLink="true">https://krushiraj.github.io/writings/first-post copy - Copy/</guid><pubDate>Sat, 20 Apr 2019 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;There is the &lt;code&gt;fetch&lt;/code&gt; API in Node, which allows us to make a HTTP request and get some information from the servers. We can use that to make REST calls, get HTML content of a webpage(if we are using node for scraping) and many more things.&lt;/p&gt;&lt;blockquote&gt;&lt;p&gt;This article is valid for any function that returns a promise.&lt;/p&gt;&lt;/blockquote&gt;&lt;p&gt;An example of such call goes like this&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot;&gt;fetch(&amp;quot;/url&amp;quot;)
+  .then(res =&amp;gt; res.json())
+  .then(data =&amp;gt; console.log(data))
+&lt;/code&gt;&lt;/pre&gt;&lt;h2&gt;The Async way&lt;/h2&gt;&lt;p&gt;We could do the same thing, using async and await.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot;&gt;const result = await fetch(&amp;quot;/url&amp;quot;)
+const data = await result.json()
+
+console.log(data)
+
+// Or, a one-liner
+// const data = await (await fetch(&amp;#x27;/url&amp;#x27;)).json(); 😉
+&lt;/code&gt;&lt;/pre&gt;&lt;h2&gt;I have so many things to fetch!&lt;/h2&gt;&lt;p&gt;Okay fine. We can do that over a classic for loop. The synchronous nature will be preserved. I mean, we can fetch one after the other, synchronously.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot;&gt;const urls = [...];
+for(const url of urls) {
+    const result = await fetch(url);
+    const data = await result.json();
+
+    console.log(data);
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;But what if, the order does not matter? We can fetch them all at once. Yes, all at once, using the Promise API. After all, &lt;code&gt;fetch&lt;/code&gt; returns a promise and that’s why we &lt;code&gt;await&lt;/code&gt; for it to be resolved.&lt;/p&gt;&lt;p&gt;Promise API has this method &lt;code&gt;Promise.all()&lt;/code&gt; , which can be awaited on for all the promises that it accepts as an argument to be resolved.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot;&gt;const urls = [...];
+const promises = urls.map(url =&amp;gt; fetch(url));
+
+await Promise.all(promises);
+
+for (const promise of promises) {
+    const data = await promise.json();
+    console.log(data);
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;This will save us a lot of time. Imagine we want to parse many webpages, around 100, and each webpage takes 2 seconds to be fetched and scraped for information we need. If we fetch it one after the other, it will take us around 200 seconds, which is over 3 minutes. But if we fetch all at once, it will take under a minute.&lt;/p&gt;&lt;h1&gt;Like, really SO MANY!&lt;/h1&gt;&lt;p&gt;What is we have over 10000 urls to fetch. If we do the same thing as above, we will most probably not make it. We will have to face some weird socket hangup error. What can we do about it?&lt;/p&gt;&lt;p&gt;There is a node package called &lt;code&gt;Bluebird&lt;/code&gt; which has its own Promise API and it functions the same. It has this method called &lt;code&gt;map&lt;/code&gt;, which takes an extra options argument where we can set concurrency.&lt;/p&gt;&lt;p&gt;&lt;code&gt;Promise.map(urls =&amp;gt; fetch(url), { concurrency: 100 });&lt;/code&gt;&lt;/p&gt;&lt;p&gt;This will, as we can infer from the line, concurrently fetch 100 requests at a time. This will save a significant load on CPU.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot;&gt;const Promise = require(&amp;#x27;bluebird&amp;#x27;).Promise;
+const urls = [...];
+const promises = await Promise.map(
+    urls =&amp;gt; fetch(url),
+    { concurrency: 100 }
+);
+
+for (const promise of promises) {
+    const data = await promise.json();
+    console.log(data);
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Thanks for making it till the end.&lt;/p&gt;&lt;p&gt;Keep on Hacking! ✌&lt;/p&gt;&lt;p&gt;&lt;blockquote class=&quot;twitter-tweet&quot; data-dnt=&quot;true&quot;&gt;&lt;p lang=&quot;en&quot; dir=&quot;ltr&quot;&gt;Tesla’s mission is to accelerate the world’s transition to sustainable energy. &lt;br/&gt;&lt;br/&gt;🌞⚡🚗🔋 &lt;br/&gt;&lt;br/&gt;(a thread)&lt;/p&gt;— Tesla (@Tesla) &lt;a href=&quot;https://twitter.com/Tesla/status/1126575043281080323&quot;&gt;May 9, 2019&lt;/a&gt;&lt;/blockquote&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[My First Post]]></title><description><![CDATA[There is the  fetch  API in Node, which allows us to make a HTTP request and get some information from the servers. We can use that to make…]]></description><link>https://krushiraj.github.io/writings/first-post copy - Copy (7)/</link><guid isPermaLink="true">https://krushiraj.github.io/writings/first-post copy - Copy (7)/</guid><pubDate>Sat, 20 Apr 2019 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;There is the &lt;code&gt;fetch&lt;/code&gt; API in Node, which allows us to make a HTTP request and get some information from the servers. We can use that to make REST calls, get HTML content of a webpage(if we are using node for scraping) and many more things.&lt;/p&gt;&lt;blockquote&gt;&lt;p&gt;This article is valid for any function that returns a promise.&lt;/p&gt;&lt;/blockquote&gt;&lt;p&gt;An example of such call goes like this&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot;&gt;fetch(&amp;quot;/url&amp;quot;)
   .then(res =&amp;gt; res.json())
   .then(data =&amp;gt; console.log(data))
 &lt;/code&gt;&lt;/pre&gt;&lt;h2&gt;The Async way&lt;/h2&gt;&lt;p&gt;We could do the same thing, using async and await.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot;&gt;const result = await fetch(&amp;quot;/url&amp;quot;)
