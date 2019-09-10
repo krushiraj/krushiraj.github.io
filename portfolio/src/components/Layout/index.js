@@ -1,63 +1,52 @@
 import React from "react"
-import { StaticQuery, graphql, Link } from "gatsby"
+import { StaticQuery, graphql } from "gatsby"
 import { MDXProvider } from "@mdx-js/react"
 
 import Footer from "../Footer"
 import mdxComponents from "../Mdx"
 import { GlobalStyle } from "../../utils/theme"
-import { StyledLayout, StyledCrumb } from "./styles"
+import { StyledLayout } from "./styles"
 
-const Layout = ({ children, location }) => (
-  <StaticQuery
-    query={graphql`
-      query {
-        site {
-          siteMetadata {
-            title
+const Layout = props => {
+  const { children } = props
+  return (
+    <StaticQuery
+      query={graphql`
+        query {
+          site {
+            siteMetadata {
+              title
+            }
+          }
+          allMdx {
+            edges {
+              node {
+                frontmatter {
+                  date(formatString: "MMMM DD, YYYY")
+                  title
+                  description
+                  published
+                }
+              }
+            }
           }
         }
-      }
-    `}
-    render={data => {
-      const title = data.site.siteMetadata.title
-      const rootPath = `${__PATH_PREFIX__}/`
-      let header
-      if (location && location.pathname === rootPath) {
-        header = (
-          <h1>
-            <Link to={"/"}>
-              {/* This is name svg animation <AravindBalla /> */}
-            </Link>
-            <span style={{ display: "none" }}>{title}</span>
-          </h1>
+      `}
+      render={() => {
+        return (
+          <React.Fragment>
+            <StyledLayout>
+              <GlobalStyle />
+              <MDXProvider components={mdxComponents}>
+                <React.Fragment>{children}</React.Fragment>
+              </MDXProvider>
+            </StyledLayout>
+            <Footer />
+          </React.Fragment>
         )
-      } else {
-        header = (
-          <StyledCrumb>
-            <span>
-              <Link to={"/"}>{title}</Link>
-            </span>
-            <span>{"/"}</span>
-            <span>writings</span>
-            <span>{">"}</span>
-            <span>{location.search.slice(1)}</span>
-          </StyledCrumb>
-        )
-      }
-      return (
-        <React.Fragment>
-          <StyledLayout>
-            <GlobalStyle />
-            {header}
-            <MDXProvider components={mdxComponents}>
-              <React.Fragment>{children}</React.Fragment>
-            </MDXProvider>
-          </StyledLayout>
-          {location.pathname !== rootPath && <Footer />}
-        </React.Fragment>
-      )
-    }}
-  />
-)
+      }}
+    />
+  )
+}
 
 export default Layout

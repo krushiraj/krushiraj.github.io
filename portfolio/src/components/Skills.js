@@ -6,7 +6,7 @@ const skills = [
   { name: "Python", level: 9, src: "/python.svg" },
   { name: "C", level: 9, src: "/c.svg" },
   { name: "JavaScript", level: 8, src: "/javascript.svg" },
-  { name: "C++", level: 8.5, src: "/c++.svg" },
+  { name: "C++", level: 7.5, src: "/c++.svg" },
   { name: "C#", level: 7, src: "/c-sharp.svg" },
   { name: "Java", level: 7, src: "/java.svg" },
   { name: "HTML", level: 8, src: "/html-5.svg" },

@@ -114,6 +114,7 @@ module.exports = {
                 return Object.assign({}, edge.node.frontmatter, {
                   description: edge.node.excerpt,
                   date: edge.node.frontmatter.date,
+                  tags: edge.node.frontmatter.tags || "",
                   url: normalizeUrl(
                     site.siteMetadata.siteUrl + edge.node.fields.slug
                   ),

@@ -55,7 +55,11 @@ const SEO = ({ postData, frontmatter = {}, postImage, isBlogPost }) => (
 
             {/* OpenGraph tags */}
             <meta property="og:url" content={url} />
-            {isBlogPost ? <meta property="og:type" content="article" /> : null}
+            {isBlogPost ? (
+              <meta property="og:type" content="article" />
+            ) : (
+              <meta property="og:type" content="project" />
+            )}
             <meta property="og:title" content={title} />
             <meta property="og:description" content={description} />
             {image && <meta property="og:image" content={image} />}

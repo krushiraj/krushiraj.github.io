@@ -38,6 +38,7 @@ const StyledTerminalLink = styled.div`
     margin: 5px 0;
 
     a {
+      width: auto;
       color: black;
       margin: 0 0 0 10px;
 

@@ -11,7 +11,8 @@ const colors = {
   green: "#ADFF2F",
   techfont: "#9ACD32",
   techborder: "#CD5C5C",
-  yellow: "#F5BF32",
+  yellow: "RGBA(255, 203, 61, 1)",
+  lightyellow: "RGBA(255, 203, 61, 0.5)",
   palered: "#E10000",
   goldenred: "#B8860E",
 }

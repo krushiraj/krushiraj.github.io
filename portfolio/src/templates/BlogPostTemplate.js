@@ -58,17 +58,37 @@ export default class BlogPostTemplate extends React.Component {
         <Bio />
 
         <StyledNextPrev>
-          <li>
+          <li className="-prev">
             {previous && (
-              <Link to={previous.fields.slug} rel="prev">
-                ← {previous.frontmatter.title}
+              <Link className="animated-arrow" to={next.fields.slug} rel="next">
+                <span className="main -prev">
+                  <span className="the-arrow -left -prev">
+                    <span className="shaft"></span>
+                  </span>
+                  <span className="text">{next.frontmatter.title}</span>
+                </span>
+                <span className="the-arrow -right -prev">
+                  <span className="shaft"></span>
+                </span>
               </Link>
             )}
           </li>
-          <li>
+          <li className="-next">
             {next && (
-              <Link to={next.fields.slug} rel="next">
-                {next.frontmatter.title} →
+              <Link
+                className="animated-arrow"
+                to={previous.fields.slug}
+                rel="prev"
+              >
+                <span className="the-arrow -left -next">
+                  <span className="shaft"></span>
+                </span>
+                <span className="main -next">
+                  <span className="text">{previous.frontmatter.title}</span>
+                  <span className="the-arrow -right -next">
+                    <span className="shaft"></span>
+                  </span>
+                </span>
               </Link>
             )}
           </li>

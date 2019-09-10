@@ -6,11 +6,11 @@ import { rhythm } from "../utils/typography"
 import { StyledDate } from "./styles/post"
 
 const Card = ({
+  excerpt,
   fields: { slug },
   frontmatter: {
     title,
     date,
-    description,
     banner: {
       childImageSharp: { fluid },
     },
@@ -23,7 +23,7 @@ const Card = ({
         <p className="title">{title}</p>
         <StyledDate>{date}</StyledDate>
         <div>
-          <p className="description">{description}</p>
+          <p className="description">{excerpt}</p>
         </div>
       </a>
     </div>
@@ -44,6 +44,7 @@ const DisplayPostsContainer = styled.div`
     margin: 10px;
 
     a {
+      width: 100%;
       :after {
         height: 0;
       }
@@ -118,13 +119,13 @@ const query = graphql`
     ) {
       edges {
         node {
+          excerpt
           fields {
             slug
           }
           frontmatter {
             title
             date(formatString: "MMMM DD, YYYY")
-            description
             banner {
               childImageSharp {
                 fluid {

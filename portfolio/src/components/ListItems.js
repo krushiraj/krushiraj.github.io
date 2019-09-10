@@ -108,7 +108,6 @@ export default class ListItems extends React.Component {
   //   if (!selected.classList.contains("active")) selected.classList.add("active")
   //   selected.style.borderBottom = "2px solid #e10000"
   //   current.style.display = "none"
-  //   console.log(selected)
   // }
 
   render() {
