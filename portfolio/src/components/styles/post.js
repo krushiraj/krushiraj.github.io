@@ -293,17 +293,24 @@ export const StyledNextPrev = styled.ul`
 
 export const StyledTech = styled.div`
   margin: ${rhythm(0.5)} 0;
-  span {
-    margin: ${rhythm(0.1)};
-    border: 1px solid ${colors.techborder};
-    padding: 4px 8px;
-    border-radius: 10px;
-    color: ${colors.techfont};
-    transition: all 0.2s linear;
 
-    &:hover {
-      color: ${colors.techborder};
-      border-color: ${colors.techfont};
+  div {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: left;
+
+    span {
+      margin: ${rhythm(0.1)};
+      border: 1px solid ${colors.techborder};
+      padding: 4px 8px;
+      border-radius: 10px;
+      color: ${colors.techfont};
+      transition: all 0.2s linear;
+
+      &:hover {
+        color: ${colors.techborder};
+        border-color: ${colors.techfont};
+      }
     }
   }
 `

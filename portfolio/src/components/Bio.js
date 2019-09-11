@@ -7,8 +7,11 @@ import styled from "styled-components"
 
 const StyledBioDiv = styled.div`
   margin-bottom: ${rhythm(2.5)};
+  display: flex;
+  align-content: center;
 
   p {
+    margin: auto 0;
     color: ${colors.skyblue};
     a {
       color: ${colors.green};
@@ -51,20 +54,16 @@ const StyledBioDiv = styled.div`
   }
 
   img {
-    margin-right: ${rhythm(1 / 2)};
-    width: ${rhythm(4)};
-    height: ${rhythm(4)};
+    margin: auto ${rhythm(1 / 2)} auto 0;
+    width: ${rhythm(3)};
+    height: ${rhythm(3)};
   }
 `
 
 export default class Bio extends React.Component {
   render() {
     return (
-      <StyledBioDiv
-        style={{
-          display: "flex",
-        }}
-      >
+      <StyledBioDiv>
         <img
           src={profilePic}
           alt={`Krushi Raj Tula`}
@@ -73,9 +72,9 @@ export default class Bio extends React.Component {
           }}
         />
         <p>
-          By <strong>Krushi Raj Tula</strong> who is a geek, enthusiast solving
-          his problems and build things for himself and others sometime with
-          technology. You can reach out to him on{" "}
+          By <strong>Krushi Raj Tula</strong> A developer, geek, enthusiast, who
+          loves to solve problems and fix things with technology. You can reach
+          out to him on{" "}
           <a
             href="https://twitter.com/krushiraj123"
             target="_blank"

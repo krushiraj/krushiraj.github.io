@@ -16,8 +16,21 @@ import { rhythm } from "../utils/typography"
 
 export default class BlogPostTemplate extends React.Component {
   render() {
-    const post = this.props.data.mdx
+    const {
+      body,
+      frontmatter,
+      fields: {
+        slug,
+        socialImage: {
+          childImageSharp: {
+            original: { src },
+          },
+        },
+      },
+    } = this.props.data.mdx
+    console.log(this.props.pageContext)
     const { previous, next } = this.props.pageContext
+    console.log({ previous, next })
 
     return (
       <Layout location={this.props.location}>
@@ -26,27 +39,29 @@ export default class BlogPostTemplate extends React.Component {
         }
         <SEO
           isBlogPost
-          frontmatter={{ ...post.frontmatter, slug: post.fields.slug }}
-          postImage={post.fields.socialImage.childImageSharp.original.src}
+          frontmatter={{ ...frontmatter, slug }}
+          postImage={src}
         />
         {
           //Title of the post as Heading of the page
         }
         <StyledPost style={{ cursor: "auto" }}>
-          {post.frontmatter.banner && (
-            <Img sizes={post.frontmatter.banner.childImageSharp.fluid} />
+          {frontmatter.banner && (
+            <Img sizes={frontmatter.banner.childImageSharp.fluid} />
           )}
-          <h1>{post.frontmatter.title}</h1>
-          <StyledDate>{post.frontmatter.date}</StyledDate>
-          {post.frontmatter.technologies && (
+          <h1>{frontmatter.title}</h1>
+          <StyledDate>{frontmatter.date}</StyledDate>
+          {frontmatter.technologies && (
             <StyledTech>
               Technology tags:{" "}
-              {post.frontmatter.technologies.split(",").map((tech, i) => (
-                <span key={`${tech.trim()}-${i}`}>{tech.trim()}</span>
-              ))}
+              <div>
+                {frontmatter.technologies.split(",").map((tech, i) => (
+                  <span key={`${tech.trim()}-${i}`}>{tech.trim()}</span>
+                ))}
+              </div>
             </StyledTech>
           )}
-          <MDXRenderer>{post.body}</MDXRenderer>
+          <MDXRenderer>{body}</MDXRenderer>
         </StyledPost>
 
         <hr
@@ -60,12 +75,16 @@ export default class BlogPostTemplate extends React.Component {
         <StyledNextPrev>
           <li className="-prev">
             {previous && (
-              <Link className="animated-arrow" to={next.fields.slug} rel="next">
+              <Link
+                className="animated-arrow"
+                to={previous.fields.slug}
+                rel="next"
+              >
                 <span className="main -prev">
                   <span className="the-arrow -left -prev">
                     <span className="shaft"></span>
                   </span>
-                  <span className="text">{next.frontmatter.title}</span>
+                  <span className="text">{previous.frontmatter.title}</span>
                 </span>
                 <span className="the-arrow -right -prev">
                   <span className="shaft"></span>
@@ -75,16 +94,12 @@ export default class BlogPostTemplate extends React.Component {
           </li>
           <li className="-next">
             {next && (
-              <Link
-                className="animated-arrow"
-                to={previous.fields.slug}
-                rel="prev"
-              >
+              <Link className="animated-arrow" to={next.fields.slug} rel="prev">
                 <span className="the-arrow -left -next">
                   <span className="shaft"></span>
                 </span>
                 <span className="main -next">
-                  <span className="text">{previous.frontmatter.title}</span>
+                  <span className="text">{next.frontmatter.title}</span>
                   <span className="the-arrow -right -next">
                     <span className="shaft"></span>
                   </span>
