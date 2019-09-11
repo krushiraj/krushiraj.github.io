@@ -1,6 +1,6 @@
 import React from "react"
 import styled from "styled-components"
-import { StaticQuery, graphql } from "gatsby"
+import { StaticQuery, graphql, Link } from "gatsby"
 import Img from "gatsby-image"
 import { rhythm } from "../utils/typography"
 import { StyledDate } from "./styles/post"
@@ -105,6 +105,10 @@ const Root = data => (
     {data.allMdx.edges.map((props, key) => (
       <Card key={key} {...props.node} />
     ))}
+    <p>
+      You can view writings on all my projects <Link to="/writings/">here</Link>
+      .
+    </p>
   </DisplayPostsContainer>
 )
 

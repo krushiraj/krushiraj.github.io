@@ -2,6 +2,7 @@ import React from "react"
 import styled from "styled-components"
 import { rhythm } from "../utils/typography"
 import { colors } from "../utils/theme"
+import { Link } from "gatsby"
 
 const StyledAboutMeText = styled.p`
   font-size: ${rhythm(0.75)};
@@ -32,5 +33,8 @@ export default () => (
       A developer, geek, enthusiast, who loves to solve problems and fix things
       with technology.
     </StyledAboutMeText>
+    <p>
+      You can read my writings <Link to="/writings/">here</Link>.
+    </p>
   </div>
 )
