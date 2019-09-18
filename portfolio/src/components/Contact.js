@@ -45,7 +45,38 @@ const StyledContactMe = styled.div`
   }
 `
 
-export default () => (
+class Resume extends React.Component {
+  withPrefix = (variant) => (
+    `https://krushiraj.github.io/KrushiRajTula_Resume${variant}.pdf`
+  )
+
+  render() {
+    return <>
+      <br/>
+      <p>
+        You can view my resume by clicking{" "}
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href={this.withPrefix("Web")}
+        >
+          here
+        </a>.{" "}
+        You can also get the print-friendly version{" "}
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href={this.withPrefix("Print")}
+        >
+          here
+        </a>.
+      </p>
+      <br/>
+    </>
+  }
+}
+
+export default () =>
   <StyledContactMe>
     <div>
       <p>Feel free to reach me out at:</p>
@@ -54,6 +85,6 @@ export default () => (
           <FontAwesomeIconWrapper key={key} {...item} size="3x" />
         ))}
       </div>
+      <Resume/>
     </div>
   </StyledContactMe>
-)

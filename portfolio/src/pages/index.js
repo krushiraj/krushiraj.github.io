@@ -16,7 +16,6 @@ import {
   Writings,
   Skills,
   Contact,
-  Resume,
   MiniTerminalLink,
   CircularImageTop,
   CircularImageLarge,
@@ -34,7 +33,6 @@ const items = [
   { name: "skills", title: "Skills", children: Skills },
   { name: "my-works", title: "My Works", children: MyWorks },
   { name: "writings", title: "Writings", children: Writings },
-  { name: "resume", title: "Resume", children: Resume },
   {
     name: "contact",
     title: "Contact",

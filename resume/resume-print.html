@@ -1,0 +1,389 @@
+<html>
+  <head>
+    <title>Krushi Raj Tula | Resume</title>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/tonsky/FiraCode@1.207/distr/fira_code.css">
+    <style>
+      :root {
+        --border-color: rgba(55,55,55,0.5);
+        --bg-color: #fff;
+        --font-color: #151515;
+        --link-color: blue;
+      }
+      
+      @media print {
+        --border-color: rgba(55,55,55,0.5);
+        --bg-color: #fff;
+        --font-color: #000;
+        body{
+          width: 21cm;
+          height: 29.7cm;
+          margin: 30mm 45mm 30mm 45mm;
+          background: var(--bg-color);
+          color: var(--font-color);
+        }
+        * {
+          color: var(--font-color);
+        }
+      }
+
+      body{
+        background: var(--bg-color);
+        width: 21cm;
+        height: 29.7cm;
+        margin: auto;
+				font-family: 'Fira Code', monospace;
+        padding: 0;
+        color: var(--font-color);
+      }
+
+      .resume {
+        padding: 0;
+        margin: 1cm;
+        height: 100%;
+      }
+
+      .personal {
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
+        padding-bottom: 2mm;
+        border-bottom: var(--border-color) solid 0.5mm;
+        margin-bottom: 5mm;
+      }
+
+      .bio-data {
+        width: 100%;
+        align-self: center;
+      }
+      
+      .name {
+        font-size: 200%;
+        font-weight: bold;
+        margin: auto;
+        white-space: nowrap;
+      }
+      
+      .role {
+        margin: auto;
+      }
+
+      .picture {
+        display: flex;
+        flex-direction: row-reverse;
+        margin: 0;
+      }
+      
+      .image {
+        border-radius: 50%;
+        height: 2.5cm;
+        width: 2.5cm;
+        filter: grayscale(100%);
+      }
+      
+      .section-header {
+        font-size: 125%;
+        font-weight: 500;
+        border-bottom: var(--border-color) solid 0.25mm;
+      }
+      
+      .skill-section {
+        display: flex;
+        flex-direction: column;
+      }
+      
+      .skills {
+        display: flex;
+        flex-wrap: wrap;
+      }
+      
+      .skill {
+        width: 20%;
+        margin: 1mm auto;
+      }
+      
+      .skill-guage {
+        width: 100%;
+        height: 1.2mm;
+        background: var(--font-color);
+        border: var(--font-color) solid 0.25mm;
+        border-radius: 1mm;
+      }
+      
+      .skill-level {
+        height: 1mm;
+        background: var(--bg-color);
+        border-radius: 1mm;
+      }
+      
+      .other-skills {
+        margin: 0 4mm;
+      }
+      
+      .*-section {
+        margin-top: 2mm;
+      }
+      
+      .experience-item, .education-item, .project-item {
+        display: flex;
+        margin: 1mm auto;
+        align-content: center;
+        align-items: center;
+      }
+      
+      .item-left {
+        display: flex;
+        flex-direction: column;
+        text-align: right;
+        padding-right: 2mm;
+        border-right: var(--font-color) solid 0.25mm;
+        width: 30%;
+      }
+      
+      .education-item .item-left {
+        width: 15%;
+      }
+      
+      .project-item .item-left {
+        width: 25%;
+      }
+      
+      .item-right {
+        display: flex;
+        flex-direction: column;
+/*        text-align: left;*/
+        margin: 1mm auto 1mm 2mm;;
+      }
+      
+      .role {
+        text-align: left;
+        margin: 0;
+      }
+      
+      .company-name {
+        font-weight: 550;
+      }
+      
+      .highlight {
+        font-weight: 600;
+      }
+      
+      .contacts {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+      }
+      
+      a, a:visited, a:active {
+        color: var(--link-color);
+      }
+      
+      .project-name {
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <section class="resume">
+      <div class="personal">
+        <div class="bio-data">
+          <p class="name">Krushi Raj Tula</p>
+          <p class="role">Developer</p>
+          <span style="display: flex">
+            <a href="mailto:krushiraj123@gmail.com">krushiraj123@gmail.com</a>&#9679;
+            <a href="https://krushiraj.github.io">krushiraj.github.io</a>&#9679;
+            <a href="https://krushiraj.github.io">github.com/krushiraj</a>
+          </span>
+        </div>
+        <div class="picture">
+          <img class="image" src="krushi.jpg"/>
+        </div>
+      </div>
+      <div class="skill-section">
+        <div class="section-header">Skills</div>
+        <div class="skills">
+          <div class="skill">
+            <div class="skill-name">Python</div>
+            <div class="skill-guage">
+              <div class="skill-level" style="width: 90%"></div>
+            </div>
+          </div>
+          <div class="skill">
+            <div class="skill-name">C</div>
+            <div class="skill-guage">
+              <div class="skill-level" style="width: 90%"></div>
+            </div>
+          </div>
+          <div class="skill">
+            <div class="skill-name">JavaScript</div>
+            <div class="skill-guage">
+              <div class="skill-level" style="width: 80%"></div>
+            </div>
+          </div>
+          <div class="skill">
+            <div class="skill-name">C#</div>
+            <div class="skill-guage">
+              <div class="skill-level" style="width: 70%"></div>
+            </div>
+          </div>
+        </div>
+        <div class="other-skills">ReactJS, VueJS, Django, Node.js, Java, PostgreSQL, MySQL, SQLite, Mocha, Selenium, HTML, CSS, SASS, SCSS, XAML</div>
+      </div>
+      <div class="experience-section">
+        <div class="section-header">Experience</div>
+        <div class="experiences">
+          <div class="experience-item">
+            <div class="item-left">
+              <div class="duration">Jul 2019 - Current</div>
+              <div class="type">Full-Time</div>
+            </div>
+            <div class="item-right">
+              <div class="role">Software Developer</div>
+              <div class="company-name">NCR Corporation</div>
+            </div>
+          </div>
+          <div class="experience-item">
+            <div class="item-left">
+              <div class="duration">Jan 2019 - Jun 2019</div>
+              <div class="type">Internship</div>
+            </div>
+            <div class="item-right">
+              <div class="role">Software Developer</div>
+              <div class="company-name">ServiceNow</div>
+            </div>
+          </div>
+          <div class="experience-item">
+            <div class="item-left">
+              <div class="duration">Jun 2018 - Jul 2018</div>
+              <div class="type">Internship(Remote)</div>
+            </div>
+            <div class="item-right">
+              <div class="role">Front-end Developer, Interns' Team Lead</div>
+              <div class="company-name">Verzeo Edutech</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="education-section">
+        <div class="section-header">Education</div>
+        <div class="education"></div>
+        <div class="education-item">
+          <div class="item-left">
+            <div class="duration">May 2019</div>
+            <div class="duration">Aug 2015</div>
+          </div>
+          <div class="item-right">
+            <div class="role">
+              Bachelor of Engineering, Information Technology -
+              <span class="highlight">CGPA: 8.50</span>
+            </div>
+            <div class="company-name">
+              Vasavi College of Engineering,
+              Osmania University
+            </div>
+          </div>
+        </div>
+        <div class="education-item">
+          <div class="item-left">
+            <div class="duration">May 2015</div>
+            <div class="duration">Jun 2013</div>
+          </div>
+          <div class="item-right">
+            <div class="role">
+              Intermediate, MPC -
+              <span class="highlight">Percentage: 93.4</span>
+            </div>
+            <div class="company-name">
+              Narayana Junior College
+            </div>
+          </div>
+        </div>
+        <div class="education-item">
+          <div class="item-left">
+            <div class="duration">Apr 2013</div>
+            <div class="duration" style="color: var(--bg-color);">.</div>
+          </div>
+          <div class="item-right">
+            <div class="role">
+              Secondary School Certification -
+              <span class="highlight">CGPA: 9.20</span>
+            </div>
+            <div class="company-name">
+              Little Flower English High School
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="project-section">
+        <div class="section-header">Projects</div>
+        <div class="projects">
+          <div class="project-item">
+            <div class="item-left">
+              <div class="project-name">Acumen IT</div>
+              <div class="duration">Django, HTML, CSS, JavaScript</div>
+            </div>
+            <div class="item-right">
+              <div class="role">
+                A web-app for our college tech-fest.
+              </div>
+              <div class="project-link">
+                GitHub links: <a href="http://tiny.cc/gutvcz">http://tiny.cc/gutvcz</a>,<br/>
+                <a href="http://tiny.cc/ywtvcz">http://tiny.cc/ywtvcz</a>
+              </div>
+            </div>
+          </div>
+          <div class="project-item">
+            <div class="item-left">
+              <div class="project-name">Switch The Ball</div>
+              <div class="duration">Unity 3D, C#</div>
+            </div>
+            <div class="item-right">
+              <div class="role">
+                A simple endless runner inspired game.
+              </div>
+              <div class="project-link">
+                PlayStore link: <a href="http://tiny.cc/0htvcz">http://tiny.cc/0htvcz</a>
+              </div>
+            </div>
+          </div>
+          <div class="project-item">
+            <div class="item-left">
+              <div class="project-name">System Components<br/></div>
+              <div class="duration">C<br/><br/><br/></div>
+            </div>
+            <div class="item-right">
+              <div class="role">
+                This includes a set of mini projects which<br/>
+                are basic implementations of assembly language<br/>
+                compiler, memory manager, thread pool in C.
+              </div>
+              <div class="project-link">
+                GitHub link: <a href="http://tiny.cc/85tvcz">http://tiny.cc/85tvcz</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          View all my projects of all kinds at <a href="https://krushiraj.github.io">My Portfolio</a> or <a href="https://github.com/krushiraj">GitHub</a>. I contribute to open-source projects when I get time.
+        </div>
+      </div>
+      <div class="contact-section">
+        <div class="section-header">Contact</div>
+        <div class="contacts">
+          <div class="contact">
+            <a href="https://krushiraj.github.io">Portfolio</a>
+          </div>
+          <div class="contact">
+            <a href="https://github.com/krushiraj">GitHub</a>
+          </div>
+          <div class="contact"> 
+            <a href="https://www.linkedin.com/in/krushi-raj-t-aba141b1/">LinkedIn</a>
+          </div>
+          <div class="contact">
+            <a href="https://stackoverflow.com/users/story/4813058">StackOverflow</a>
+          </div>
+        </div>
+        <div>View my writings which describe my projects, experiences, skills, and many more at <a href="https://krushiraj.github.io/writings/">Krushi Raj's Writings</a></div>
+      </div>
+    </section>
+  </body>
+</html>

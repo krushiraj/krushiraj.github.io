@@ -2,7 +2,6 @@ import AboutMe from "./AboutMe"
 import Contact from "./Contact"
 import Experience from "./Experience"
 import MyWorks from "./MyWorks"
-import Resume from "./Resume"
 import Skills from "./Skills"
 import Writings from "./Writings"
 import CircularImageLarge from "./CircularImage/CircularImageLarge"
@@ -15,7 +14,6 @@ export {
   Contact,
   Experience,
   MyWorks,
-  Resume,
   Skills,
   Writings,
   CircularImageTop,
