@@ -164,7 +164,13 @@ module.exports = {
               changefreq: `daily`,
               priority: 0.7,
             }
-          }),
+          }).concat([
+            {
+              url: 'https://krushiraj.github.io/mini-terminal',
+              changefreq: `daily`,
+              priority: 0.7,
+            }
+          ]),
       },
     },
   ],

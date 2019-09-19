@@ -72,6 +72,9 @@ export default class ListItems extends React.Component {
     else {
       const prevActive = document.querySelector("a.active")
       if (prevActive) prevActive.classList.remove("active")
+      const hashName = selected.id
+      console.log(window.location.hash)
+      window.location.hash = hashName.slice(0, hashName.length-3)
       selected.classList.add("active")
       this.setState({ selected })
     }

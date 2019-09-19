@@ -60,7 +60,7 @@ class Resume extends React.Component {
   render() {
     return <>
       <br/>
-      <p class="resume">
+      <p className="resume">
         You can view my resume by clicking{" "}
         <a
           target="_blank"

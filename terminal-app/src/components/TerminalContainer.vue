@@ -4,6 +4,7 @@
 		tabindex="1"
 		:style="{'--font-size': fontSize + 'rem'}"
 		v-on:keydown="handleInput"
+		@click.prevent="openKeyboard"
 	>
 		<TerminalLogin :isLoggedIn="isLoggedIn" />
 		<template v-for="({child, props}, index) in children">
@@ -62,6 +63,9 @@ export default {
 		}
 	},
 	methods: {
+		openKeyboard() {
+			document.getElementById('terminal-container').focus();
+		},
 		isBackspace(char) {
 			return char == "Backspace";
 		},
@@ -437,12 +441,24 @@ export default {
 			return os;
 		},
 		isLoggedIn() {
-			const cookie = document.cookie;
-			if (cookie) {
-				this.prevLoggedIn = true;
-				this.loggedIn = true;
-				this.pwd = "/";
-				this.username = cookie.split("=")[1];
+			const cookies = document.cookie.split(';');
+			let index = -1;
+			for(let i = 0; i < cookies.length; i++) {
+				if (cookies[i].match('mini-username') !== null) {
+					index = i;
+					break;
+				}
+			}
+			if (cookies && index !== -1) {
+				const username = cookies[
+					index
+				].split('=')[1];
+				if (username !== '') {
+					this.prevLoggedIn = true;
+					this.loggedIn = true;
+					this.pwd = "/";
+					this.username = username;
+				}
 			}
 			return this.loggedIn;
 		},

@@ -125,7 +125,11 @@ const NavigationItems = ({ title, top, updateTop }) => {
     >
       <ImageWithName name={title} top={top} updateTop={updateTop} />
       <div style={top ? topNavInnerStyles : fullScreenInnerStyles}>
-        <ListItems updateTop={updateTop} items={items} top={top} />
+        <ListItems
+          updateTop={updateTop}
+          items={items}
+          top={top}
+        />
       </div>
     </div>
   )
@@ -344,6 +348,12 @@ class AnimatedIndexDiv extends React.Component {
     Events.scrollEvent.register("end", function() {
       console.log("end", arguments)
     })
+
+    const { location: { hash } } = this.props
+
+    if (hash) {
+      document.querySelector(`${hash}`).click()
+    }
   }
 
   componentWillUnmount() {
@@ -397,7 +407,7 @@ class AnimatedIndexDiv extends React.Component {
     }
 
     const top = this.state.top
-    const title = this.props.title
+    const { title } = this.props
     return (
       <Element name="home">
         <StyledIndexDiv
@@ -429,7 +439,7 @@ export default props => (
   <React.Fragment>
     <GlobalStyle />
     <SEO />
-    <AnimatedIndexDiv title={props.data.site.siteMetadata.title} />
+    <AnimatedIndexDiv title={props.data.site.siteMetadata.title} location={props.location} />
     <MiniTerminalLink />
   </React.Fragment>
 )
