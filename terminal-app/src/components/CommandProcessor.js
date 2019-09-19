@@ -262,7 +262,7 @@ const execute_help = ({ command: { args, options } }) => {
 const execute_logout = () => {
     const expiry = new Date();
     expiry.setMinutes(expiry.getMinutes() - 1);
-    document.cookie = `username=;expires=${expiry.toUTCString()};path=/`;
+    document.cookie = `mini-username=;expires=${expiry.toUTCString()};path=/`;
     currentState.prevLoggedIn = false;
     currentState.loggedIn = false;
     paintReadOnly("You have been logged out successfully");

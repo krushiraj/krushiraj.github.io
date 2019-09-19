@@ -1,5 +1,5 @@
 <template>
-    <TerminalReadOnly breakOnNewLine :readOnlyText="welcomeText"/> 
+    <TerminalReadOnly breakOnNewLine :readOnlyText="welcomeText"/>
 </template>
 
 <script>
@@ -19,10 +19,10 @@ export default {
     computed: {
         welcomeText: ({isLoggedIn}) => {
             //TODO - make this configurable with text and template which can accept data
-            return ( 
+            return (
             `Welcome to Mini Terminal. Here you can checkout the profile of Krushi Raj Tula.
                 Copyright (c) 2019, Everyone - as this is an open-source site :P.
-            ` + (isLoggedIn ? '' : `Please enter your username to establish a session. Guest is default username.
+            ` + (isLoggedIn ? 'Need some help on how to use this? Use \'help\' command.' : `Please enter your username to establish a session. Guest is default username.
             In case of any error in logging in with the username provided, the system will try to fallback to default username and establishes a session with default username.`)
             )
         }

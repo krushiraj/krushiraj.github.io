@@ -44,14 +44,32 @@ const SEO = ({ postData, frontmatter = {}, postImage, isBlogPost }) => (
       const datePublished = isBlogPost
         ? new Date(postMeta.date).toISOString()
         : false
+      const tags = (postMeta.tags && postMeta.tags.split(",")) || []
+      const keywords = [
+        'krushi', 'raj', 'tula', 'missionrnd', 'mission',
+        'krushi raj', 'krushiraj', 'krushiraj123', 'rnd',
+        'developer', 'web developer', 'frontend', 'backend',
+        'blog', 'portfolio', 'python', 'c', 'c++', 'javascript',
+        'react', 'vue', 'node', 'css', 'html', 'js', 'scss',
+        'portfolio', 'resume', 'profile', 'experience', 'ncr',
+        'servicenow', 'verzeo', 'mini terminal', 'mini', 'terminal',
+        'file system', 'parser', 'tokens', 'commands', 'help',
+      ].concat((postMeta.keywords && postMeta.keywords.split(",")) || [])
 
       return (
         <React.Fragment>
           <Helmet htmlAttributes={{ lang: "en" }}>
+            <meta name="robots" content="index, follow" />
             {/* General tags */}
             <title>{isBlogPost ? `${title} | ${seo.title}` : title}</title>
             <meta name="description" content={description} />
             {image && <meta name="image" content={image} />}
+
+            {/* Meta describing the content related tags */}
+            {tags.map(tag => <meta property="tag" key={tag} content={tag}/>)}
+
+            {/* Keywords for the page */}
+            {keywords.map(keyword => <meta property="keyword" key={keyword} content={keyword}/>)}
 
             {/* OpenGraph tags */}
             <meta property="og:url" content={url} />
@@ -63,6 +81,27 @@ const SEO = ({ postData, frontmatter = {}, postImage, isBlogPost }) => (
             <meta property="og:title" content={title} />
             <meta property="og:description" content={description} />
             {image && <meta property="og:image" content={image} />}
+
+            {/* Github tags */}
+            <meta name="github:site" content={"@" + seo.social.github} />
+            <meta name="github:creator" content={"@" + seo.social.github} />
+            <meta name="github:title" content={title} />
+            <meta name="github:description" content={description} />
+            {image && <meta name="github:image" content={image} />}
+
+            {/* LinkedIn tags */}
+            <meta name="linkedin:site" content={"@" + seo.social.linkedin} />
+            <meta name="linkedin:creator" content={"@" + seo.social.linkedin} />
+            <meta name="linkedin:title" content={title} />
+            <meta name="linkedin:description" content={description} />
+            {image && <meta name="linkedin:image" content={image} />}
+
+            {/* StackOverflow tags */}
+            <meta name="stackoverflow:site" content={"@" + seo.social.stackoverflow} />
+            <meta name="stackoverflow:creator" content={"@" + seo.social.stackoverflow} />
+            <meta name="stackoverflow:title" content={title} />
+            <meta name="stackoverflow:description" content={description} />
+            {image && <meta name="stackoverflow:image" content={image} />}
 
             {/* Twitter Card tags */}
             <meta name="twitter:card" content="summary_large_image" />

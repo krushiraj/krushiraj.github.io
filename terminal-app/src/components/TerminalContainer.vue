@@ -27,7 +27,7 @@ import {
 } from "./CommandProcessor.js";
 import TerminalReadOnly from "./TerminalReadOnly.vue";
 
-//TODO: Allow user settings for color, font
+//TODO: Allow user settings for font
 
 const coTrie = new COTrie();
 
@@ -287,14 +287,14 @@ export default {
 		loginUser() {
 			const expiry = new Date();
 			expiry.setDate(expiry.getDate() + 1);
-			document.cookie = `username=${
+			document.cookie = `mini-username=${
 				this.editableText
 			};expires=${expiry.toUTCString()};path=/`;
 			if (document.cookie) {
 				this.loggedIn = true;
 				this.username = this.editableText;
 				this.pwd = "/";
-				document.cookie = `username=${
+				document.cookie = `mini-username=${
 					this.editableText
 				};expires=${expiry.toUTCString()};path=/`;
 			}

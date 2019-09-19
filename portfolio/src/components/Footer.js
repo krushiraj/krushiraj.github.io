@@ -40,7 +40,15 @@ const Footer = () => (
       >
         open-source
       </a>{" "}
-      site :P.
+      site :P. This theme is inspired from{" "}
+      <a
+        className="underline"
+        href="https://aravindballa.com"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Aravind Balla
+      </a>
       <br />
       {contactItems.map((item, index) => (
         <FontAwesomeIconWrapper key={index} {...item} />

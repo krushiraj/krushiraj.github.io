@@ -78,7 +78,6 @@ class Resume extends React.Component {
           here
         </a>.
       </p>
-      <div class="LI-profile-badge" data-version="v1" data-size="medium" data-locale="en_US" data-type="horizontal" data-theme="light" data-vanity="krushi-raj-t-aba141b1"><a class="LI-simple-link" href='https://in.linkedin.com/in/krushi-raj-t-aba141b1?trk=profile-badge'>Krushi Raj T.</a></div>
       <br/>
     </>
   }

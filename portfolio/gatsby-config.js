@@ -12,9 +12,12 @@ module.exports = {
     titleTemplate: `%s's portfolio`,
     siteUrl: `https://krushiraj.github.io`,
     image: `/tkrlogo.png`,
-    description: `Portfolio of Krushi Raj Tula`,
+    description: `Portfolio of Krushi Raj Tula. A developer, geek, enthusiast, who loves to solve problems and fix things with technology. You can read my writings here.`,
     social: {
       twitter: "krushiraj123",
+      github: "krushiraj",
+      linkedin: "krushi-raj-t-aba141b1",
+      stackoverflow: "krushiraj",
     },
     organization: {
       name: "Krushi Raj Tula",
