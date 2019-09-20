@@ -28,7 +28,7 @@ const ExperienceList = [
     company: "Verzeo",
     companyUrl: "https://verzeo.in/",
     imgSrc: "verzeo-logo.png",
-    role: "Frontend Developer, Interns' team lead.",
+    role: "UI Developer, Interns' team lead.",
     type: "Internship(Remote)",
     duration: "May 2018 - Jun 2018",
     description:
@@ -39,7 +39,7 @@ const ExperienceList = [
 const ExperienceCardDiv = styled.div`
   display: flex;
   flex-direction: column;
-  max-height: ${rhythm(4)};
+  max-height: ${rhythm(5)};
   width: 100%;
   border-radius: 10px;
   padding: 10px;
