@@ -7,10 +7,11 @@ const filenames = [
 ];
 
 filenames.forEach((filename) => {
-  console.log(`started copying file: ${filename}`);
+  console.log(`started copying file: ${__dirname}/${filename}`);
+  const fileContents = fs.readFileSync(`${__dirname}/${filename}`)
   fs.writeFileSync(
-    `portfolio/public/${filename}`,
-    fs.readFileSync(filename)
+    `portfolio/public/${filename.split('/')[1]}`,
+    fileContents
   )
   console.log(`done copying file: ${filename}`);
 })
