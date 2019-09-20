@@ -29,7 +29,7 @@ const ExperienceList = [
     companyUrl: "https://verzeo.in/",
     imgSrc: "verzeo-logo.png",
     role: "Frontend Developer",
-    type: "Internship",
+    type: "Internship(Remote)",
     duration: "May 2018 - Jun 2018",
     description:
       "A team of interns was formed to build frontend for an e-Commerce site. I was the lead of interns team and also frontend developer to build UI for the site.",
