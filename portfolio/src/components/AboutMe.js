@@ -33,6 +33,7 @@ export default () => (
       A developer, geek, enthusiast, who loves to solve problems and fix things
       with technology.
     </StyledAboutMeText>
+    <br/>
     <p>
       You can read my writings <Link to="/writings/">here</Link>.
     </p>
