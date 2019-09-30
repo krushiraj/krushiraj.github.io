@@ -9,6 +9,10 @@ const StyledAboutMeText = styled.p`
   color: ${colors.text};
   margin: 0;
 
+  a {
+    color: ${colors.skyblue};
+  }
+
   @media only screen and (max-width: 768px) {
     font-size: ${rhythm(0.5)};
   }
@@ -34,8 +38,8 @@ export default () => (
       with technology.
     </StyledAboutMeText>
     <br/>
-    <p>
+    <StyledAboutMeText>
       You can read my writings <Link to="/writings/">here</Link>.
-    </p>
+    </StyledAboutMeText>
   </div>
 )
