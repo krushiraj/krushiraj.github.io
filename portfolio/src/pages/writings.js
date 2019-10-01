@@ -194,7 +194,6 @@ export default class WritingsIndex extends React.Component {
     const projSelectionCheck =
         this.state.selection.indexOf("Type: Project") !== -1,
       projCheck = node.frontmatter.type === "project"
-    console.log(projCheck, projSelectionCheck, node)
     if (projSelectionCheck && !projCheck) {
       return false
     } else {
