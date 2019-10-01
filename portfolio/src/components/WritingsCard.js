@@ -23,9 +23,7 @@ export const Card = ({
         <Img fluid={fluid} />
         <p className="title">{title}</p>
         <StyledDate>{date}</StyledDate>
-        <div>
           <p className="description">{excerpt}</p>
-        </div>
       </a>
     </div>
   )
@@ -38,9 +36,14 @@ export const DisplayPostsContainer = styled.div`
   flex-direction: row;
   flex-wrap: wrap;
   overflow: hidden;
+  text-align: center;
 
-  p a {
-    color: ${colors.skyblue};
+  p {
+    margin: 0 auto;
+
+    a {
+      color: ${colors.skyblue};
+    }
   }
 
   .card {
@@ -49,6 +52,7 @@ export const DisplayPostsContainer = styled.div`
     margin: 10px;
 
     a {
+      height: 100%;
       width: 100%;
       :after {
         height: 0;

@@ -1,12 +1,10 @@
 exports.onRouteUpdate = () => {
   // Load JS required for github cards
-  console.log("onerouteupdate called", document, document.querySelector('.github-card'))
   if (document.getElementsByClassName("github-card").length !== 0) {
     const cards = document.getElementsByClassName("github-card")
     for (let card of cards) {
       const username = card.dataset.user
       const repo = card.dataset.repo
-      console.log('call made')
       fetch(`https://api.github.com/repos/${username}/${repo}`)
         .then(res => res.json())
         .then(data => {
@@ -38,7 +36,6 @@ exports.onRouteUpdate = () => {
             }" target="_blank">https://github.com/${data.full_name}</a>
           </p>
           `
-          console.log(data)
         })
     }
   }
