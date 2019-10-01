@@ -1,11 +1,51 @@
 ---
-title: "How I wrote a bot that saved a lot of time for me."
-date: "2019-04-22"
-type: "article"
-published: false
+title: "Quiz Writer Bot"
+date: "2019-01-22"
+type: "project"
+published: true
 keywords: "quiz,quiz-writer,bot,python,selenium"
 description: "There Krushi is the fetch API in Node, which allows us to make a HTTP request and get some information from the servers. We can use that to make REST calls, get HTML content of a webpage and many more things."
 tags: "python,selenium,beautiful soup,bot"
-banner: "./krushi.jpg"
+banner: "./bot.png"
+bannercaption: "Image from Google Images"
+source: "https://github.com/krushiraj/quiz-writer-bot"
 technologies: "python,selenium"
 ---
+
+I have made this project for my personal use and it helped me in a few situations after I wrote this one. You can read about the [background story](/writings/quiz-writer-blog) about why I built this. You can also find the basic version of the script for the bot at:
+
+github/krushiraj/quiz-writer-bot
+
+In this post, I'll briefly explain how I made this bot and what were the problems that I faced and the decisions I made.
+
+## Why this bot
+
+First and foremost thing that motivated me to write this bot is that almost 80-90% of questions were based on guess the output types. So, I thought I can write a bot which can directly execute the code that is shown and select the answer based on output. If you want to read in detail about why I built this then read [Quiz writer bot blog](/writings/quiz-writer-blog)
+
+## Identify the pattern
+
+To the knowledge that I had at the time I wrote this bot, I know that bots are written based on some common patterns for a given task. The common things or patterns that I found in my particular problem were:
+
+  1. All questions containing code to guess the output were in C (a single language)
+  1. Most of the options contained the exact output that we may get when we compile and run the given code. No complicated options that required human intervention to map to an option based on the output.
+  1. The DOM pattern was similar to all questions, they don't have any dynamic class names or ids. So once we have an XPath or a CSS selector to some element it remains the same all the time.
+
+Once I had all the information above I tried to fetch the elements by playing for a while in console in developer tools of the browser. With that, I have all the CSS selectors or XPaths ready for grabbing the elements.
+
+## Implementation
+
+Now I can access the DOM elements that I want but, what about the interactions? How do my bot clicks on correct options and then clicks on the next question, next test, etc.,? To simulate these I chose [Selenium](https://selenium-python.readthedocs.io/), which is used to automate some tests on webpages. My choice of language was python because of 2 reasons, I am very elegant in Python and most of the bots that I heard of is written in Python. So, here is what I did:
+
+1. Initialize the selenium driver and goto the URL where the online test is hosted. Enter my credentials which are fed to bot through selenium.
+1. Select the appropriate test and click on start test.
+1. Repeat the following steps until there are no questions left else go to step 9.
+1. Get the question and find if it contains 'guess the output' sub-string.
+1. If no skip to next question else get the code from `pre` or `code` tag and write it to a file with `.c` extension.
+1. Now compile the file and execute it with the [`run`](https://docs.python.org/3.7/library/subprocess.html#subprocess.run) method exposed in the [`subprocess`](https://docs.python.org/3.7/library/subprocess.html) module of python and get the output.
+1. Compare the output the options available. Whichever has the exact match select it. If no exact match is found then go for the next closest match. If still nothing matches then go for some random option.
+1. Click on the next question.
+1. Click on the next test if there are any else quit the browser.
+I used [`difflib`](https://docs.python.org/3/library/difflib.html) for finding the closest matches and [`random`](https://docs.python.org/3/library/random.html) module for random choice making.
+
+That's how I wrote a bot to write online tests for me in my hectic schedule 😜.
+

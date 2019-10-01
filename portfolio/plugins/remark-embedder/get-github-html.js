@@ -14,9 +14,9 @@ function isValid(string) {
 function getGithubHTML(string) {
   const matcher = string.match(/^github\/(.*?)\/(.*)$/)
   if (matcher) {
-    return `<div class="gh-card-wrap"><div class="github-card" data-user="${
+    return `<span class="gh-card-wrap"><span class="github-card" data-user="${
       matcher[1]
-    }" data-repo="${matcher[2]}"><span class="loading"/></div></div>`
+    }" data-repo="${matcher[2]}"><span class="loading"/></span></span>`
   }
   return "not matched"
 }

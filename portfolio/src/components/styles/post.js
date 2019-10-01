@@ -381,3 +381,11 @@ export const StyledPost = styled.div`
 export const StyledSummary = styled.p`
   color: ${colors.text};
 `
+
+export const StyledImgCaption = styled.div`
+  margin-top: 0px;
+  margin-bottom: 20px;
+  font-style: italic;
+  opacity: 0.4;
+  ${scale(-1 / 5)}
+`;

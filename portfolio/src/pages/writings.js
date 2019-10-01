@@ -116,7 +116,6 @@ class Filter extends React.Component {
             onChange={(selections, action) => {
               const selection =
                 selections != null ? selections.map(({ value }) => value) : []
-              console.log(selections, action, selection)
               setSelection(selection, searchWritings)
             }}
           />

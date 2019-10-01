@@ -1,11 +1,12 @@
-export const onRouteUpdate = () => {
+exports.onRouteUpdate = () => {
   // Load JS required for github cards
-  if (document.querySelector(".github-card") !== null) {
-    const cards = document.querySelectorAll(".github-card")
+  console.log("onerouteupdate called", document, document.querySelector('.github-card'))
+  if (document.getElementsByClassName("github-card").length !== 0) {
+    const cards = document.getElementsByClassName("github-card")
     for (let card of cards) {
       const username = card.dataset.user
       const repo = card.dataset.repo
-
+      console.log('call made')
       fetch(`https://api.github.com/repos/${username}/${repo}`)
         .then(res => res.json())
         .then(data => {
@@ -26,7 +27,7 @@ export const onRouteUpdate = () => {
             </div>
             <div class="stats">
               <span class="summary">
-              <span><b>${data.stargazers_count}</b> Stars</span> | 
+              <span><b>${data.stargazers_count}</b> Stars</span> |
               <span><b>${data.forks}</b> Forks</span>
               </span>
             </div>
@@ -37,6 +38,7 @@ export const onRouteUpdate = () => {
             }" target="_blank">https://github.com/${data.full_name}</a>
           </p>
           `
+          console.log(data)
         })
     }
   }

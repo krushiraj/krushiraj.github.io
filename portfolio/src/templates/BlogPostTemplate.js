@@ -6,11 +6,13 @@ import Img from "gatsby-image"
 import Bio from "../components/Bio"
 import SEO from "../components/SEO"
 import Layout from "../components/Layout"
+import BreadCrumbs from "../components/BreadCrumbs"
 import {
   StyledDate,
   StyledNextPrev,
   StyledTech,
   StyledPost,
+  StyledImgCaption
 } from "../components/styles/post"
 import { rhythm } from "../utils/typography"
 
@@ -28,9 +30,7 @@ export default class BlogPostTemplate extends React.Component {
         },
       },
     } = this.props.data.mdx
-    console.log(this.props.pageContext)
     const { previous, next } = this.props.pageContext
-    console.log({ previous, next })
 
     return (
       <Layout location={this.props.location}>
@@ -46,8 +46,12 @@ export default class BlogPostTemplate extends React.Component {
           //Title of the post as Heading of the page
         }
         <StyledPost style={{ cursor: "auto" }}>
+          <BreadCrumbs path={this.props.pageContext.slug} />
           {frontmatter.banner && (
             <Img sizes={frontmatter.banner.childImageSharp.fluid} />
+          )}
+          {frontmatter.bannercaption && (
+            <StyledImgCaption>{frontmatter.bannercaption}</StyledImgCaption>
           )}
           <h1>{frontmatter.title}</h1>
           <StyledDate>{frontmatter.date}</StyledDate>
@@ -138,6 +142,7 @@ export const pageQuery = graphql`
             }
           }
         }
+        bannercaption
       }
       fields {
         slug

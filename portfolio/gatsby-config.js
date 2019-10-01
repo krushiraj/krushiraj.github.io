@@ -53,6 +53,8 @@ module.exports = {
           },
           {
             resolve: require.resolve("./plugins/remark-embedder"),
+          },
+          {
             resolve: "gatsby-remark-embedder",
           },
           {

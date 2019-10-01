@@ -1,11 +1,30 @@
 ---
 title: "How I wrote a bot that saved a lot of time for me."
-date: "2019-04-22"
+date: "2019-01-23"
 type: "article"
-published: false
+published: true
 keywords: "quiz,quiz-writer,bot,python,selenium"
 description: "There Krushi is the fetch API in Node, which allows us to make a HTTP request and get some information from the servers. We can use that to make REST calls, get HTML content of a webpage and many more things."
 tags: "python,selenium,beautiful soup,bot,article"
-banner: "./krushi.jpg"
+banner: "./bot-blog.png"
+bannercaption: "Image from Google Images"
 technologies: "python,selenium"
 ---
+
+In 2018, sometime between May and June. I had a remote working internship with [_Verzeo Edutech_](https://verzeo.in/). In the same period, I had to attend the summer course of [_Mission RnD_](http://missionrnd.com/). I was able to manage and work on both the things parallelly and everything was fine. But, one day I realized that there were some mandatory quizzes assigned to us and there were only 2 days left before I should finish writing those tests.
+
+![](https://media.giphy.com/media/lJnAXeJO8tE7E37mxq/giphy.gif)
+
+> Lazy minds fetch the solutions faster
+
+I started to take the first quiz and felt that almost 80-90% of the questions were of type 'guess the output for the following code'. So, I immediately called my friend who finished all the quizzes and asked him if my analysis was correct. I immediately got an idea to write a bot to write quizzes on behalf of me. I thought this would work because the passing score is 75% and almost 80-90% questions are 'guess the output' types which doesn't require any human knowledge or interference. I made my mind and started writing a bot for this purpose.
+
+My choice of language for this bot was python. Because, I'm more confident and elegant at writing code in Python and huge availability of helper libraries are easy to read and write syntax. I chose my language and I have to think of how do I read the questions and mark answers for each of the questions in each test. My answer for this was [`Selenium`](https://selenium-python.readthedocs.io/) automated testing framework for python.
+
+So, what have I done to make the bot working? It's just as simple as you can think. You can read about it [`here`](/writings/quiz-writer-bot-project)
+
+That's how I wrote a bot to write tests for myself. Each question had a tricky code and I had to guess the correct output, which would take at least a minute for each question, in the best case. Every test had 20 questions and there were 12 tests lined up for me in the pending tab. So, in the best case, it would be a 4-hour long task. I took around 30 mins to write the code which will do this for me in a few minutes. That's how I saved my time by spending it wisely by work smart rather than working hard 😜  .
+
+![](https://media.giphy.com/media/SLBr5yLzocSYw/giphy.gif)
+
+This is how I felt myself when others were writing those tests by spending a lot of time and I wrote a bot that writes those tests for me 😎.
