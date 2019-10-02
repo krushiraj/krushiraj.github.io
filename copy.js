@@ -10,7 +10,7 @@ filenames.forEach((filename) => {
   console.log(`started copying file: ${__dirname}/${filename}`);
   const fileContents = fs.readFileSync(`${__dirname}/${filename}`)
   fs.writeFileSync(
-    `portfolio/public/${filename.split('/')[1]}`,
+    `portfolio/public/${filename.indexOf('/') !== -1 ? filename.split('/')[1] : filename}`,
     fileContents
   )
   console.log(`done copying file: ${filename}`);
