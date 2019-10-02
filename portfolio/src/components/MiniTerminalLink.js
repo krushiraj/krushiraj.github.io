@@ -15,6 +15,7 @@ const StyledTerminalLink = styled.div`
   animation-duration: 1.5s;
   animation-iteration-count: 2;
   animation-direction: alternate-reverse;
+  z-index: 99;
 
   &:before {
     content: "";
