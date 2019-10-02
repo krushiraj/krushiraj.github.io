@@ -191,23 +191,34 @@ export default class WritingsIndex extends React.Component {
   }
 
   checkForKeyword = ({ node }) => {
-    const projSelectionCheck =
-        this.state.selection.indexOf("Type: Project") !== -1,
-      projCheck = node.frontmatter.type === "project"
-    if (projSelectionCheck && !projCheck) {
-      return false
-    } else {
-      for (let key of this.state.selection) {
-        if (this.state.query === "") return true
-        else
-          for (let query of this.state.query.split(/[\s,.]+/)) {
-            const subStrCheck =
-              node.frontmatter.hasOwnProperty(key) &&
-              node.frontmatter[key]
-                .toLowerCase()
-                .search(query.toLowerCase()) !== -1
-            if (subStrCheck) return true
-          }
+    const typeSelection =
+      this.state.selection.indexOf("projects") !== -1 ?
+      "project" :
+      (
+        this.state.selection.indexOf("articles") ?
+        "article" :
+        ""
+      ),
+    type = node.frontmatter.type,
+    projCheck = (
+      typeSelection !== "" ?
+        typeSelection === type :
+        false
+    )
+
+    for (let key of this.state.selection) {
+      if (this.state.query === "" && projCheck) return true
+      else {
+        for (let query of this.state.query.split(/[\s,.]+/)) {
+          const subStrCheck = (
+            node.frontmatter.hasOwnProperty(key) &&
+            node.frontmatter[key]
+              .toLowerCase()
+              .search(query.toLowerCase()) !== -1 &&
+            projCheck
+          )
+          if (subStrCheck) return true
+        }
       }
     }
     return false
@@ -218,12 +229,23 @@ export default class WritingsIndex extends React.Component {
       this.props.data.allMdx.edges[0].node.frontmatter
     )
       .filter(val => val !== "type")
-      .concat(["Type: Project"])
       .map(key => ({
         value: key,
         label: key.charAt(0).toUpperCase() + key.slice(1),
         color: colors.background,
       }))
+      .concat([
+        {
+          label: "Type: Project",
+          value: "projects",
+          color: colors.background
+        },
+        {
+          label: "Type: Article",
+          value: "articles",
+          color: colors.background
+        }
+      ])
   }
 
   static getDerivedStateFromProps(props, state) {
