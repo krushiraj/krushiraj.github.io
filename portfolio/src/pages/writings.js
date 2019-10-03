@@ -195,7 +195,7 @@ export default class WritingsIndex extends React.Component {
       this.state.selection.indexOf("projects") !== -1 ?
       "project" :
       (
-        this.state.selection.indexOf("articles") ?
+        this.state.selection.indexOf("articles") !== -1 ?
         "article" :
         ""
       ),
@@ -205,9 +205,9 @@ export default class WritingsIndex extends React.Component {
         typeSelection === type :
         false
     )
-
+    console.log({typeSelection, type, projCheck, state: this.state})
     for (let key of this.state.selection) {
-      if (this.state.query === "" && projCheck) return true
+      if (this.state.query === "" && typeSelection === "") return true
       else {
         for (let query of this.state.query.split(/[\s,.]+/)) {
           const subStrCheck = (

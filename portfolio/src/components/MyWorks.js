@@ -8,7 +8,7 @@ const Root = data => (
       <Card key={key} {...props.node} />
     ))}
     <p>
-      You can view writings on all my projects <Link to="/writings/">here</Link>
+      You can view writings on all my projects <Link to="/writings/?filters=projects">here</Link>
       .
     </p>
   </DisplayPostsContainer>

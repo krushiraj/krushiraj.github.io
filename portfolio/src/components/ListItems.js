@@ -69,14 +69,17 @@ export default class ListItems extends React.Component {
     //       listItems[i].classList.remove("active")
     //     }
     //   }
-    else {
-      const prevActive = document.querySelector("a.active")
-      if (prevActive) prevActive.classList.remove("active")
-      const hashName = selected.id
-      window.location.hash = hashName.slice(0, hashName.length-3)
-      selected.classList.add("active")
-      this.setState({ selected })
-    }
+
+    const prevActive = document.querySelector("a.active")
+    if (prevActive) prevActive.classList.remove("active")
+    const hashName = selected.id
+    const hash = hashName.indexOf('top') !== -1 ?
+      hashName.slice(0, hashName.length - 3) :
+      hashName
+    window.location.hash = hash
+    selected.classList.add("active")
+    this.setState({ selected })
+
 
     // const width = selected.getBoundingClientRect().width
     // const height = selected.getBoundingClientRect().height
