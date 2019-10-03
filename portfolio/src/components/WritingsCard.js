@@ -7,11 +7,11 @@ import styled from "styled-components"
 
 
 export const Card = ({
-  excerpt,
   fields: { slug },
   frontmatter: {
     title,
     date,
+    description,
     banner: {
       childImageSharp: { fluid },
     },
@@ -23,7 +23,7 @@ export const Card = ({
         <Img fluid={fluid} />
         <p className="title">{title}</p>
         <StyledDate>{date}</StyledDate>
-          <p className="description">{excerpt}</p>
+          <p className="description">{description}</p>
       </a>
     </div>
   )
@@ -93,7 +93,7 @@ export const DisplayPostsContainer = styled.div`
     .description {
       color: #fff;
       position: relative;
-      top: calc(-${rhythm(7)} - 10px);
+      top: calc(-${rhythm(7)});
       width: 100%;
       height: ${rhythm(5)};
       text-overflow: ellipsis;

@@ -25,13 +25,13 @@ const query = graphql`
     ) {
       edges {
         node {
-          excerpt
           fields {
             slug
           }
           frontmatter {
             title
             date(formatString: "MMMM DD, YYYY")
+            description
             banner {
               childImageSharp {
                 fluid {
