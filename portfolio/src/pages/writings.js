@@ -205,7 +205,7 @@ export default class WritingsIndex extends React.Component {
         typeSelection === type :
         false
     )
-    console.log({typeSelection, type, projCheck, state: this.state})
+
     for (let key of this.state.selection) {
       if (this.state.query === "" && typeSelection === "") return true
       else {
@@ -288,17 +288,19 @@ export default class WritingsIndex extends React.Component {
           }}
           onClick={() => (window.location = node.fields.slug)}
         >
-          <h3>
-            <Link style={{ boxShadow: "none" }} to={node.fields.slug}>
-              {title}
-            </Link>
-          </h3>
-          <small>{node.frontmatter.date}</small>
-          <p
-            dangerouslySetInnerHTML={{
-              __html: node.excerpt,
-            }}
-          />
+          <div className="writing">
+            <h3>
+              <Link style={{ boxShadow: "none" }} to={node.fields.slug}>
+                {title}
+              </Link>
+            </h3>
+            <small>{node.frontmatter.date}</small>
+            <p
+              dangerouslySetInnerHTML={{
+                __html: node.frontmatter.description,
+              }}
+            />
+          </div>
         </StyledPost>
       )
     })
@@ -357,7 +359,6 @@ export const pageQuery = graphql`
     ) {
       edges {
         node {
-          excerpt
           fields {
             slug
           }

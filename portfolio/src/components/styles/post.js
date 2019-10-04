@@ -318,6 +318,33 @@ export const StyledTech = styled.div`
 export const StyledPost = styled.div`
   transition: all 0.3s ease;
 
+  .writing {
+    transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+    margin: 20px 5px;
+
+    &:hover {
+      transform: scale(1.05, 1.05);
+    }
+
+    &:hover:after {
+      opacity: 1;
+    }
+
+    &:after {
+      content: "";
+      border-radius: 5px;
+      position: absolute;
+      z-index: -1;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      box-shadow: 0 15px 20px  rgba(152,251,152, 0.5);
+      opacity: 0;
+      transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
+  }
+
   .gatsby-image-wrapper {
     position: "absolute";
     top: 0;
