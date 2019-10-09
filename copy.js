@@ -4,6 +4,7 @@ const filenames = [
   "google68dbec46a3e3319d.html",
   "resume/KrushiRajTula_ResumeWeb.pdf",
   "resume/KrushiRajTula_ResumePrint.pdf",
+  "resume/KrushiRajTula_ResumeTex.pdf",
 ];
 
 filenames.forEach((filename) => {
