@@ -65,10 +65,13 @@ class Resume extends React.Component {
         <a
           target="_blank"
           rel="noopener noreferrer"
-          href={this.withPrefix("Web")}
+          href={this.withPrefix("Tex")}
         >
           here
-        </a>.{" "}
+        </a>.
+        {
+        /* Unwanted link as of now
+        {" "}
         You can also get the print-friendly version{" "}
         <a
           target="_blank"
@@ -77,6 +80,8 @@ class Resume extends React.Component {
         >
           here
         </a>.
+        */
+        }
       </p>
       <br/>
     </>
