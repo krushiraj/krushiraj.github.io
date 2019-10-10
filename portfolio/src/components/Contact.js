@@ -12,6 +12,10 @@ const StyledContactMe = styled.div`
   height: 100%;
   width: 100%;
 
+  i {
+    color: ${colors.green};
+  }
+
   div {
     margin: auto 0;
     width: 100%;
@@ -83,6 +87,7 @@ class Resume extends React.Component {
         */
         }
       </p>
+      <i>I'm actively looking for a remote job opportunity.</i>
       <br/>
     </>
   }
