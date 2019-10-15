@@ -16,14 +16,14 @@ const skills = [
   { name: "Tailwind", level: 6, src: "/tailwindcss.svg" },
   { name: "Django", level: 8, src: "/django.svg" },
   { name: "Node.js", level: 7.5, src: "/nodejs.svg" },
-  { name: "React", level: 7.5, src: "/react.svg" },
+  { name: "React", level: 8, src: "/react.svg" },
   { name: "Vue", level: 8, src: "/vue.svg" },
   { name: "PostgreSQL", level: 7, src: "/postgresql.svg" },
   { name: "MySQL", level: 7.5, src: "/mysql.svg" },
   { name: "SQLite", level: 7, src: "/sqlite.svg" },
   { name: "Selenium", level: 7, src: "/selenium.svg" },
-  { name: "Mocha", level: 7, src: "/mocha.svg" },
-  { name: "Jest", level: 7, src: "/jest.svg" },
+  { name: "Mocha", level: 5, src: "/mocha.svg" },
+  { name: "Jest", level: 5, src: "/jest.svg" },
 ]
 
 const StyledSkillContainer = styled.div`
