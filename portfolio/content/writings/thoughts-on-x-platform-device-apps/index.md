@@ -4,7 +4,7 @@ date: "2019-06-28"
 type: "article"
 published: true
 keywords: "cross,cross-platform,cross-device,app,application,electron,node,javascript,nodejs,electron,react-native,NAPI,react-native-bridge"
-description: "There Krushi is the fetch API in Node, which allows us to make a HTTP request and get some information from the servers. We can use that to make REST calls, get HTML content of a webpage and many more things."
+description: "This is a writing, where I share my experiences, learnings and my views on cross platform application development now-a-days."
 tags: "javascript,nodejs,electron,react-native,NAPI,react-native-bridge"
 banner: "./crossdp.jpg"
 bannercaption: "Image from Google Images"
