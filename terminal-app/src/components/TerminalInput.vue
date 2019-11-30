@@ -1,5 +1,6 @@
 <template>
     <span id="terminal-input">
+        <input id="fake-input" type="text"/>
         <TerminalPWDUser :username="username" :pwd="pwd"/>
         <TerminalEditableWrapper :suggestions="suggestions" :cursorIndex="cursorIndex" :editableText="editableText"/>
     </span>
@@ -41,5 +42,8 @@ export default {
 </script>
 
 <style>
-
+    #fake-input {
+        position: absolute;
+        top: -30px;
+    }
 </style>

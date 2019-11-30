@@ -64,7 +64,7 @@ export default {
 	},
 	methods: {
 		openKeyboard() {
-			document.getElementById('terminal-container').focus();
+			document.getElementById('fake-input').focus();
 		},
 		isBackspace(char) {
 			return char == "Backspace";
