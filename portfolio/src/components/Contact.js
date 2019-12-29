@@ -87,7 +87,9 @@ class Resume extends React.Component {
         */
         }
       </p>
-      <i>I'm actively looking for a remote job opportunity.</i>
+      {
+      //<i>I'm actively looking for a remote job opportunity.</i>
+      }
       <br/>
     </>
   }
