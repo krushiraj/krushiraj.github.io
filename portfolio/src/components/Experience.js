@@ -5,14 +5,23 @@ import { colors } from "../utils/theme"
 
 const ExperienceList = [
   {
+    company: "Paperpile",
+    companyUrl: "https://www.paperpile.com/",
+    imgSrc: "paperpile-logo.png",
+    role: "Javascript Engineer",
+    type: "Full Time",
+    duration: "Jan 2020 - Present", 
+    description: "I'm working as a full-stack JavaScript Engineer."
+  },
+  {
     company: "NCR Corporation",
     companyUrl: "https://www.ncr.com/",
     imgSrc: "NCR-logo.png",
     role: "Software Developer",
     type: "Full Time",
-    duration: "Jul 2019 - Present",
-    description:
-      "I'm working on automating building jobs for each component of the team. Also, working on enhancements of the existing components.",
+    duration: "Jul 2019 - Dec 2019",
+    description: 
+      "I worked on automating build-jobs and enhancement of each component of the team. I have shipped a new requirement/feature for one of the core components of team to have real-time sync between ATMs and servers.",
   },
   {
     company: "ServiceNow",
