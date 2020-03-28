@@ -98,7 +98,7 @@ export default class FSTree {
       return this._currDir;
     } else if (this._currDir.name == '~' && path == '..') {
       return {
-        error: `Please saty at home. Don't go outside. #StayHome #StaySafe`
+        error: `Please stay at home. Don't go outside. #StayHome #StaySafe`
       };
     }
   }
