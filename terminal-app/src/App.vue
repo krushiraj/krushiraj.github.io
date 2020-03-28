@@ -1,27 +1,28 @@
 <template>
   <div id="app" tabindex="0" v-on:focus="setFocus">
-    <TerminalContainer/>
+    <TerminalContainer />
   </div>
 </template>
 
 <script>
-import TerminalContainer from './components/TerminalContainer.vue';
+import TerminalContainer from "./components/TerminalContainer.vue";
 
 export default {
-  name: 'app',
+  name: "app",
   components: {
     TerminalContainer
   },
   methods: {
     setFocus() {
-      document.getElementById('terminal-container').focus();
+      document.getElementById("terminal-container").focus();
     }
   }
-}
+};
 </script>
 
 <style>
-html, body {
+html,
+body {
   --bg-color: #000;
   --font-color: #fff;
   padding: 0;
@@ -32,12 +33,12 @@ html, body {
   color: var(--font-color);
 }
 #app {
-  font-family: monospace ;
+  font-family: monospace;
   height: 100%;
   width: 100%;
 }
 span ::selection {
-	color: var(--bg-color);
-	background-color: var(--font-color);
+  color: var(--bg-color);
+  background-color: var(--font-color);
 }
 </style>
