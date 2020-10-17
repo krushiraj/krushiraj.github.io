@@ -2,6 +2,9 @@ import React from "react"
 import { Link, graphql } from "gatsby"
 import MDXRenderer from "gatsby-plugin-mdx/mdx-renderer"
 import Img from "gatsby-image"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faClock } from "@fortawesome/free-solid-svg-icons"
+import stopword from 'stopword'
 
 import Bio from "../components/Bio"
 import SEO from "../components/SEO"
@@ -9,14 +12,29 @@ import Layout from "../components/Layout"
 import BreadCrumbs from "../components/BreadCrumbs"
 import {
   StyledDate,
+  StyledReadingTime,
   StyledNextPrev,
   StyledTech,
   StyledPost,
-  StyledImgCaption
+  StyledImgCaption,
 } from "../components/styles/post"
 import { rhythm } from "../utils/typography"
 
 export default class BlogPostTemplate extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      readingTime: 1,
+    }
+  }
+
+  componentDidMount() {
+    const str = document.getElementById("post").textContent
+    const words = stopword.removeStopwords(str.split(/[\s\n]/)).length
+    const readingTime = Math.max(1, Math.floor(words / 60))
+    this.setState({ readingTime })
+  }
+
   render() {
     const {
       body,
@@ -55,6 +73,12 @@ export default class BlogPostTemplate extends React.Component {
           )}
           <h1>{frontmatter.title}</h1>
           <StyledDate>{frontmatter.date}</StyledDate>
+          <span title="Reading time">
+            <FontAwesomeIcon display="inline" icon={faClock} size="md" />
+            <StyledReadingTime>
+              {this.state.readingTime} mins.
+            </StyledReadingTime>
+          </span>
           {frontmatter.technologies && (
             <StyledTech>
               Technology tags:{" "}
@@ -65,7 +89,9 @@ export default class BlogPostTemplate extends React.Component {
               </div>
             </StyledTech>
           )}
-          <MDXRenderer>{body}</MDXRenderer>
+          <div id="post">
+            <MDXRenderer>{body}</MDXRenderer>
+          </div>
         </StyledPost>
 
         <hr
