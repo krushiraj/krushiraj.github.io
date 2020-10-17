@@ -76,6 +76,7 @@ const ImageWithName = ({ name, top, updateTop }) => {
   }
   return (
     <div
+      role="navigation"
       style={top ? topNavStyles : fullScreenStyles}
       onClick={() => {
         scroller.scrollTo("home")

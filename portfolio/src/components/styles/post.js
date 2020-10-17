@@ -5,8 +5,16 @@ import { colors } from "../../utils/theme"
 export const StyledDate = styled.p`
   ${scale(-1 / 5)};
   display: block;
-  margin-bottom: ${rhythm(1 / 2)};
+  margin-bottom: 0;
   color: ${colors.blue};
+`
+
+export const StyledReadingTime = styled.p`
+  ${scale(-1 / 5)};
+  display: inline;
+  margin-bottom: ${rhythm(1 / 2)};
+  margin-left: ${rhythm(1 / 4)};
+  color: ${colors.goldenred};
 `
 
 export const StyledNextPrev = styled.ul`
@@ -339,7 +347,7 @@ export const StyledPost = styled.div`
       left: 0;
       width: 100%;
       height: 100%;
-      box-shadow: 0 15px 20px  rgba(152,251,152, 0.5);
+      box-shadow: 0 15px 20px rgba(152, 251, 152, 0.5);
       opacity: 0;
       transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
     }
@@ -415,4 +423,4 @@ export const StyledImgCaption = styled.div`
   font-style: italic;
   opacity: 0.4;
   ${scale(-1 / 5)}
-`;
+`
