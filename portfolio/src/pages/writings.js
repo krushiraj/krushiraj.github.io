@@ -192,31 +192,23 @@ export default class WritingsIndex extends React.Component {
 
   checkForKeyword = ({ node }) => {
     const typeSelection =
-      this.state.selection.indexOf("projects") !== -1 ?
-      "project" :
-      (
-        this.state.selection.indexOf("articles") !== -1 ?
-        "article" :
-        ""
-      ),
-    type = node.frontmatter.type,
-    projCheck = (
-      typeSelection !== "" ?
-        typeSelection === type :
-        false
-    )
+      this.state.selection.indexOf("projects") !== -1
+        ? "project"
+        : this.state.selection.indexOf("articles") !== -1
+          ? "article"
+          : ""
+    const type = node.frontmatter.type
+    const typeCheck = typeSelection !== "" ? typeSelection === type : true
 
+    if (this.state.query === "") return typeCheck
     for (let key of this.state.selection) {
-      if (this.state.query === "" && typeSelection === "") return true
-      else {
+      if (!["articles", "projects"].includes(key)) {
         for (let query of this.state.query.split(/[\s,.]+/)) {
-          const subStrCheck = (
+          const matchesSubStr =
             node.frontmatter.hasOwnProperty(key) &&
-            node.frontmatter[key]
-              .toLowerCase()
-              .search(query.toLowerCase()) !== -1 &&
-            projCheck
-          )
+            node.frontmatter[key].toLowerCase().search(query.toLowerCase()) !==
+              -1
+          const subStrCheck = matchesSubStr && typeCheck
           if (subStrCheck) return true
         }
       }
@@ -238,13 +230,13 @@ export default class WritingsIndex extends React.Component {
         {
           label: "Type: Project",
           value: "projects",
-          color: colors.background
+          color: colors.background,
         },
         {
           label: "Type: Article",
           value: "articles",
-          color: colors.background
-        }
+          color: colors.background,
+        },
       ])
   }
 
@@ -269,7 +261,7 @@ export default class WritingsIndex extends React.Component {
 
   searchWritings = () => {
     const data = this.props.data.allMdx.edges
-    let posts = data.filter(this.checkForKeyword)
+    const posts = data.filter(this.checkForKeyword)
     this.setState({ posts: posts }, () => {})
   }
 
