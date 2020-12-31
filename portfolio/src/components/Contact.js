@@ -48,10 +48,6 @@ const StyledContactMe = styled.div`
       &:active {
         color: #ffffff;
       }
-
-      &:visited {
-        color: #ffffff;
-      }
     }
   }
 `
