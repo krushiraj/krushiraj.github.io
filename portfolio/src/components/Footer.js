@@ -21,10 +21,6 @@ const StyledFooter = styled.footer`
     &:active {
       color: #ffffff;
     }
-
-    &:visited {
-      color: #ffffff;
-    }
   }
 `
 

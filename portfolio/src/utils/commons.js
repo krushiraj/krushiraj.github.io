@@ -20,7 +20,7 @@ export const contactItems = [
   {
     href: "https://www.linkedin.com/in/krushi-raj-t-aba141b1/",
     icon: faLinkedinIn,
-    "title": "LinkedIn",
+    title: "LinkedIn",
   },
   {
     href: "https://stackoverflow.com/users/story/4813058",
