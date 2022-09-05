@@ -87,12 +87,7 @@ const writeCachedFile = async (CACHE_DIR, key, contents, extension) => {
   // I'm using the title as the key for the hash, because it's the only
   // thing which impacts the final image. If you were to have something
   // more elaborate, you should just use the HTML as the hash instead.
-  const fileName =
-    createHash("md5")
-      .update(key)
-      .digest("hex") +
-    "." +
-    extension
+  const fileName = createHash("md5").update(key).digest("hex") + "." + extension
   const absolutePath = resolve(CACHE_DIR, fileName)
   fs.writeFileSync(absolutePath, contents)
   return absolutePath
@@ -100,17 +95,11 @@ const writeCachedFile = async (CACHE_DIR, key, contents, extension) => {
 
 const imageFromHtml = async (CACHE_DIR, browser, data) => {
   const page = await browser.newPage()
-  page._emulationManager._client.send(
-    "Emulation.setDefaultBackgroundColorOverride",
-    {
-      color: { r: 0, g: 0, b: 0, a: 0 },
-    }
-  )
   await page.setViewport({ width: 2400, height: 1254 })
   await page.setContent(getHtml(data))
   await page.evaluateHandle("document.fonts.ready")
 
-  const file = await page.screenshot({ type: "png" })
+  const file = await page.screenshot({ type: "png", omitBackground: true })
 
   return writeCachedFile(CACHE_DIR, data.title, file, "png")
 }

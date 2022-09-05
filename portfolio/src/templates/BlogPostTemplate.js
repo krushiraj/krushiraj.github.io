@@ -4,7 +4,6 @@ import MDXRenderer from "gatsby-plugin-mdx/mdx-renderer"
 import Img from "gatsby-image"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faClock } from "@fortawesome/free-solid-svg-icons"
-import stopword from 'stopword'
 
 import Bio from "../components/Bio"
 import SEO from "../components/SEO"
@@ -28,19 +27,13 @@ export default class BlogPostTemplate extends React.Component {
     }
   }
 
-  componentDidMount() {
-    const str = document.getElementById("post").textContent
-    const words = stopword.removeStopwords(str.split(/[\s\n]/)).length
-    const readingTime = Math.max(1, Math.floor(words / 60))
-    this.setState({ readingTime })
-  }
-
   render() {
     const {
       body,
       frontmatter,
       fields: {
         slug,
+        timeToRead: { minutes: readingTime },
         socialImage: {
           childImageSharp: {
             original: { src },
@@ -66,19 +59,19 @@ export default class BlogPostTemplate extends React.Component {
         <StyledPost style={{ cursor: "auto" }}>
           <BreadCrumbs path={this.props.pageContext.slug} />
           {frontmatter.banner && (
-            <Img sizes={frontmatter.banner.childImageSharp.fluid} />
+            <Img fluid={frontmatter.banner.childImageSharp.fluid} />
           )}
           {frontmatter.bannercaption && (
             <StyledImgCaption>{frontmatter.bannercaption}</StyledImgCaption>
           )}
           <h1>{frontmatter.title}</h1>
           <StyledDate>{frontmatter.date}</StyledDate>
-          <span title="Reading time">
-            <FontAwesomeIcon display="inline" icon={faClock} size="md" />
-            <StyledReadingTime>
-              {this.state.readingTime} mins.
-            </StyledReadingTime>
-          </span>
+          {readingTime !== 0 && (
+            <span title="Reading time">
+              <FontAwesomeIcon display="inline" icon={faClock} size="lg" />
+              <StyledReadingTime>{Math.ceil(readingTime)} mins.</StyledReadingTime>
+            </span>
+          )}
           {frontmatter.technologies && (
             <StyledTech>
               Technology tags:{" "}
@@ -172,6 +165,9 @@ export const pageQuery = graphql`
       }
       fields {
         slug
+        timeToRead {
+          minutes
+        }
         socialImage {
           childImageSharp {
             original {

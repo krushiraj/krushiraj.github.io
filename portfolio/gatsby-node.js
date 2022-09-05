@@ -2,6 +2,7 @@ const path = require("path")
 const puppeteer = require("puppeteer")
 const fs = require("fs-extra")
 const { createFilePath } = require("gatsby-source-filesystem")
+const readingTime = require("reading-time")
 const {
   createFileNode: baseCreateFileNode,
 } = require("gatsby-source-filesystem/create-file-node")
@@ -111,6 +112,7 @@ exports.onCreateNode = async ({
   await fs.ensureDir(CACHE_DIR)
 
   if (node.internal.type === `Mdx`) {
+    debugger;
     const value = createFilePath({ node, getNode })
     createNodeField({
       name: `slug`,
@@ -121,6 +123,12 @@ exports.onCreateNode = async ({
       name: "banner",
       node,
       value: node.frontmatter.banner,
+    })
+    debugger;
+    createNodeField({
+      node,
+      name: "timeToRead",
+      value: readingTime(node.rawBody.replace(/^---.*---/, '') || '')
     })
 
     try {

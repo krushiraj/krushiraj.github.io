@@ -114,7 +114,7 @@ module.exports = {
         feeds: [
           {
             serialize: ({ query: { site, allMdx } }) => {
-              return allMdx.edges.map(edge => {
+              return allMdx.edges.map((edge) => {
                 const normalizeUrl = require("./src/utils/helpers").normalizeUrl
                 return Object.assign({}, edge.node.frontmatter, {
                   description: edge.node.excerpt,
@@ -159,20 +159,22 @@ module.exports = {
       resolve: `gatsby-plugin-sitemap`,
       options: {
         serialize: ({ site, allSitePage }) =>
-          allSitePage.edges.map(edge => {
-            const normalizeUrl = require("./src/utils/helpers").normalizeUrl
-            return {
-              url: normalizeUrl(site.siteMetadata.siteUrl + edge.node.path),
-              changefreq: `daily`,
-              priority: 0.7,
-            }
-          }).concat([
-            {
-              url: 'https://krushiraj.github.io/mini-terminal',
-              changefreq: `daily`,
-              priority: 0.7,
-            }
-          ])
+          allSitePage.edges
+            .map((edge) => {
+              const normalizeUrl = require("./src/utils/helpers").normalizeUrl
+              return {
+                url: normalizeUrl(site.siteMetadata.siteUrl + edge.node.path),
+                changefreq: `daily`,
+                priority: 0.7,
+              }
+            })
+            .concat([
+              {
+                url: "https://krushiraj.github.io/mini-terminal",
+                changefreq: `daily`,
+                priority: 0.7,
+              },
+            ]),
       },
     },
   ],
