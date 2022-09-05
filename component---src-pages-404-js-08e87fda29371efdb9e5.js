@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunktkr_portfolio=self.webpackChunktkr_portfolio||[]).push([[883],{30429:function(e,t,r){r.r(t);var n=r(67294);t.default=function(){return n.createElement("div",null,n.createElement("h1",null,"404 - Not found"),n.createElement("hr",{style:{margin:0,height:"5px"}}),n.createElement("p",null,"The resource that you are searching for is not found."))}}}]);
+//# sourceMappingURL=component---src-pages-404-js-08e87fda29371efdb9e5.js.map
