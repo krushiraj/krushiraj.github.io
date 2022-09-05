@@ -1,3 +1,15 @@
+---
+title: "Teachers and Mentors"
+date: "2012-09-05"
+type: "article"
+published: true
+keywords: "teachers,mentors,learnings,school,college,mission rnd,rnd,peri,kc,sir,aravind,ball,raghava,satyajeet,ram,satyanrayana"
+description: "A writing dedicated to all the teachers and mentors who are reason for what I am today. :D"
+tags: "philosophy,learning"
+banner: "./teachersday.jpg"
+technologies: ""
+---
+
 It's been a long while since I wrote any blog or worked continously on any side-project. But today I feel like writing this and it was always in my mind since last 2 years. So, I thought of writing this as a first step to re-write my daily routine and to check off item in my list that are there from a long time.
 
 It is **Teacher's Day** today and I always wanted to dedicate a writing to all those who directly or indirectly taught me various things in the coure of my life. I'm always thankful about what I am today. This particular position that I am in today is somehow because of the impact that various people had on me. Thanks to all my **teachers/mentors**. There are a lot of things I learned from various people but there are some striking qualitites that I _imitated/learned/assimilated_ from few of them. This writing is a special dedication to all of them and I want to list what all I learned from them. I think it would be better if I go in chronological order on how they has an impact on my life and how I changed eventually to become a better person.
