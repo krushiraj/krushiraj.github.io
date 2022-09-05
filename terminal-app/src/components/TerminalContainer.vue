@@ -23,8 +23,6 @@ import {
   commands,
   fsTree,
   COTrie,
-  paintReadOnly,
-  paintInputNew
 } from "./CommandProcessor.js";
 import TerminalReadOnly from "./TerminalReadOnly.vue";
 

@@ -158,23 +158,31 @@ module.exports = {
     {
       resolve: `gatsby-plugin-sitemap`,
       options: {
-        serialize: ({ site, allSitePage }) =>
-          allSitePage.edges
-            .map((edge) => {
-              const normalizeUrl = require("./src/utils/helpers").normalizeUrl
-              return {
-                url: normalizeUrl(site.siteMetadata.siteUrl + edge.node.path),
-                changefreq: `daily`,
-                priority: 0.7,
-              }
-            })
-            .concat([
-              {
-                url: "https://krushiraj.github.io/mini-terminal",
-                changefreq: `daily`,
-                priority: 0.7,
-              },
-            ]),
+        query: `
+        {
+          allSitePage {
+            nodes {
+              path
+            }
+          }
+        }
+      `,
+        resolveSiteUrl: () => `https://krushiraj.github.io`,
+        resolvePages: ({
+          allSitePage: { nodes: allPages },
+        }) => {
+          return allPages.map((page) => {
+            return { ...page }
+          })
+        },
+        serialize: ({ path, modifiedGmt }) => {
+          return {
+            url: path,
+            lastmod: modifiedGmt,
+            changefreq: `daily`,
+            priority: 0.7,
+          }
+        },
       },
     },
   ],

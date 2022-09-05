@@ -9,14 +9,14 @@
   },
   "dependencies": {
     "core-js": "^3.25.0",
-    "vue": "^3.2.38",
+    "vue": "2.7.10",
     "vue-headful": "^2.1.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^5.0.8",
     "@vue/cli-plugin-eslint": "^5.0.8",
     "@vue/cli-service": "^5.0.8",
-    "babel-eslint": "^10.0.1",
+    "@babel/eslint-parser": "^7.5.4",
     "eslint": "^8.23.0",
     "eslint-plugin-vue": "^9.4.0",
     "vue-template-compiler": "^2.6.10"
@@ -32,7 +32,7 @@
     ],
     "rules": {},
     "parserOptions": {
-      "parser": "babel-eslint"
+      "parser": "@babel/eslint-parser"
     }
   },
   "postcss": {

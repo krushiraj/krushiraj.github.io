@@ -112,7 +112,6 @@ exports.onCreateNode = async ({
   await fs.ensureDir(CACHE_DIR)
 
   if (node.internal.type === `Mdx`) {
-    debugger;
     const value = createFilePath({ node, getNode })
     createNodeField({
       name: `slug`,
@@ -124,7 +123,6 @@ exports.onCreateNode = async ({
       node,
       value: node.frontmatter.banner,
     })
-    debugger;
     createNodeField({
       node,
       name: "timeToRead",
