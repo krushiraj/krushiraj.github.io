@@ -6,7 +6,7 @@ published: true
 keywords: "one core, one os, one platform, uwp, universal, apps, cross platform, ios, ipados, macos, watchos, watch, iphone, ipad, airpods, macbook, apple, microsoft, android, ecosystem, devices, integration"
 description: "My love for ecosystems."
 tags: "ios,iphone,ipados,ipad,macos,macbook,watchos,watch,windows,universal apps"
-banner: "./ecosystem.png"
+banner: "./ecosystem.jpg"
 bannercaption: "Image of Apple Ecosystem"
 source: "https://github.com/krushiraj/well-knitted-ecosystem"
 ---
