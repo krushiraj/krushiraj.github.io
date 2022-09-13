@@ -1,7 +1,7 @@
 ---
 title: "Well Knitted Ecosystem"
 date: "2022-09-13"
-type: "writing"
+type: "article"
 published: true
 keywords: "one core, one os, one platform, uwp, universal, apps, cross platform, ios, ipados, macos, watchos, watch, iphone, ipad, airpods, macbook, apple, microsoft, android, ecosystem, devices, integration"
 description: "My love for ecosystems."
