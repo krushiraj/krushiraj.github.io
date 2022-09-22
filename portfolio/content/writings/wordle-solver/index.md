@@ -1,4 +1,3 @@
-
 ---
 title: "Solving the Wordle Solver"
 date: "2022-09-22"
@@ -43,7 +42,7 @@ I started on with an array of all 5 words that are gonna show up on Wordle game 
 The solver starts with suggesting AUDIO or any other word (if you want) for the first time and then it runs the search on trie and get backs all the possible results, sorted in the way that has more vowels, less repetitions. Then we can update the game state telling which letter exists in the word, which letter is in correct place and which doesn't exist in the word
 
 > You can have a look at the read me file of the project I mentioned. It will have the visual representation. I'll attach screenshots here too!
-<img src="https://raw.githubusercontent.com/krushiraj/krushiraj.github.io/dev/portfolio/content/writings/wordle-solver/example.png">
+![](https://raw.githubusercontent.com/krushiraj/krushiraj.github.io/dev/portfolio/content/writings/wordle-solver/example.png)
 
 So if a letter in 2nd spot is green, I search for all words in trie which should have that particular letter as second letter.
 

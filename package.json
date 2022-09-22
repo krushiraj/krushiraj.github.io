@@ -5,7 +5,7 @@
   "scripts": {
     "copy": "node copy.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "install": "cd portfolio && npm i && cd ../terminal-app && npm i",
+    "install": "cd portfolio && npm i --force && cd ../terminal-app && npm i --force",
     "build": "cd portfolio && gatsby build && cd ../terminal-app && npm run build",
     "deploy": "npm run install && npm run build && npm run copy && cd portfolio && gh-pages -d public -b master -m \"Deploying to master branch\""
   },
