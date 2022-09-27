@@ -9,7 +9,7 @@ tags: "python,cli,algorithm,trie,bot"
 banner: "./wordle.jpg"
 bannercaption: "Image from Google Images"
 source: "https://github.com/krushiraj/wordle-solver"
-technologies: "python,selenium"
+technologies: "python"
 ---
 
 I think there are very less people who are unaware of the popular (at least contemporarily or may be not) game [Wordle](https://en.wikipedia.org/wiki/Wordle). I liked the simplicity and equally challenging pattern of the game. I used to play it to get the final answer right. But eventually the geek in me wanted to write a script that could solve the puzzle without much effort on my brain but a little on my computer's brain. 
