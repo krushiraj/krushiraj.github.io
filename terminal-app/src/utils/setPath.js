@@ -5,5 +5,5 @@ fs.writeFileSync(
   fs
     .readFileSync('../portfolio/public/mini-terminal/index.html')
     .toString()
-    .replace(/=\//g, '=')
+    .replace(/="\//g, '="')
 );
