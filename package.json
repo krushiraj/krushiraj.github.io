@@ -5,9 +5,10 @@
   "scripts": {
     "copy": "node copy.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "install": "cd portfolio && npm i --force && cd ../terminal-app && npm i --force",
-    "build": "cd portfolio && gatsby build && cd ../terminal-app && npm run build",
-    "deploy": "npm run install && npm run build && npm run copy && cd portfolio && gh-pages -d public -b master -m \"Deploying to master branch\""
+    "install:all": "cd portfolio && npm i --force && cd ../terminal-app && npm i --force",
+    "build": "cd portfolio && npm run build && cd ../terminal-app && npm run build",
+    "gh-pages": "cd portfolio && gh-pages -d public -b master -m \"Deploying to master branch\"",
+    "deploy": "npm run install:all && npm run build && npm run copy && npm run gh-pages"
   },
   "repository": {
     "type": "git",
