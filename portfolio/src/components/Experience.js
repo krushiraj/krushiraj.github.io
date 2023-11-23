@@ -189,7 +189,7 @@ export default () => (
       </React.Fragment>
     ))}
     <p>
-      You can read more about my experiences <a href="/writings">here</a>
+      You can read more about my experiences <Link to="/writings">here</Link>
     </p>
   </>
 )

@@ -151,7 +151,7 @@ export default ({ showBar }) => {
       <br />
       <p>
         You can read more about the skills(other than technical) that I
-        developed while working with people - <a href="/writings">here</a>
+        developed while working with people - <Link to="/writings">here</Link>
       </p>
     </>
   )
