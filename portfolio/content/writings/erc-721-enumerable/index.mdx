@@ -1,0 +1,240 @@
+---
+title: "Mastering ERC721 Enumerable"
+date: "2023-12-23"
+type: "article"
+published: true
+keywords: "web3,nft,erc721,erc721enumerable,enumerable,solidity"
+description: "An article about ERC721Enumerable and how is it helpful and different from base ERC721 standard."
+tags: "web3,nft,erc721,erc721enumerable,enumerable,solidity,article"
+banner: "./erc-721-enumerable.jpg"
+bannercaption: "Image from Google Images"
+technologies: "solidity,web3"
+---
+
+# The ERC721 Enumerable
+
+## ERC721 Enumerable Intro
+
+We are well known for the fact that **ERC721** is the standard for the NFTs, which are used to represent the unique digital assets on the Ethereum Blockchain. In addition to that **ERC721 Enumerable** is an extension of ERC721 that enhances its capabilities by enabling efficient enumeration of NFTs for advanced tracking, management and optimal for the operations on the blockchain.
+
+ERC721 Enumerable is designed to track and enumerate tokens more effectively. It’s particularly useful for applications requiring knowledge of all tokens owned by an address or the total supply of tokens.
+
+## Using ERC721 Enumerable to create an NFT smart contract
+
+It is similar to the creation of an NFT smart contract using ERC721 but with some additional functions that we need to override so we can enjoy the benefits of ERC721 Enumerable.
+
+> You can learn how to implement and use ERC721 here
+
+1. **Starting with Basic Setup:**
+Import OpenZeppelin's ERC721 and ERC721Enumerable contracts. 
+Declare the contract and inherit from both ERC721 and ERC721Enumerable.
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
+
+contract MyNFT is ERC721, ERC721Enumerable {
+    // Your contract code goes here
+}
+```
+
+2. **Override Required Functions.** 
+Override functions from both ERC721 and ERC721Enumerable to ensure compatibility.
+```solidity
+function _beforeTokenTransfer(address from, address to, uint256 tokenId)
+    internal
+    override(ERC721, ERC721Enumerable)
+{
+    super._beforeTokenTransfer(from, to, tokenId);
+}
+
+function supportsInterface(bytes4 interfaceId)
+    public
+    view
+    override(ERC721, ERC721Enumerable)
+    returns (bool)
+{
+    return super.supportsInterface(interfaceId);
+}
+```
+
+3. **Implement Minting Function.**
+Create a function to mint new NFTs.
+```solidity
+function mint(address to, uint256 tokenId) public {
+    _safeMint(to, tokenId);
+    // Additional logic can be added here
+}
+```
+
+4. **Accessing Enumerable Features** (refer [Open Zeppelin Docs](https://docs.openzeppelin.com/contracts/4.x/api/token/erc721#ERC721Enumerable) to know more).
+- Use totalSupply() to get the total number of tokens minted.
+- tokenByIndex(uint256 index) to access a token by its global index.
+- tokenOfOwnerByIndex(address owner, uint256 index) to find a user's token by index.
+```solidity
+function getTokenByIndex(uint256 index) public view returns (uint256) {
+    return tokenByIndex(index);
+}
+
+function getTokenOfOwnerByIndex(address owner, uint256 index) public view returns (uint256) {
+    return tokenOfOwnerByIndex(owner, index);
+}
+```
+
+This basic structure covers the essentials of using ERC721 Enumerable in a smart contract. With this, you can easily get the totalSupply of an NFT collection, fetch any token by its index or fetch tokens held by an owner.
+
+## Understanding the Underlying Mechanics
+
+We have discussed a bit about the uses of ERC721 Enumerable and how we can use it to create an NFT contract. Now, let us dive deep into it and see how and why it is useful, in what ways and how is it better than other approaches which can give the same result to get totalSupply, fetching tokens by index or owner.
+
+To answer the simple question of "**why?**" with a simple answer: 
+<u>ERC721 Enumerable is designed for efficiency and reduced gas costs, crucial in Ethereum transactions.</u>
+
+We know that you are curious to know the detailed explanation too. Here it is.
+
+### Usage of additional data structures and storage
+We refer to [ERC721](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC721/ERC721.sol) and [ERC721 Enumerable](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC721/extensions/ERC721Enumerable.sol) by Open Zeppelin for this.
+
+#### ERC721
+```solidity
+abstract contract ERC721 is Context, ERC165, IERC721, IERC721Metadata, IERC721Errors {
+    using Strings for uint256;
+
+    // Token name
+    string private _name;
+
+    // Token symbol
+    string private _symbol;
+
+    mapping(uint256 tokenId => address) private _owners;
+
+    mapping(address owner => uint256) private _balances;
+```
+
+#### ERC721 Enumerable
+```solidity
+abstract contract ERC721Enumerable is ERC721, IERC721Enumerable {
+    mapping(address owner => mapping(uint256 index => uint256)) private _ownedTokens;
+    mapping(uint256 tokenId => uint256) private _ownedTokensIndex;
+
+    uint256[] private _allTokens;
+    mapping(uint256 tokenId => uint256) private _allTokensIndex;
+```
+
+#### Going into the details
+If you observe here, the Enumerable version has 4 extra storage variables i.e., `_ownedTokens`, `_ownedTokensIndex`, `_allTokens` and `_allTokensIndex`
+
+- `_ownedTokens`: Maps an owner's address to their owned token IDs. 
+Example: If Alice (address `0x1234...alice`) owns tokens 1, 2, and 5, `_ownedTokens[0x1234...alice]` could return [1, 2, 5].
+- `_ownedTokensIndex`: Maps a token ID to its index in the owner's tokens list. 
+Example: If Alice's 3rd token ID is 5, `_ownedTokensIndex[5]` returns 2 (the index of token 5 in Alice's list in the example above).
+- `_allTokens`: An array of all token IDs in the contract. 
+Example: If there are three minted tokens with IDs 1, 2, and 5, `_allTokens` could be [1, 2, 5].
+- `_allTokensIndex`: Maps each token ID to its index in `_allTokens`. 
+Example: Token ID 2 is the second token in `_allTokens` (from the example above), `_allTokensIndex[2]` returns 1.
+
+### What makes the Enumerable different
+These 4 storage variables are the reason why ERC721 Enumerable is gas-efficient, optimal for tracking and management of tokens owned by addresses.
+
+For example, 
+- To get the total supply, you just have to return the length of `_allTokens`.
+- To retrieve the token data by an index we can simply use `_allTokens[index]`.
+- To get a single token owned by an owner we can simply use `_ownedTokens[owner][index]`
+
+### How are storage variables useful and how do they affect? 
+Imagine you want to know the number of tokens that have been minted so far in ERC721. We have to go through all key-value pairs in the `_owners` mapping or calculate the sum of all values in `_balances` mapping.
+
+But, the catch here is we cannot simply iterate over them, we must get all the keys or values (*for which you have to maintain another storage variable, as Solidity doesn't have an implementation to get all keys/values from a mapping*) and do the necessary sum operations to get the total supply which is very high in gas cost. So in short this is <u>quite inefficient</u>.
+
+On the other side having an extra storage variable which alters the state of the blockchain would cost you some gas on writes and reads but at least they are far lesser when compared to the earlier approach.
+
+### Alternative Storage Considerations
+
+#### Storing an Array of Tokens Per Address:
+```solidity
+mapping (address owner => uint[]) private ownerTokens;
+```
+
+This approach would significantly increase gas costs due to high storage requirements and reads/writes on array change with the number of elements in an array.
+
+As the number of tokens owned by the owner increases it will increase the gas cost.
+
+Also when setting the token IDs in an array, we must either define a fixed-length array or use a dynamic-length array. This again has a problem for each approach.
+
+- **fixed-length** - you have to specify the number of max tokens held by an address and it will take up storage space to store max number of token IDs in the array even if the address only owns 1 token. Waste of storage. Also, you must decide on the number of max tokens an address could hold or choose a high number so that we never reach the overflow point. *Which by the way is not a good idea*.
+- **dynamic-length** - you have to always adjust the size of the array and add/remove token IDs which is not gas efficient when compared to mapping read/write operations
+
+#### Returning a List of Owned Tokens:
+Directly returning a list is not gas-efficient.
+
+It again needs an extra storage variable to support us to iterate over all the tokens held by an address.
+
+Consider an example where the dApp wants to show details of a single NFT owned by an address, they might have to get a list of all tokens and iterate over them in frontend to pick one token and display its data. Here we are sending data that is unnecessary, also this affects gas costs drastically as the number of tokens owned increases for an address. Because it would take more memory and more unnecessary processing power on the node.
+
+### Compare and Contrast
+|ERC721 Enumerable Approach | Other Approaches|
+|---------------------------|-----------------|
+| Use of multiple extra mapping storage. | Use of single extra array storage. 
+| Reads/writes have almost constant gas costs. | Gas cost increases with the array sizes. |
+| Has granularity to get data for a single token with constant gas cost. | Have to iterate and pick the token, which varies the gas cost. |
+| Easy for tracking. | Need extra processing and would need more storage variables to do so. |
+| Not easy to iterate over all tokens of the owner by using single storage. |  Can easily iterate over tokens owned by an address. |
+
+### Should we go for readability over efficiency?
+It completely depends on the particular use of the contract, how the reads and writes are done, what is the frequency of each operation, the purpose of the NFT contract and various other things.
+
+But when we look at the ease of implementation, efficiency and usability, ERC721 Enumerable has figured out most of them and solves most of the issues. Unless the project has *some specific and sophisticated requirements which get benefit from the use of arrays* for the storage of tokens for an address, <u>ERC721ERC721 Enumerable should do the job in most cases</u>.
+
+### Projects Utilizing ERC721 Enumerable
+
+Many NFT projects leverage ERC721 Enumerable to manage large collections efficiently, ensuring users can quickly access ownership data.
+
+Some popular NFT project examples are:
+- [Bored Ape Yacht Club](https://etherscan.io/token/0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d#code)
+- [Azuki](https://etherscan.io/token/0xed5af388653567af2f388e6224dc7c4b3241c544)
+- [Lawless](https://etherscan.io/token/0xb119ec7ee48928a94789ed0842309faf34f0c790#code)
+
+> You can go through the verified code of the above contracts to see how they made use of ERC721Enumerable
+
+## Problems Solved
+
+ERC721 Enumerable addresses the challenge of efficiently tracking and enumerating NFTs in a collection, particularly vital for projects with extensive NFT assets.
+
+## Potential Issues and Considerations
+The ERC721 Enumerable extension, while useful, introduces some potential security concerns and issues:
+
+1. **Gas Costs**: Functions that iterate over large data sets can incur significant gas costs, potentially making the contract expensive to interact with.
+2. **Denial of Service (DoS) Vulnerabilities**: Malicious actors could exploit high gas costs in enumeration functions to cause DoS attacks, especially in functions like tokenOfOwnerByIndex when called with a high index value.
+3. **Complexity and Bugs**: Additional complexity introduced by enumerable functionality can lead to bugs, making the contract more vulnerable to exploits.
+4. **Front-Running Attacks**: Enumeration could expose data that might be susceptible to front-running attacks, where a malicious user observes a transaction and tries to get their own transaction mined first.
+5. **Scalability Issues**: As the NFT collection grows, the cost and time of enumeration might increase, which could lead to performance issues.
+
+**Example**: Imagine someone holds a large number of tokens in a collection and getting all of them in a single go would cost more gas [1]. Sometimes it may cross the block limit [2]. This makes the whole project sesceptible for more failure of transactions for a use case with large dataset, causing the issues in scaling the project [5]. This can be considered as a drawback due to the openness and transperency provided by the blockchain. Also due to this a front-runner attacker who might know about rare `tokenId`s can look into mempool and frontrun to get those NFTs as we store `tokenId` and `index` in storage while miniting [4]. With additional data structures there is always a risk for bugs in implementation [3].
+
+Though these all can be mitigated too:
+- **DoS** can be mitigated by limiting the data being sent for each transaction.
+- **Bugs** can be avoided by proper testing and auditing, running the contract in testnets before putting it on mainnet.
+- **Scalability** by proper consideration of project details and relying on off chain data, using oracles for that data. Also to try making it more modular.
+- **Front-running** is always an issue but one can consider commit-reveal schemes, time lock for addresses, increase in randomness, not disclosing the raribility of tokens before minting.
+
+All the issues are quite common in most of the smart contracts. We always got to tackle them anyway :wink:.
+
+## Use Cases
+
+ERC721 Enumerable is ideal for projects 
+- that require efficient enumeration of NFTs, such as marketplaces or galleries.
+- that need to fetch data for single token by `tokenID` or `owner`
+- that has an NFT collection where minting is random and tracking them is essential
+
+> The job of NFT marketplaces like OpenSea and Rarible would be very tough and they might had to go for a centralised API to keep track of NFTs if ERC721Enumerable doesn't exist
+
+### Key Considerations for Users
+**Understand Gas Implications**: Be aware of the gas costs associated with large-scale enumeration.
+
+**Scalability Planning**: Plan for potential scalability challenges as your NFT collection grows.
+
+## Conclusion
+
+ERC721 Enumerable extends the basic ERC721 functionality to efficiently track and enumerate tokens. It balances the need for detailed information with the practical considerations of gas costs and blockchain efficiency. Understanding its use and underlying structure is crucial for developing robust and efficient NFT projects.
