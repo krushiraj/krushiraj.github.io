@@ -1,0 +1,244 @@
+﻿---
+title: "FixedPointMathLib vs ABDKMath64x64 - What should you use?"
+date: "2023-12-23"
+type: "article"
+published: true
+keywords: "web3,math,arithmetic,fixedpoint,solidity"
+description: "An article about which library to pick for fractional arithmetic in Solidity."
+tags: "web3,math,arithmetic,fixedpoint,solidity"
+banner: "./comparison.jpeg"
+bannercaption: "Image from Google Images"
+technologies: "solidity,web3"
+---
+
+# FixedPointMathLib vs ABDKMath64x64 - What should you use?
+
+In Solidity we don't have *Fixed Point Arithmetic* out-of-the-box, hence we rely on various libraries to make it easier and safer for us. [FixedPointMathLib](https://github.com/Vectorized/solady/blob/main/src/utils/FixedPointMathLib.sol) and [ABDKMath64x64](https://github.com/abdk-consulting/abdk-libraries-solidity/blob/master/ABDKMath64x64.sol) are some of the well known libraries that handle this.
+
+Lets see which one should you be using and why? There can be a lot of factor to support the decision of which one to use, we will go through a couple of things that matter and see which one has to be used based on the scenario that a smart contract developer has.
+
+## Differences
+1.  **Precision and Range**:    
+    -   **ABDKMath64x64**: Operates with a 64.64 fixed point math library, meaning it uses 64 bits for the integer part and 64 bits for the fractional part. This allows for high precision and a wide range of numbers, but it can be more computationally intensive.
+    -   **FixedPointMathLib**: This library uses a different approach and have a different precision range with WAD factor which is `10**18`.
+
+2.  **Performance**:
+    -   **ABDKMath64x64**: Known for high precision, but this can come at the cost of gas (when used in Ethereum smart contracts), as operations are more complex and you might have to keep converting the numbers from `int` to `64x64` format.
+    -   **FixedPointMathLib**: Less gas-intensive for certain operations as it relies on the Yul to make use of direct math functions mostly.
+
+3.  **Use Cases**:    
+    -   **ABDKMath64x64**: Its high precision makes it suitable for financial applications, complex calculations, and anywhere that a very small margin of error is critical.
+    -   **FixedPointMathLib**: Good to use when we have simple calculations that can be done with in 18 decimal point precision. Most of the transactions of ERC20 and user facing data will be similar to this. So better for naive usage.
+
+## Code in action
+```solidity
+// SPDX-License-Identifier: MIT
+pragma  solidity  >=0.8.0;
+
+import  "https://github.com/Vectorized/solady/blob/main/src/utils/FixedPointMathLib.sol";
+
+import  "https://github.com/abdk-consulting/abdk-libraries-solidity/blob/master/ABDKMath64x64.sol";
+
+using FixedPointMathLib for  uint256;
+using FixedPointMathLib for  int256;
+
+using ABDKMath64x64 for  int128;
+
+contract Math {
+	function mul0(uint256 a,  uint256 b)  public  pure  returns  (uint256 c)  {
+		c = a * b;
+	}
+	
+	function mul1(int128 a,  int128 b)  public  pure  returns  (int128 c)  {
+		c = a.mul(b);
+	}
+	
+	function mul2(uint256 a,  uint256 b)  public  pure  returns  (uint256 c)  {
+		int128 aFixed = ABDKMath64x64.fromUInt(a);
+		int128 bFixed = ABDKMath64x64.fromUInt(b);
+
+		// Perform the calculation using ABDKMath64x64
+		int128 rawResult = aFixed.mul(bFixed);
+		
+		// Convert the result back to uint for the return value
+		c = ABDKMath64x64.toUInt(rawResult);
+	}
+
+	function mul3(uint256 a,  uint256 b)  public  pure  returns  (uint256 c)  {
+		c = a.mulWad(b);
+	}
+
+	function pow0(int256 a,  int256 b)  public  pure  returns  (int256 c)  {
+		c = a.powWad(b);
+	}
+
+	function pow1(int128 a,  uint256 b)  internal  pure  returns  (int128 c)  {
+		c = a.pow(b);
+	}
+}
+```
+This smart contract tries to make use of both the libraries to do some basic multiplication and then calculate power.
+
+Now we will try to execute each of those and see how each performs. We only care about inputs, outputs and gas here. So rest of logs are omitted here.
+
+### mul0
+```
+to: Math.mul0(uint256,uint256)
+
+execution cost
+1049 gas (Cost only applies when called by a contract)[]
+
+decoded input
+{ "uint256 a": "120", "uint256 b": "130" }[]
+
+decoded output
+{ "0": "uint256: c 15600" }[]
+```
+This is direct multiplication in solidity without any help of libraries. Simple to understand inputs and output.
+
+### mul1
+```
+to
+
+Math.mul1(int128,int128) 0x9D7f74d0C41E726EC95884E0e97Fa6129e3b5E99[]
+
+execution cost
+1058 gas (Cost only applies when called by a contract)[]
+
+decoded input
+{ "int128 a": "120", "int128 b": "130" }[]
+
+decoded output
+{ "0": "int128: c 0" }[]
+```
+The output here is 0. Any idea about why is that 0? 
+It is because the _ABDKMath64x64_ library expects the number to be in the form of `64.64` bit representation. That means we need to convert the number to binary and then add 64 bit of binary 0 to make fractional part 0 for that number. Lets do that for 120 and 130
+| decimal | binary (without 64 zeros for fractional part) | decimal for 64.64 |
+|----------|---------|------------------|
+|120 | 1111000 | 2213609288845146193920 |
+|130 | 10000010 | 2398076729582241710080 |
+
+```
+to
+
+Math.mul1(int128,int128) 0x9D7f74d0C41E726EC95884E0e97Fa6129e3b5E99[]
+
+execution cost
+1058 gas (Cost only applies when called by a contract)[]
+
+decoded input
+{ "int128 a": "2213609288845146193920", "int128 b": "2398076729582241710080" }[]
+
+decoded output
+{ "0": "int128: c 287769207549869005209600" }[]
+```
+
+`287769207549869005209600 = 111100111100000000000000000000000000000000000000000000000000000000000000000000 = 15600`
+
+### mul2
+```
+Math.mul2(uint256,uint256) 0x9D7f74d0C41E726EC95884E0e97Fa6129e3b5E99[]
+
+execution cost
+1351 gas (Cost only applies when called by a contract)[]
+
+decoded input
+{ "uint256 a": "120", "uint256 b": "130" }[]
+
+decoded output
+{ "0": "uint256: c 15600" }[]
+```
+This is using _ABDKMath64x64_, but the catch here is we used extra helpers to convert instead of doing it all by ourselves like we did before. Hence extra gas cost.
+
+
+### mul3
+```
+to
+
+Math.mul3(uint256,uint256) 0x9D7f74d0C41E726EC95884E0e97Fa6129e3b5E99[]
+
+execution cost
+877 gas (Cost only applies when called by a contract)[]
+
+decoded input
+{ "uint256 a": "128", "uint256 b": "128" }[]
+
+decoded output
+{ "0": "uint256: c 0" }[]
+```
+The same again, not the results we wanted to see. _FixedPointMathLib_ expects a number with 18 decimal places i.e., we need to append 18 zeros after the number
+
+```
+to
+
+Math.mul3(uint256,uint256) 0x9D7f74d0C41E726EC95884E0e97Fa6129e3b5E99[]
+
+execution cost
+877 gas (Cost only applies when called by a contract)[]
+
+
+decoded input
+{ "uint256 a": "120000000000000000000", "uint256 b": "130000000000000000000" }[]
+
+decoded output
+{ "0": "uint256: c 15600000000000000000000" }[]
+```
+Now we get the correct output but with 18 zeros appended to it.
+
+### pow0
+```
+to
+
+Math.pow0(int256,int256) 0x9D7f74d0C41E726EC95884E0e97Fa6129e3b5E99[]
+
+execution cost
+2723 gas (Cost only applies when called by a contract)[]
+
+decoded input
+{ "int256 a": "2000000000000000000", "int256 b": "10000000000000000000" }[]
+
+decoded output
+{ "0": "int256: c 1023999999999999995727" }[]
+```
+Uses the _FixedPointMathLib_. I would expect `2 ** 10` to be `1024`. But the value here is `1023.999.....5727` which is not correct but close when we round up.
+
+### pow1
+Users the _ABDKMath64x64_. For conversion
+`2` - `10` in binary and when converted to int with 64 bit decimal places, it is `18446744073709551616`
+`10` - we give this directly as the power is expected in `int128` but not `64.64`
+
+```
+to
+
+Math.pow1(int128,uint256) 0xddaAd340b0f1Ef65169Ae5E41A8b10776a75482d[](https://remix.ethereum.org/#)
+
+execution cost
+
+2302 gas (Cost only applies when called by a contract)[](https://remix.ethereum.org/#)
+
+input
+
+0x9ea...0000a[](https://remix.ethereum.org/#)
+
+decoded input
+
+{ "int128 a": "36893488147419103232", "uint256 b": "10" }[](https://remix.ethereum.org/#)
+
+decoded output
+
+{ "0": "int128: c 18889465931478580854784" }[](https://remix.ethereum.org/#)
+```
+The output when converted to binary will give us `10000000000+64 zeros`. Those 64 zeros can be omitted to get the integral part which then converts to `1024`, the exact output for `2 ** 10`
+
+### Gas costs
+|	| ABDKMath64x64 | FixedPointMathLib |
+|--|----------------------|-------------|
+| mul | 1058 | 877 |
+| pow | 2302 | 2723 |
+> If we include gas to convert for _ABDKMath64x64_ it would add around 300
+
+## Conclusion
+_ABDKMath64x64_ is gas efficient for complex calculations and very precise and accurate for smaller integral numbers with large fractional part.
+_FixedPointMathLib_ is good with large numbers and has less precision for more complex calculations, but highly gas efficient for basic math.
+
+So, if you are building something that include complex formulae like bonding curve, exponential farming or anything that requires high precision and complex calculations one should go for **ABDKMath64x64**, else if you require basic math with low precision which is mostly used in transfer, ERC20 related, more user facing applications and functions one should go for **FixedPointMathLib**, as for user facing you don't have to put in extra effort to convert it to `64.64`format when compared to `WAD`.

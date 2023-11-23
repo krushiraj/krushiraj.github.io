@@ -1,0 +1,164 @@
+﻿---
+title: "Mastering Fixed Point Arithmetic in Solidity"
+date: "2023-12-23"
+type: "article"
+published: true
+keywords: "web3,math,arithmetic,fixedpoint,solidity"
+description: "An article that explores on why we would need a library to handle fixed point arithmetic in Solidity."
+tags: "web3,math,arithmetic,fixedpoint,solidity"
+banner: "./fixed-point-arithmetic.png"
+bannercaption: "Image from Google Images"
+technologies: "solidity,web3"
+---
+
+# Mastering Fixed Point Arithmetic in Solidity
+
+In the realm of blockchain and smart contract development, efficient and accurate arithmetic operations are crucial. Solidity inherently supports integer arithmetic. However, there are scenarios where we require more precision, and this is where fixed point arithmetic enters the fray. 
+
+Fixed point arithmetic allows for fractional calculations, bridging the gap between integer arithmetic's limitations and the necessity for precision in certain calculations.
+
+Let's delve into the FixedPointMathLib, one of the the libraries that facilitate fixed point arithmetic in Solidity , available on GitHub, source file located [here](https://github.com/Vectorized/solady/blob/main/src/utils/FixedPointMathLib.sol). To understand its core functionalities and how you can leverage it in your smart contract projects. We'll try to understand what __Fixed Point Arithmetic__ is and also go through some code in the library aforementioned.
+
+## Understanding Fixed Point Arithmetic
+In fixed point arithmetic, numbers are represented as integers, but a predefined scale factor indicates the decimal point's position. For instance, if the scale factor is `100`, the number `12345` represents `123.45`. This method allows for fractional computations while utilising integer arithmetic operations, thus maintaining a balance between precision and performance. The scale factor can change depending on our requirement for precision.
+
+## Why even use a Library for this?
+If you're familiar with other programming languages then you would have already known that most of the languages support floating point and fixed point numbers by default with some data types. For example you can see `float` and `double` types in C/C++. If you can remember we have no such data types in Solidity. That is for a reason, to put it simple it is due to the inconsistencies in the handling and implementation of fractional numbers on machines. Due to these inconsistencies, we might end up in multiple forks of the chain due to minor changes in data on chain.
+> Need to know more? Your rabbit hole starts [here](https://ethereum.stackexchange.com/a/87235)
+
+## FixedPointMathLib
+Let us look into some functions what this library offers us.
+
+### mulWad
+The `mulWad` function is designed to multiply two fixed point numbers. Here’s the function signature:
+
+```solidity
+function mulWad(uint256 x, uint256 y) internal pure returns (uint256 z)
+```
+
+Parameters:
+- `a` and `b`: The fixed point numbers to be multiplied.
+
+If you observe, we have something called `Wad` in function name. That basically means that the scale factor here is `10**18` (alleged origin of `wad` comes from [here](https://github.com/dapphub/ds-math/blob/master/README.md))
+
+The function employs Yul to perform the multiplication operation efficiently. By leveraging Yul, the `mulWad` function ensures that the multiplication is carried out with a low gas cost, which is crucial for blockchain operations.
+
+```solidity
+/// @solidity memory-safe-assembly
+assembly {
+    // Equivalent to `require(y == 0 || x <= type(uint256).max / y)`.
+    if mul(y, gt(x, div(not(0), y))) {
+        mstore(0x00, 0xbac65e5b) // `MulWadFailed()`.
+        revert(0x1c, 0x04)
+    }
+    z := div(mul(x, y), WAD)
+}
+```
+
+The `mulWad` function first computes the product of `a` and `b` using integer multiplication, then adjusts the result for the scale factor by dividing the product by `10 ** 18`(in the file at L51 `WAD` constant is defined). This way, the function yields the correct fixed point representation of the product.
+
+```solidity
+if mul(y, gt(x, div(not(0), y)))
+```
+If you observe the code checks for the overflow case and makes sure to revert the execution with error.
+- `not(0)` - bit wise negation results in the max int value. Ex: `0x00` will be `0xFF` when negated - let us assume this result as `maxInt`. Here it is actually max value a `uint256` can take.
+- `div(not(0), y))` - now this will be `div(maxInt, y)` - lets assume this as `quotient`
+- `gt(x, div(not(0), y))` - this will check if `x > quotient`. Simple check to make sure that `x * y < maxInt`. Lets assume this result as `check`, which can have a value of `0` and `1`
+- `iszero(mul(y, iszero(mul(WAD, gt(x, div(not(0), WAD))))))` - simply means that verifying if `y * check` is `0` or not
+
+This makes it safe to avoid unexpected behaviour of the smart contracts.
+
+```solidity
+mstore(0x00, 0xbac65e5b) // `MulWadFailed()`.
+revert(0x1c, 0x04)
+```
+- `mstore(0x00, 0xbac65e5b)`: This line is storing the value `0xbac65e5b` at memory location `0x00`. The value `0xbac65e5b` is likely the hash of the error message `MulWadFailed()`. Solidity uses the first 4 bytes of the `keccak-256` hash of the function signature to identify it. This is a common practice to save gas instead of storing the entire string error message.
+- `revert(0x1c, 0x04)`: This line reverts the transaction. The `revert` opcode takes two parameters: the first is the starting position in memory of the data to return, and the second is the size of this data in bytes. In this case, `0x1c` is the position in memory where the data starts, and `0x04` is the size of the data to return. It means that when the transaction is reverted, it will return 4 bytes of data starting from the 28th byte (`0x1c` in hexadecimal) of memory.
+
+### mulWadUp
+This is similar to `mulWad` but the result is rounded up. For the other case it is rounded down
+
+```solidity
+z := add(iszero(iszero(mod(mul(x, y), WAD))), div(mul(x, y), WAD))
+```
+- `iszero(mod(mul(x, y), WAD))`- check if `(x * y) % WAD == 0`- If it is zero, it means the product is perfectly divisible by `WAD` and there's no fractional part to consider for rounding
+- `iszero(iszero(mod(mul(x, y), WAD)))`: This double-negative check turns a true condition (non-zero modulus) into a false one and vice versa. So, if there is a non-zero fractional part, the `iszero` function will return `0` for non-zero and then `iszero` again will turn that `0` into `1`.
+- `add(iszero(iszero(mod(mul(x, y), WAD))), div(mul(x, y), WAD))`: Adds the result of the double `iszero` check to the quotient of the product divided by `WAD`. This effectively rounds up the result if there was a non-zero fractional part.
+
+### divWad
+Similarly, the `divWad` function facilitates division operations between fixed point numbers. Here’s the function signature:
+
+```solidity
+function divWad(uint256 x, uint256 y) internal pure returns (uint256 z)
+```
+
+Parameters are similar to `mulWad`, with `a` and `b` being the operands
+
+There are checks here as well, just like we do in other functions to make sure the results are not inconsistence or overflowed or underflowed.
+
+```solidity
+assembly {
+	// Equivalent to `require(y != 0 && (WAD == 0 || x <= type(uint256).max / WAD))`.
+	if iszero(mul(y, iszero(mul(WAD, gt(x, div(not(0), WAD)))))) {
+	    mstore(0x00, 0x7c5f487d) // `DivWadFailed()`.
+	    revert(0x1c, 0x04)
+	}
+	z := div(mul(x, WAD), y)
+}
+```
+-   `mul(WAD, gt(x, div(not(0), WAD)))`: This performs a check to ensure that the value of `x` is not too large to be multiplied by the scaling factor `WAD` without causing an overflow. The `gt` function checks if `x` is greater than the largest `uint256` divided by `WAD`. If `x` is indeed greater, `gt(x, div(not(0), WAD))` would return `1` indicating an overflow. If `x` is not greater, the result would be `0`.    
+-   `iszero(mul(WAD, gt(x, div(not(0), WAD))))`: This is checking the result of the multiplication for `0`. If `x <= uint256.max / WAD`, then `gt(x, div(not(0), WAD))` would be `0`, and multiplying by `WAD` would still be `0`, resulting in `iszero` returning `1`. If `x` were too large, the result of `gt(x, div(not(0), WAD))` would be `1`, and `mul(WAD, 1)` would be `WAD`, making `iszero` return `0`.
+-   `mul(y, iszero(mul(WAD, gt(x, div(not(0), WAD)))))`: This multiplies `y` with the result of the previous `iszero` check. If the previous result was `1`, it implies that there is no risk of overflow when `x` is multiplied by `WAD`, and it proceeds to multiply `y` by `1` (effectively leaving `y` unchanged). If the result was `0`, it means that there was a risk of overflow, and multiplying `y` by `0` would yield `0`.
+-   `iszero(...)`: If `y` was `0` or if `x` was safe to multiply by `WAD` without causing an overflow, then the entire multiplication expression would evaluate to `0`, and `iszero` would return `1`. If there was a potential overflow detected, the multiplication result would not be `0`, and `iszero` would return `0`.
+
+This is making sure that we make the calculations in the bounds and makes sure no unexpected behaviour happens if there is an overflow or underflow.
+
+### divWadUp
+This is similar to `divWad` but the result is rounded up. For the other case it is rounded down. A similar approach to round up used in `mulWadUp` is being used here but with a different values.
+
+## How would this help?
+
+
+### Pros:
+
+1.  **Precision**: It offers higher precision for fractional numbers compared to integer arithmetic, which is crucial for financial computations that require decimal points.
+    
+2.  **Gas Efficiency**: The library uses Yul, an intermediate language that compiles down to EVM bytecode, often leading to more gas-efficient contract execution than using Solidity alone.
+    
+3.  **Safety**: It includes checks to prevent overflows and underflows, common pitfalls in smart contract development that can lead to significant vulnerabilities.
+    
+4.  **Convenience**: Developers can perform arithmetic operations without implementing their own fixed-point math system, saving time and reducing the risk of errors.
+    
+5.  **Interoperability**: It uses a standard format (wad) that is widely recognized in the Ethereum ecosystem, making it easier to integrate with other contracts and systems.
+    
+6.  **Transparency**: The operations are transparent and verifiable, ensuring that contract behavior can be predicted and validated, which is essential for trust in DeFi applications.
+    
+
+### Cons:
+
+1.  **Complexity**: For developers unfamiliar with fixed-point arithmetic, there may be a learning curve to understand how to properly use the library functions.
+    
+2.  **Code Size**: Including an external library can increase the size of the contract bytecode, potentially leading to higher deployment costs.
+    
+3.  **Overhead**: While the library is optimized for gas, using any library still adds a layer of complexity and gas overhead compared to native operations.
+    
+4.  **Limited Range**: Fixed-point numbers have a limited range compared to floating-point numbers, which may be a limitation for some applications.
+    
+5.  **Specificity**: The library is designed for a specific scaling factor (wad), which may not be suitable for all use cases requiring different levels of precision.
+    
+6.  **Upgradability**: If the library is found to have a bug or requires an update, depending on how it's integrated, it might be difficult to upgrade the smart contracts that use it.
+
+## Practical Applications
+These functions are indispensable when dealing with financial calculations, simulations, or any scenario demanding precision beyond integer arithmetic in your smart contracts. By understanding and utilising fixed point arithmetic through the FixedPointMathLib, you can ensure that your smart contracts operate accurately and efficiently, making your dApps more robust and reliable. Examples as follows:
+
+1. **DeFi Yield Farming Platforms**: Calculating rewards based on staking durations and amounts often requires precision to ensure users receive an accurate share of the yield.
+    
+2.  **Automated Market Makers (AMMs)**: AMMs use complex formulas like the constant product formula (`x * y = k`) for liquidity pools.
+    
+3.  **Token Vesting Contracts**: When tokens are vested, they might be released continuously over time, which could require division to calculate the fraction of tokens to release at any given point.
+    
+4.  **Oracles**: Price oracles that feed external data (like currency exchange rates) into the blockchain often require high precision. When these rates are used to determine transaction values or contract terms, fixed-point arithmetic helps maintain accuracy.
+    
+Also other examples include **Insurance Contracts**, **Bonding Curves**,  **Interest Rate Models**, **Stablecoin Pegs**, **Financial Derivatives**, **Scientific Computations**,  **Gaming and Gambling Contracts**, **Fractional NFTs**
+
+In conclusion, FixedPointMathLib’s functions are vital tools in the toolkit of a Solidity developer aiming to tackle complex arithmetic scenarios in smart contract development. Through a deep understanding of these functions and fixed point arithmetic, you’re well on your way to mastering the mathematical underpinnings of Solidity and developing sophisticated smart contracts for the Ethereum blockchain.
