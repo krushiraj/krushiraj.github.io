@@ -1,6 +1,7 @@
 import React from "react"
 import styled from "styled-components"
 import { rhythm } from "../utils/typography"
+import { Link } from "gatsby"
 
 const skills = [
   { name: "Python", level: 9, src: "/python.svg" },

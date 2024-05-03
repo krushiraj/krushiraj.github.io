@@ -2,6 +2,7 @@ import React from "react"
 import styled from "styled-components"
 import { rhythm } from "../utils/typography"
 import { colors } from "../utils/theme"
+import { Link } from "gatsby"
 
 const ExperienceList = [
   {
