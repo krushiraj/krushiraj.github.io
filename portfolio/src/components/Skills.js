@@ -4,51 +4,59 @@ import { rhythm } from "../utils/typography"
 import { Link } from "gatsby"
 
 const skills = [
+  { name: "JavaScript", level: 9.5, src: "/javascript.svg" },
+  { name: "TypeScript", level: 9.5, src: "/typescript.svg" },
   { name: "Python", level: 9, src: "/python.svg" },
-  { name: "C", level: 9, src: "/c.svg" },
-  { name: "JavaScript", level: 8, src: "/javascript.svg" },
-  { name: "C++", level: 7.5, src: "/c++.svg" },
-  { name: "C#", level: 7, src: "/c-sharp.svg" },
-  { name: "Java", level: 7, src: "/java.svg" },
-  { name: "HTML", level: 8, src: "/html-5.svg" },
-  { name: "CSS", level: 7.5, src: "/css-3.svg" },
-  { name: "SASS", level: 7, src: "/sass.svg" },
-  { name: "Less", level: 7, src: "/less.svg" },
-  { name: "Tailwind", level: 6, src: "/tailwindcss.svg" },
+  { name: "Node.js", level: 9.5, src: "/nodejs.svg" },
+  { name: "React", level: 9, src: "/react.svg" },
+  { name: "Next.js", level: 8.5, src: "/nextjs.svg" },
+  { name: "Vue", level: 8.5, src: "/vue.svg" },
+  { name: "HTML", level: 9, src: "/html-5.svg" },
+  { name: "CSS", level: 8.5, src: "/css-3.svg" },
+  { name: "Tailwind", level: 8, src: "/tailwindcss.svg" },
+  { name: "SASS", level: 7.5, src: "/sass.svg" },
+  { name: "Express", level: 8.5, src: "/express.svg" },
   { name: "Django", level: 8, src: "/django.svg" },
-  { name: "Node.js", level: 7.5, src: "/nodejs.svg" },
-  { name: "React", level: 8, src: "/react.svg" },
-  { name: "Vue", level: 8, src: "/vue.svg" },
-  { name: "PostgreSQL", level: 7, src: "/postgresql.svg" },
+  { name: "GraphQL", level: 8, src: "/graphql.svg" },
+  { name: "PostgreSQL", level: 8.5, src: "/postgresql.svg" },
+  { name: "MongoDB", level: 8.5, src: "/mongodb.svg" },
+  { name: "Elasticsearch", level: 8.5, src: "/elasticsearch.svg" },
+  { name: "Redis", level: 8, src: "/redis.svg" },
+  { name: "ClickHouse", level: 7.5, src: "/clickhouse.svg" },
+  { name: "SQLite", level: 8, src: "/sqlite.svg" },
   { name: "MySQL", level: 7.5, src: "/mysql.svg" },
-  { name: "SQLite", level: 7, src: "/sqlite.svg" },
-  { name: "Selenium", level: 7, src: "/selenium.svg" },
-  { name: "Mocha", level: 5, src: "/mocha.svg" },
-  { name: "Jest", level: 5, src: "/jest.svg" },
+  { name: "Docker", level: 8.5, src: "/docker.svg" },
+  { name: "Kubernetes", level: 8, src: "/kubernetes.svg" },
+  { name: "AWS", level: 7.5, src: "/aws.svg" },
+  { name: "ELK Stack", level: 8, src: "/elk.svg" },
+  { name: "Jenkins", level: 8.5, src: "/jenkins.svg" },
+  { name: "Jest", level: 9, src: "/jest.svg" },
+  { name: "Mocha", level: 8, src: "/mocha.svg" },
+  { name: "Java", level: 7.5, src: "/java.svg" },
 ]
 
 const StyledSkillContainer = styled.div`
   .items {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(185px, 1fr));
+    gap: ${rhythm(0.55)};
   }
 
   .item {
     border: 1px solid #7a7a7a;
-    border-radius: 5px;
-    width: calc(50% - 10px);
-    height: ${rhythm(2)};
-    margin: 5px;
+    border-radius: 8px;
+    min-width: 0;
+    padding: ${rhythm(0.45)} ${rhythm(0.6)};
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 
     .skill {
       display: flex;
       flex-direction: row;
-      padding: 0;
-      margin: 5px;
-      text-align: center;
       align-items: center;
-      font-size: ${rhythm(0.75)};
+      font-size: ${rhythm(0.6)};
+      margin-bottom: ${rhythm(0.32)};
 
       @media only screen and (max-width: 768px) {
         font-size: ${rhythm(0.5)};
@@ -56,30 +64,34 @@ const StyledSkillContainer = styled.div`
 
       div {
         display: flex;
-        margin: 0 auto;
         align-items: center;
-        align-content: center;
+        width: 100%;
+        min-width: 0;
 
         p {
           padding: 0;
           margin: 0;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
 
         img {
-          height: ${rhythm(0.7)};
+          height: ${rhythm(0.85)};
+          width: ${rhythm(0.85)};
+          flex-shrink: 0;
           padding: 0;
-          margin: ${rhythm(0.15)};
+          margin: 0 ${rhythm(0.35)} 0 0;
         }
       }
     }
 
     .skill-bar {
       background: red;
-      height: ${rhythm(0.2)};
+      height: ${rhythm(0.18)};
       border-radius: ${rhythm(0.1)};
-      margin: auto 5px;
-      transition: width 0.3s ease;
-      transition: 0.8s;
+      margin: 0;
+      transition: width 0.8s ease;
     }
   }
 `
@@ -109,11 +121,10 @@ const Skills = ({ showBar }) => (
 
 const tools = [
   { title: "Visual Studio Code", src: "/vscode.svg" },
+  { title: "Claude Code", src: "/claude.svg" },
   { title: "Unity3D", src: "/unity.svg" },
-  { title: "Brackets", src: "/brackets.svg" },
   { title: "PyCharm", src: "/pycharm.svg" },
   { title: "Git", src: "/git.svg" },
-  { title: "Jenkins", src: "/jenkins.svg" },
 ]
 
 const ToolsContainer = styled.div`

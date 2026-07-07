@@ -9,10 +9,22 @@ const ExperienceList = [
     company: "Paperpile",
     companyUrl: "https://www.paperpile.com/",
     imgSrc: "paperpile-logo.png",
-    role: "Javascript Engineer",
+    role: "Full-Stack Engineer",
     type: "Full Time",
-    duration: "Jan 2020 - Present", 
-    description: "I'm working as a full-stack JavaScript Engineer."
+    duration: "Jan 2020 - Present",
+    description:
+      "Sole developer of Paperpile's internal academic search platform, a 230M+ document system I own end to end (React/Next.js, Node/TypeScript, Python; MongoDB, Elasticsearch, PostgreSQL).",
+    highlights: [
+      "Cut p99 search latency from ~10s to under 1s by redesigning indexing and query paths across Elasticsearch, MongoDB, and SQLite.",
+      "Designed and maintained 10+ microservices handling millions of dynamic-payload messages, with strict retries, ordering, and idempotency.",
+      "Built ingestion pipelines processing 300GB+ of text monthly, and raised corpus abstract coverage from 27% to 51% with crawler/scraper engines.",
+      "Built the author-name parser (Stanford NLP model + a custom trie), reaching 87% accuracy vs 45-58% for the best open-source parsers at the time.",
+      "Built an MCP (Model Context Protocol) server so LLM tools verify citations against the 230M+ corpus before emitting them, a hallucination-mitigation guardrail.",
+      "Built AI plugins and a test-gated harness for the parser/crawler stack, cutting a release cycle from ~2 weeks to ~2 days.",
+      "Own the shared middlewares and core utilities reused across the codebase, and ported legacy code to modern TypeScript for speed and memory gains.",
+      "Cut production error rate from 10% to 2% and deploy time by 50% via CI/CD (Docker, Kubernetes); run ELK observability and own incident response.",
+      "Built and own an internal data-management dashboard in React, plus Google Drive and OneDrive integrations and S3-backed storage.",
+    ],
   },
   {
     company: "NCR Corporation",
@@ -21,8 +33,8 @@ const ExperienceList = [
     role: "Software Developer",
     type: "Full Time",
     duration: "Jul 2019 - Dec 2019",
-    description: 
-      "I worked on automating build-jobs and enhancement of each component of the team. I have shipped a new requirement/feature for one of the core components of team to have real-time sync between ATMs and servers.",
+    description:
+      "Built the Content Management and Advertising module for ATM machines and cut ad initial-load latency from ~2 minutes to under 30 seconds on constrained, low-bandwidth hardware; root-caused a production defect blocking a major bank chain's ads.",
   },
   {
     company: "ServiceNow",
@@ -67,8 +79,22 @@ const ExperienceCardDiv = styled.div`
   }
 
   .expandable {
-    p {
+    p,
+    ul {
       display: none;
+    }
+    .highlights {
+      margin: ${rhythm(0.3)} 0 0;
+      padding-left: ${rhythm(0.8)};
+      text-align: left;
+    }
+    .highlights li {
+      font-size: ${rhythm(0.6)};
+      margin-bottom: ${rhythm(0.1)};
+
+      @media only screen and (max-width: 768px) {
+        font-size: ${rhythm(0.45)};
+      }
     }
     opacity: 0;
     transition: all 0.3s ease;
@@ -84,7 +110,7 @@ const ExperienceCardDiv = styled.div`
 
   &:hover {
     box-shadow: 1px 2px 20px 2px darkolivegreen;
-    max-height: ${rhythm(10)};
+    max-height: none;
 
     .expandable {
       opacity: 1;
@@ -92,6 +118,9 @@ const ExperienceCardDiv = styled.div`
       p {
         height: auto;
         display: initial;
+      }
+      ul {
+        display: block;
       }
     }
   }
@@ -152,6 +181,7 @@ const ExperienceCard = ({
   type,
   duration,
   description,
+  highlights,
 }) => (
   <ExperienceCardDiv>
     <div className="visible">
@@ -173,6 +203,13 @@ const ExperienceCard = ({
     </div>
     <div className="expandable">
       <p className="description">{description}</p>
+      {highlights && (
+        <ul className="highlights">
+          {highlights.map((item, i) => (
+            <li key={i}>{item}</li>
+          ))}
+        </ul>
+      )}
     </div>
   </ExperienceCardDiv>
 )
