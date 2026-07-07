@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunktkr_portfolio=self.webpackChunktkr_portfolio||[]).push([[883],{30429:function(e,t,r){r.r(t);var l=r(67294);t.default=()=>l.createElement("div",null,l.createElement("h1",null,"404 - Not found"),l.createElement("hr",{style:{margin:0,height:"5px"}}),l.createElement("p",null,"The resource that you are searching for is not found."))}}]);
+//# sourceMappingURL=component---src-pages-404-js-40b5b7f8ef69b4bdebec.js.map
