@@ -4,6 +4,7 @@ import { MDXProvider } from "@mdx-js/react"
 
 import Footer from "../Footer"
 import mdxComponents from "../Mdx"
+import Fonts from "../v2/Fonts"
 import { GlobalStyle } from "../../utils/theme"
 import { StyledLayout } from "./styles"
 
@@ -37,6 +38,7 @@ const Layout = props => {
           <React.Fragment>
             <StyledLayout>
               <GlobalStyle />
+              <Fonts />
               <MDXProvider components={mdxComponents}>
                 <React.Fragment>{children}</React.Fragment>
               </MDXProvider>

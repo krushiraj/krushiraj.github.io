@@ -27,7 +27,8 @@ const StyledFooter = styled.footer`
 const Footer = () => (
   <StyledFooter>
     <p>
-      Copyright (c) 2019, Everyone - as this is an{" "}
+      © {new Date().getFullYear()} Krushi Raj Tula · Designed &amp; built by
+      me — and it&rsquo;s{" "}
       <a
         className="underline"
         href="https://github.com/krushiraj/krushiraj.github.io"
@@ -35,15 +36,6 @@ const Footer = () => (
         rel="noopener noreferrer"
       >
         open-source
-      </a>{" "}
-      site :P. This theme is inspired from{" "}
-      <a
-        className="underline"
-        href="https://aravindballa.com"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Aravind Balla
       </a>
       <br />
       {contactItems.map((item, index) => (

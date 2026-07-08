@@ -347,7 +347,7 @@ export const StyledPost = styled.div`
       left: 0;
       width: 100%;
       height: 100%;
-      box-shadow: 0 15px 20px rgba(152, 251, 152, 0.5);
+      box-shadow: 0 15px 30px -10px rgba(255, 74, 47, 0.25);
       opacity: 0;
       transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
     }

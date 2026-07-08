@@ -1,52 +1,93 @@
 import { createGlobalStyle } from "styled-components"
-import { rhythm, scale } from "./typography"
+import { rhythm } from "./typography"
+
+/**
+ * Redesign 2026 — "engineering editorial"
+ *
+ * Warm ink canvas, paper-white type, vermillion accent (a refined
+ * descendant of the original #e10000 brand red).
+ *
+ * The legacy color keys (skyblue, yellow, goldenred, ...) are kept as
+ * aliases so older styled-components (blog post styles) keep working,
+ * but they now resolve into the new palette.
+ */
+const palette = {
+  ink: "#0D0C0A",
+  inkRaised: "#161411",
+  inkOverlay: "#1E1B17",
+  line: "rgba(232, 226, 214, 0.14)",
+  lineSoft: "rgba(232, 226, 214, 0.08)",
+  paper: "#E9E3D6",
+  paperBright: "#F7F3EA",
+  muted: "#A69D8C",
+  faint: "#6E675B",
+  accent: "#FF4A2F",
+  accentBright: "#FF6A50",
+  accentDeep: "#B62E1A",
+}
 
 const colors = {
-  background: "#151515",
-  text: "#D7D7D7",
-  headings: "#FFFFFF",
-  red: "#E94040",
-  blue: "#67BBEF",
-  skyblue: "#00BFFF",
-  green: "#ADFF2F",
-  techfont: "#9ACD32",
-  techborder: "#CD5C5C",
-  yellow: "RGBA(255, 203, 61, 1)",
-  lightyellow: "RGBA(255, 203, 61, 0.5)",
-  palered: "#E10000",
-  goldenred: "#B8860E",
+  // new tokens
+  ...palette,
+
+  // legacy aliases — old keys mapped into the new palette
+  background: palette.ink,
+  text: palette.paper,
+  headings: palette.paperBright,
+  red: palette.accent,
+  blue: palette.muted,
+  skyblue: palette.accentBright,
+  green: palette.accentBright,
+  techfont: palette.paper,
+  techborder: palette.line,
+  yellow: palette.paperBright,
+  lightyellow: palette.muted,
+  palered: palette.accent,
+  goldenred: palette.muted,
+}
+
+const fonts = {
+  display: `"Fraunces", "Georgia", serif`,
+  body: `"Hanken Grotesk", "Helvetica Neue", Helvetica, Arial, sans-serif`,
+  mono: `"IBM Plex Mono", "SFMono-Regular", Menlo, Consolas, monospace`,
 }
 
 /**
  * Global styles are placed here instead of gatsby-browser.js
- * beacuse, we make use of the power of styled-components
+ * because we make use of the power of styled-components
  * and can change the theme easily.
  */
 const GlobalStyle = createGlobalStyle`
   body {
-    background: ${colors.background};
+    background: ${colors.ink};
     color: ${colors.text};
+    font-family: ${fonts.body};
     font-display: auto;
     margin: 0;
     padding: 0;
+    -webkit-font-smoothing: antialiased;
   }
 
-  h1,h2,h3 {
-    margin-top: ${rhythm(1)};
+  ::selection {
+    background: ${colors.accent};
+    color: ${colors.ink};
+  }
+
+  h1, h2, h3, h4 {
+    font-family: ${fonts.display};
+    font-weight: 550;
+    letter-spacing: -0.01em;
     color: ${colors.headings};
-      a {
+
+    a {
       box-shadow: none;
       text-decoration: none;
       color: inherit;
 
-      &:hover: {
+      &:hover {
         text-decoration: none;
       }
     }
-  }
-
-  h2 {
-    ${scale(2 / 3)}
   }
 
   a {
@@ -61,10 +102,10 @@ const GlobalStyle = createGlobalStyle`
       bottom: -1px;
       content: "";
       display: block;
-      height: 2px;
+      height: 1px;
       left: 50%;
       position: absolute;
-      background: ${colors.palered};
+      background: ${colors.accent};
       transition: width 0.3s ease 0s, left 0.3s ease 0s;
       width: 0;
     }
@@ -75,7 +116,7 @@ const GlobalStyle = createGlobalStyle`
     }
 
     &:hover {
-      color: rgba(255, 255, 255, 0.7);
+      color: ${colors.paperBright};
     }
 
     &:active {
@@ -88,7 +129,9 @@ const GlobalStyle = createGlobalStyle`
   }
 
   hr {
-    background: gray;
+    background: ${colors.line};
+    height: 1px;
+    border: none;
   }
 
   .gh-card-wrap {
@@ -98,16 +141,16 @@ const GlobalStyle = createGlobalStyle`
         margin: 0 auto;
         max-width: 400px;
         border-radius: 5px;
-        border: 1px solid #ddd;
+        border: 1px solid ${colors.line};
         .main {
-          border-bottom: 1px solid #666;
+          border-bottom: 1px solid ${colors.line};
           padding: 0 10px;
           .user {
             display: flex;
             .avatar {
               margin: 10px;
               border-radius: 50%;
-              border: 2px solid #fff;
+              border: 2px solid ${colors.paper};
             }
             .user-details {
               margin: 10px;
@@ -136,27 +179,30 @@ const GlobalStyle = createGlobalStyle`
         font-weight: 200;
         margin: 0;
         a {
-          color: #ccc;
-
+          color: ${colors.muted};
         }
       }
     }
   }
 
   blockquote {
-    background: #111;
-    border-left: 4px solid #eee;
-    padding-left: 20px;
-    font-size: 1.2em;
+    background: ${colors.inkRaised};
+    border-left: 2px solid ${colors.accent};
+    margin-left: 0;
+    padding: ${rhythm(0.5)} ${rhythm(0.75)};
+    font-family: ${fonts.display};
     font-style: italic;
+    font-size: 1.1em;
+    color: ${colors.paper};
   }
 
   :not(pre) > code {
     border-radius: .3em;
-    color: #EB697F;
-    padding: .1em;
-    background: #2b2b2b;
+    font-family: ${fonts.mono};
+    color: ${colors.accentBright};
+    padding: .1em .3em;
+    background: ${colors.inkRaised};
   }
 `
 
-export { colors, GlobalStyle }
+export { colors, fonts, GlobalStyle }

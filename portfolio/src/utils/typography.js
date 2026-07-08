@@ -1,19 +1,27 @@
 import Typography from "typography"
 
+/**
+ * Redesign 2026 type stack:
+ *  - Fraunces (display serif) for headings
+ *  - Hanken Grotesk for body copy
+ *  - IBM Plex Mono for labels / code (applied per-component)
+ *
+ * The font files themselves are loaded via the <Fonts /> Helmet
+ * component (src/components/v2/Fonts.js) using the css2 API, since
+ * typography.js's googleFonts option only speaks the legacy API.
+ */
 const typography = new Typography({
   baseFontSize: "18px",
   baseLineHeight: 1.666,
-  headerFontFamily: [
-    "Fira Code",
-    "Avenir Next",
+  headerFontFamily: ["Fraunces", "Georgia", "serif"],
+  bodyFontFamily: [
+    "Hanken Grotesk",
     "Helvetica Neue",
     "Segoe UI",
     "Helvetica",
     "Arial",
     "sans-serif",
   ],
-  bodyFontFamily: ["Fira Code", "Inconsolata", "monospace"],
-  googleFonts: [{ name: "Inconsolata", styles: [200, 400, 600] }],
 })
 
 // Hot reload typography in development.
