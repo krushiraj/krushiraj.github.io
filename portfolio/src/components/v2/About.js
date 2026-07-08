@@ -69,7 +69,7 @@ const StyledAbout = styled.div`
 `
 
 const stats = [
-  { value: <>6<em>+</em> yrs</>, caption: "shipping production software" },
+  { value: <>7<em>+</em> yrs</>, caption: "shipping production software" },
   { value: <>Full<em>&#8288;-&#8288;</em>stack</>, caption: "frontend, backend, data & infra" },
   { value: <>End<em>&#8288;-&#8288;</em>to<em>&#8288;-&#8288;</em>end</>, caption: "design, ship, run, and own it" },
   { value: <>AI<em>&#8288;-&#8288;</em>native</>, caption: "MCP servers, agents & guardrails" },
