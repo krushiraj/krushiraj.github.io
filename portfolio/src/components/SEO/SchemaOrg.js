@@ -75,10 +75,14 @@ export default React.memo(
       : baseSchema
 
     return (
-      <Helmet>
-        {/* Schema.org tags */}
-        <script type="application/ld+json">{JSON.stringify(schema)}</script>
-      </Helmet>
+      <Helmet
+        script={[
+          {
+            type: "application/ld+json",
+            innerHTML: JSON.stringify(schema),
+          },
+        ]}
+      />
     )
   }
 )
