@@ -309,15 +309,16 @@ export const StyledTech = styled.div`
 
     span {
       margin: ${rhythm(0.1)};
-      border: 1px solid ${colors.techborder};
+      border: 1px solid ${colors.line};
       padding: 4px 8px;
       border-radius: 10px;
-      color: ${colors.techfont};
+      color: ${colors.paper};
       transition: all 0.2s linear;
 
       &:hover {
-        color: ${colors.techborder};
-        border-color: ${colors.techfont};
+        color: ${colors.accent};
+        border-color: ${colors.accent};
+        background: ${accentTint("8%")};
       }
     }
   }

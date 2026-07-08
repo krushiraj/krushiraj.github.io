@@ -1,6 +1,6 @@
 import React from "react"
 import styled from "styled-components"
-import { colors, fonts } from "../../utils/theme"
+import { colors, fonts, accentTint } from "../../utils/theme"
 import { media, smoothScrollToId } from "./shared"
 import ThemeToggle from "./ThemeToggle"
 
@@ -21,14 +21,21 @@ const StyledSidebar = styled.aside`
   }
 
   .portrait {
-    width: 76px;
-    height: 76px;
+    width: 80px;
+    height: 80px;
     border-radius: 50%;
     object-fit: cover;
+    object-position: center top;
     margin: 0 0 1.5rem;
     display: block;
-    outline: 1px solid ${colors.line};
+    background: radial-gradient(
+      circle at 50% 28%,
+      ${accentTint("34%")},
+      ${accentTint("10%")} 72%
+    );
+    outline: 1px solid ${accentTint("55%")};
     outline-offset: 4px;
+    box-shadow: 0 10px 24px -10px ${accentTint("45%")};
   }
 
   .theme-toggle {
