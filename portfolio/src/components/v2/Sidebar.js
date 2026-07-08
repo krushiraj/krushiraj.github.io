@@ -193,8 +193,8 @@ const Sidebar = ({ activeId }) => (
         </a>
       </p>
       <p className="tagline">
-        I build search systems at 230M-document scale, developer tools people
-        actually enjoy, and AI-native products.
+        I design and scale backend systems, ship developer tools people
+        actually enjoy, and build AI-native products end to end.
       </p>
 
       <nav aria-label="Section navigation">

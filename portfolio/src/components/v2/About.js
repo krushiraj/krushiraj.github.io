@@ -69,10 +69,10 @@ const StyledAbout = styled.div`
 `
 
 const stats = [
-  { value: <>230M<em>+</em></>, caption: "documents in the search corpus I own" },
-  { value: <>10s → <em>&lt;1s</em></>, caption: "p99 search latency after my redesign" },
-  { value: <>300GB<em>+</em></>, caption: "of text ingested monthly by my pipelines" },
-  { value: <>6<em>+</em> yrs</>, caption: "building production software" },
+  { value: <>6<em>+</em> yrs</>, caption: "shipping production software" },
+  { value: <>Full<em>&#8288;-&#8288;</em>stack</>, caption: "frontend, backend, data & infra" },
+  { value: <>End<em>&#8288;-&#8288;</em>to<em>&#8288;-&#8288;</em>end</>, caption: "design, ship, run, and own it" },
+  { value: <>AI<em>&#8288;-&#8288;</em>native</>, caption: "MCP servers, agents & guardrails" },
 ]
 
 const About = () => (
@@ -80,20 +80,20 @@ const About = () => (
     <Reveal>
       <StyledAbout>
         <p>
-          I&rsquo;m a developer, geek, and enthusiast who loves solving hard
-          problems and fixing things with technology. Since 2020 I&rsquo;ve
-          been at <strong>Paperpile</strong>, where I&rsquo;m the sole engineer
-          behind the internal academic search platform &mdash; a{" "}
-          <strong>230M+ document system</strong> I design, build, and operate
-          end to end.
+          I&rsquo;m a senior full-stack engineer who loves solving hard problems
+          and fixing things with technology. I own products{" "}
+          <strong>end to end</strong> &mdash; React and Next.js frontends, Node
+          and Python services, and the search, data, and infrastructure
+          underneath &mdash; and I care as much about how a system behaves in
+          production as how it&rsquo;s built.
         </p>
         <p>
-          My happy place is the full stack in its widest sense: React
-          frontends, Node and Python services, search and data infrastructure,
-          CI/CD, and lately <strong>AI-native tooling</strong> &mdash; MCP
-          servers, agent harnesses, and guardrails that keep LLMs honest.
-          I ship open-source developer tools on the side and write about what
-          I learn <Link to="/writings/">on my blog</Link>.
+          Since 2020 I&rsquo;ve been building at <strong>Paperpile</strong>,
+          currently as the sole engineer behind its internal academic search
+          platform. A lot of my work lately is <strong>AI-native</strong> &mdash;
+          MCP servers, agent harnesses, and guardrails that keep LLMs honest. I
+          ship open-source developer tools on the side and write about what I
+          learn <Link to="/writings/">on my blog</Link>.
         </p>
         <div className="stats">
           {stats.map(({ value, caption }, i) => (
