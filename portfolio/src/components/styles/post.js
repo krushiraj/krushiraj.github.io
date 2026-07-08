@@ -395,12 +395,12 @@ export const StyledPost = styled.div`
   h3 {
     margin: 0;
     a {
-      color: rgba(255, 255, 255, 0.7);
+      color: ${colors.headings};
     }
 
     &:hover {
       a {
-        color: rgba(255, 255, 255, 1);
+        color: ${colors.accent};
       }
     }
   }
