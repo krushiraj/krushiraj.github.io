@@ -5,7 +5,11 @@ export const StyledLayout = styled.div`
   margin-left: auto;
   margin-right: auto;
   max-width: ${rhythm(24)};
-  padding: 0 ${rhythm(1 / 2)};
+  padding: ${rhythm(2.5)} ${rhythm(1 / 2)} 0;
+
+  @media (max-width: 640px) {
+    padding-top: ${rhythm(3.5)};
+  }
 `
 
 export const StyledCrumb = styled.h2`

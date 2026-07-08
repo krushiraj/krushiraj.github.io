@@ -11,6 +11,8 @@ const skillGroups = [
       { name: "JavaScript", src: "/javascript.svg" },
       { name: "Python", src: "/python.svg" },
       { name: "Java", src: "/java.svg" },
+      { name: "C#", src: "/c-sharp.svg" },
+      { name: "C", src: "/c.svg" },
     ],
   },
   {
