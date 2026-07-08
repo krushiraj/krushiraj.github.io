@@ -68,8 +68,15 @@ const StyledAbout = styled.div`
   }
 `
 
+// First full-time role (NCR, Jul 2019). Years of experience are derived
+// from this so the number stays current without manual edits.
+const CAREER_START = new Date("2019-07-01")
+const yearsOfExperience = Math.floor(
+  (Date.now() - CAREER_START.getTime()) / (365.25 * 24 * 60 * 60 * 1000)
+)
+
 const stats = [
-  { value: <>7<em>+</em> yrs</>, caption: "shipping production software" },
+  { value: <>{yearsOfExperience}<em>+</em> yrs</>, caption: "shipping production software" },
   { value: <>Full<em>&#8288;-&#8288;</em>stack</>, caption: "frontend, backend, data & infra" },
   { value: <>End<em>&#8288;-&#8288;</em>to<em>&#8288;-&#8288;</em>end</>, caption: "design, ship, run, and own it" },
   { value: <>AI<em>&#8288;-&#8288;</em>native</>, caption: "MCP servers, agents & guardrails" },
