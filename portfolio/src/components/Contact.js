@@ -65,7 +65,7 @@ class Resume extends React.Component {
         <a
           target="_blank"
           rel="noopener noreferrer"
-          href={this.withPrefix("Tex")}
+          href={this.withPrefix("")}
         >
           here
         </a>.
