@@ -91,13 +91,17 @@ const StyledEntry = styled.article`
     margin-bottom: 0.6rem;
 
     img {
-      height: 34px;
-      width: 34px;
+      height: 38px;
+      width: 38px;
       object-fit: contain;
       margin: 0;
-      background: ${colors.paperBright};
-      border-radius: 8px;
-      padding: 4px;
+      /* Brand logos are dark/colored artwork on transparent, so give them a
+         fixed light chip in both themes (not a theme token — that inverted
+         to black in light mode). */
+      background: #ffffff;
+      border: 1px solid rgba(20, 17, 12, 0.1);
+      border-radius: 9px;
+      padding: 5px;
     }
 
     h3 {
