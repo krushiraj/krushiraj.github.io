@@ -3,7 +3,7 @@ import { graphql } from "gatsby"
 import styled from "styled-components"
 
 import SEO from "../components/SEO"
-import { GlobalStyle, colors } from "../utils/theme"
+import { GlobalStyle, colors, accentTint } from "../utils/theme"
 import {
   Fonts,
   Sidebar,
@@ -44,19 +44,19 @@ const Page = styled.div`
   position: relative;
   min-height: 100vh;
 
-  /* atmosphere: vermillion glow top-left + faint grain everywhere */
+  /* atmosphere: accent glow top-left + bottom-right, plus faint grain */
   &:before {
     content: "";
     position: fixed;
     inset: 0;
     background: radial-gradient(
         60rem 40rem at 12% -5%,
-        rgba(255, 74, 47, 0.07),
+        ${accentTint("9%")},
         transparent 60%
       ),
       radial-gradient(
         50rem 35rem at 95% 110%,
-        rgba(255, 74, 47, 0.05),
+        ${accentTint("6%")},
         transparent 55%
       );
     pointer-events: none;

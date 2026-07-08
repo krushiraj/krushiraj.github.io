@@ -2,7 +2,7 @@ import React from "react"
 import { StaticQuery, graphql, Link } from "gatsby"
 import Img from "gatsby-image"
 import styled from "styled-components"
-import { colors, fonts } from "../../utils/theme"
+import { colors, fonts, accentTint } from "../../utils/theme"
 import { Section, Reveal, Meta, media } from "./shared"
 
 const StyledWorks = styled.div`
@@ -80,8 +80,8 @@ const StyledWorks = styled.div`
 
     &:hover {
       transform: translateY(-4px);
-      border-color: rgba(255, 74, 47, 0.45);
-      box-shadow: 0 18px 40px -20px rgba(0, 0, 0, 0.8);
+      border-color: ${accentTint("45%")};
+      box-shadow: 0 18px 40px -20px rgba(0, 0, 0, 0.55);
 
       h3 {
         color: ${colors.accentBright};

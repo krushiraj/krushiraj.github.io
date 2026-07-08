@@ -1,32 +1,29 @@
 import React from "react"
 import styled from "styled-components"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { colors, fonts } from "../../utils/theme"
-import { contactItems } from "../../utils/commons"
 import { media, smoothScrollToId } from "./shared"
-
-const RESUME_URL = "https://krushiraj.github.io/KrushiRajTula_Resume.pdf"
+import ThemeToggle from "./ThemeToggle"
 
 const StyledSidebar = styled.aside`
   position: sticky;
   top: 0;
   align-self: flex-start;
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  padding: 5rem 3rem 3rem 0;
+  justify-content: flex-start;
+  padding: 4rem 3rem 3rem 0;
 
   ${media.tablet} {
     position: relative;
-    height: auto;
+    min-height: auto;
     padding: 4rem 0 0;
   }
 
   .portrait {
-    width: 72px;
-    height: 72px;
-    border-radius: 18px;
+    width: 76px;
+    height: 76px;
+    border-radius: 50%;
     object-fit: cover;
     margin: 0 0 1.5rem;
     display: block;
@@ -34,13 +31,17 @@ const StyledSidebar = styled.aside`
     outline-offset: 4px;
   }
 
+  .theme-toggle {
+    margin-top: 1.75rem;
+  }
+
   h1 {
     font-family: ${fonts.display};
-    font-size: clamp(2.6rem, 4.2vw, 3.6rem);
+    font-size: clamp(2.4rem, 3.6vw, 3.1rem);
     font-weight: 580;
     letter-spacing: -0.03em;
     line-height: 1.02;
-    margin: 0 0 1rem;
+    margin: 0 0 0.9rem;
     color: ${colors.paperBright};
 
     em {
@@ -72,7 +73,7 @@ const StyledSidebar = styled.aside`
   }
 
   nav {
-    margin: 3rem 0;
+    margin: 2rem 0 0;
 
     ${media.tablet} {
       display: none;
@@ -139,72 +140,6 @@ const StyledSidebar = styled.aside`
       }
     }
   }
-
-  .bottom {
-    display: flex;
-    flex-direction: column;
-    gap: 1.4rem;
-
-    ${media.tablet} {
-      margin-top: 2rem;
-    }
-  }
-
-  .socials {
-    display: flex;
-    align-items: center;
-    gap: 1.4rem;
-
-    a {
-      color: ${colors.muted};
-      font-size: 1.05rem;
-
-      &:after {
-        display: none;
-      }
-
-      &:hover {
-        color: ${colors.paperBright};
-        transform: translateY(-2px);
-      }
-
-      transition: color 0.25s ease, transform 0.25s ease;
-    }
-  }
-
-  .resume {
-    align-self: flex-start;
-    font-family: ${fonts.mono};
-    font-size: 0.75rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: ${colors.paperBright};
-    border: 1px solid ${colors.line};
-    border-radius: 999px;
-    padding: 0.7rem 1.4rem;
-    transition: border-color 0.25s ease, background 0.25s ease,
-      color 0.25s ease;
-
-    &:after {
-      display: none;
-    }
-
-    .arrow {
-      display: inline-block;
-      margin-left: 0.5rem;
-      transition: transform 0.25s ease;
-    }
-
-    &:hover {
-      border-color: ${colors.accent};
-      background: rgba(255, 74, 47, 0.08);
-      color: ${colors.paperBright};
-
-      .arrow {
-        transform: translate(2px, -2px);
-      }
-    }
-  }
 `
 
 export const navItems = [
@@ -219,7 +154,22 @@ export const navItems = [
 const Sidebar = ({ activeId }) => (
   <StyledSidebar>
     <div>
-      <img className="portrait" src="/krushi.jpg" alt="Krushi Raj Tula" />
+      <picture>
+        <source
+          type="image/webp"
+          srcSet="/krushi-portrait-256.webp 256w, /krushi-portrait-512.webp 512w"
+          sizes="76px"
+        />
+        <img
+          className="portrait"
+          src="/krushi-portrait-256.png"
+          srcSet="/krushi-portrait-256.png 256w, /krushi-portrait-512.png 512w"
+          sizes="76px"
+          width="76"
+          height="76"
+          alt="Krushi Raj Tula"
+        />
+      </picture>
       <h1>
         Krushi Raj
         <br />
@@ -262,31 +212,8 @@ const Sidebar = ({ activeId }) => (
           ))}
         </ul>
       </nav>
-    </div>
 
-    <div className="bottom">
-      <div className="socials">
-        {contactItems.map(({ href, icon, title }) => (
-          <a
-            key={title}
-            href={href}
-            title={title}
-            aria-label={title}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <FontAwesomeIcon icon={icon} />
-          </a>
-        ))}
-      </div>
-      <a
-        className="resume"
-        href={RESUME_URL}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        View Résumé <span className="arrow">↗</span>
-      </a>
+      <ThemeToggle className="theme-toggle" />
     </div>
   </StyledSidebar>
 )

@@ -2,48 +2,53 @@ import { createGlobalStyle } from "styled-components"
 import { rhythm } from "./typography"
 
 /**
- * Redesign 2026 — "engineering editorial"
+ * Redesign 2026 — "Periwinkle Ink"
  *
- * Warm ink canvas, paper-white type, vermillion accent (a refined
- * descendant of the original #e10000 brand red).
+ * Soft indigo-periwinkle accent on a cool ink canvas, with a full
+ * light/dark theme. Every token is a CSS custom property so the theme
+ * can flip at runtime (see <ThemeToggle /> and gatsby-ssr.js) without
+ * re-rendering React — styled-components interpolate `var(--x)` and the
+ * browser resolves it against the `data-theme` on <html>.
  *
- * The legacy color keys (skyblue, yellow, goldenred, ...) are kept as
- * aliases so older styled-components (blog post styles) keep working,
- * but they now resolve into the new palette.
+ * Key trick: --accent is the *legibility-appropriate* shade per theme
+ * (bright periwinkle on dark, deep periwinkle on light) and --ink is
+ * always the opposite lightness. So "accent fill + ink text" — the
+ * contact button — stays high-contrast in both themes for free.
+ *
+ * Legacy color keys (skyblue, yellow, goldenred, ...) are kept as
+ * aliases so the older blog-post styles inherit the new theme too.
  */
-const palette = {
-  ink: "#0D0C0A",
-  inkRaised: "#161411",
-  inkOverlay: "#1E1B17",
-  line: "rgba(232, 226, 214, 0.14)",
-  lineSoft: "rgba(232, 226, 214, 0.08)",
-  paper: "#E9E3D6",
-  paperBright: "#F7F3EA",
-  muted: "#A69D8C",
-  faint: "#6E675B",
-  accent: "#FF4A2F",
-  accentBright: "#FF6A50",
-  accentDeep: "#B62E1A",
-}
+const v = name => `var(--${name})`
 
 const colors = {
   // new tokens
-  ...palette,
+  ink: v("ink"),
+  inkRaised: v("inkRaised"),
+  inkOverlay: v("inkOverlay"),
+  line: v("line"),
+  lineSoft: v("lineSoft"),
+  paper: v("paper"),
+  paperBright: v("paperBright"),
+  muted: v("muted"),
+  faint: v("faint"),
+  accent: v("accent"),
+  accentBright: v("accentBright"),
+  accentDeep: v("accentDeep"),
 
-  // legacy aliases — old keys mapped into the new palette
-  background: palette.ink,
-  text: palette.paper,
-  headings: palette.paperBright,
-  red: palette.accent,
-  blue: palette.muted,
-  skyblue: palette.accentBright,
-  green: palette.accentBright,
-  techfont: palette.paper,
-  techborder: palette.line,
-  yellow: palette.paperBright,
-  lightyellow: palette.muted,
-  palered: palette.accent,
-  goldenred: palette.muted,
+  // legacy aliases → new tokens
+  background: v("ink"),
+  text: v("paper"),
+  headings: v("paperBright"),
+  red: v("accent"),
+  blue: v("muted"),
+  skyblue: v("accentBright"),
+  green: v("accentBright"),
+  techfont: v("paper"),
+  techborder: v("line"),
+  yellow: v("paperBright"),
+  lightyellow: v("muted"),
+  palered: v("accent"),
+  goldenred: v("muted"),
 }
 
 const fonts = {
@@ -52,12 +57,47 @@ const fonts = {
   mono: `"IBM Plex Mono", "SFMono-Regular", Menlo, Consolas, monospace`,
 }
 
-/**
- * Global styles are placed here instead of gatsby-browser.js
- * because we make use of the power of styled-components
- * and can change the theme easily.
- */
+/** A translucent accent tint, theme-aware (used for glows and hovers). */
+const accentTint = pct => `color-mix(in srgb, ${colors.accent} ${pct}, transparent)`
+
 const GlobalStyle = createGlobalStyle`
+  /* ---- theme tokens: dark is the default, light overrides ---- */
+  :root, :root[data-theme="dark"] {
+    color-scheme: dark;
+    --ink: #0C0D11;
+    --inkRaised: #141621;
+    --inkOverlay: #1C1F2E;
+    --line: rgba(226, 227, 245, 0.13);
+    --lineSoft: rgba(226, 227, 245, 0.06);
+    --paper: #E4E4EE;
+    --paperBright: #F4F4FA;
+    --muted: #9B9AB0;
+    --faint: #66647C;
+    --accent: #8E97F2;
+    --accentBright: #B4BAF8;
+    --accentDeep: #5A63D8;
+  }
+
+  :root[data-theme="light"] {
+    color-scheme: light;
+    --ink: #ECECF3;
+    --inkRaised: #F7F7FC;
+    --inkOverlay: #FFFFFF;
+    --line: rgba(32, 30, 54, 0.14);
+    --lineSoft: rgba(32, 30, 54, 0.07);
+    --paper: #35333F;
+    --paperBright: #17151F;
+    --muted: #6B6982;
+    --faint: #9C9AAE;
+    --accent: #5A63D8;
+    --accentBright: #4A53C8;
+    --accentDeep: #3F47BC;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+
   body {
     background: ${colors.ink};
     color: ${colors.text};
@@ -66,6 +106,7 @@ const GlobalStyle = createGlobalStyle`
     margin: 0;
     padding: 0;
     -webkit-font-smoothing: antialiased;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 
   ::selection {
@@ -199,10 +240,10 @@ const GlobalStyle = createGlobalStyle`
   :not(pre) > code {
     border-radius: .3em;
     font-family: ${fonts.mono};
-    color: ${colors.accentBright};
+    color: ${colors.accentDeep};
     padding: .1em .3em;
     background: ${colors.inkRaised};
   }
 `
 
-export { colors, fonts, GlobalStyle }
+export { colors, fonts, accentTint, GlobalStyle }
