@@ -1,6 +1,8 @@
 import React, { useState } from "react"
 import styled from "styled-components"
-import { colors, fonts } from "../../utils/theme"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faGraduationCap } from "@fortawesome/free-solid-svg-icons"
+import { colors, fonts, accentTint } from "../../utils/theme"
 import { Section, Reveal, Meta, media } from "./shared"
 
 const experienceList = [
@@ -12,7 +14,7 @@ const experienceList = [
     type: "Full Time",
     duration: "Jan 2020 — Present",
     description:
-      "Sole developer of Paperpile's internal academic search platform, a 230M+ document system I own end to end (React/Next.js, Node/TypeScript, Python; MongoDB, Elasticsearch, PostgreSQL).",
+      "Sole developer of Paperpile's internal academic search platform, a 230M+ document system I own end to end (React/Next.js, Node/TypeScript; MongoDB, Elasticsearch, PostgreSQL).",
     highlights: [
       "Cut p99 search latency from ~10s to under 1s by redesigning indexing and query paths across Elasticsearch, MongoDB, and SQLite.",
       "Designed and maintained 10+ microservices handling millions of dynamic-payload messages, with strict retries, ordering, and idempotency.",
@@ -21,10 +23,29 @@ const experienceList = [
       "Built an MCP (Model Context Protocol) server so LLM tools verify citations against the 230M+ corpus before emitting them, a hallucination-mitigation guardrail.",
       "Built AI plugins and a test-gated harness for the parser/crawler stack, cutting a release cycle from ~2 weeks to ~2 days.",
       "Own the shared middlewares and core utilities reused across the codebase, and ported legacy code to modern TypeScript for speed and memory gains.",
-      "Cut production error rate from 10% to 2% and deploy time by 50% via CI/CD (Docker, Kubernetes); run ELK observability and own incident response.",
+      "Cut production error rate from 10% to 2% and deploy time by 50% via CI/CD (Docker, Jenkins); run ELK observability and own incident response.",
       "Built and own an internal data-management dashboard in React, plus Google Drive and OneDrive integrations and S3-backed storage.",
     ],
-    tech: ["TypeScript", "React", "Node.js", "Python", "Elasticsearch", "MongoDB", "Kubernetes"],
+    tech: [
+      "TypeScript",
+      "React",
+      "Node.js",
+      "Express",
+      "Elasticsearch",
+      "MongoDB",
+      "PostgreSQL",
+      "SQLite",
+      "Docker",
+      "Jenkins",
+      "AWS",
+      "Apify",
+    ],
+    focus: [
+      "Data pipelines",
+      "Crawlers",
+      "Parsers",
+      "Linux server management",
+    ],
   },
   {
     company: "NCR Corporation",
@@ -59,6 +80,23 @@ const experienceList = [
       "Led a team of interns building the frontend for an e-commerce site, contributing UI development while coordinating the team's output.",
     tech: ["HTML", "CSS", "JavaScript"],
   },
+  {
+    company: "Vasavi College of Engineering",
+    companyUrl: "https://www.vce.ac.in/",
+    icon: faGraduationCap,
+    role: "Adjunct Faculty & Guest Lecturer",
+    type: "Teaching · Part-time",
+    duration: "2022 — Present",
+    description:
+      "Teach and mentor IT students at my alma mater — guest lectures on full-stack development and DevOps, hands-on project reviews, and placement coaching.",
+    highlights: [
+      "Deliver guest lectures on full-stack development and DevOps (Docker, Kubernetes), with comparative backend teaching across Express.js, Django, and Java/Spring Boot.",
+      "Review student projects and advise on architecture and implementation decisions, including guiding students' RAG (Retrieval-Augmented Generation) builds.",
+      "Mentor students for placements: run mock interviews, give profile feedback, and coach problem-solving and technical skills.",
+      "Served as a judge at Tech Savishkar, a national-level hackathon hosted by the college.",
+    ],
+    focus: ["Mentoring", "Guest lectures", "Mock interviews", "Hackathon judge"],
+  },
 ]
 
 const VISIBLE_HIGHLIGHTS = 4
@@ -90,10 +128,11 @@ const StyledEntry = styled.article`
     gap: 0.9rem;
     margin-bottom: 0.6rem;
 
-    img {
+    img,
+    .logo-badge {
       height: 72px;
       width: 72px;
-      object-fit: contain;
+      flex-shrink: 0;
       margin: 0;
       /* Brand logos are dark/colored artwork on transparent, so give them a
          fixed light chip in both themes (not a theme token — that inverted
@@ -101,7 +140,23 @@ const StyledEntry = styled.article`
       background: #ffffff;
       border: 1px solid rgba(20, 17, 12, 0.1);
       border-radius: 12px;
+    }
+
+    img {
+      object-fit: contain;
       padding: 9px;
+    }
+
+    /* icon badge used when there's no brand logo (e.g. teaching role) */
+    .logo-badge {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      svg {
+        font-size: 1.9rem;
+        color: ${colors.accentDeep};
+      }
     }
 
     h3 {
@@ -202,6 +257,13 @@ const StyledEntry = styled.article`
       border-radius: 999px;
       padding: 0.25rem 0.7rem;
     }
+
+    /* domain focus areas — accent-highlighted to stand out from the stack */
+    span.focus {
+      color: ${colors.accent};
+      border-color: ${accentTint("45%")};
+      background: ${accentTint("9%")};
+    }
   }
 `
 
@@ -221,7 +283,13 @@ const Entry = ({ entry, delay }) => {
         </div>
         <div>
           <div className="head">
-            <img src={entry.imgSrc} alt={`${entry.company} logo`} />
+            {entry.imgSrc ? (
+              <img src={entry.imgSrc} alt={`${entry.company} logo`} />
+            ) : entry.icon ? (
+              <span className="logo-badge" aria-hidden="true">
+                <FontAwesomeIcon icon={entry.icon} />
+              </span>
+            ) : null}
             <div>
               <h3>{entry.role}</h3>
               <span className="company">
@@ -254,10 +322,15 @@ const Entry = ({ entry, delay }) => {
               )}
             </>
           )}
-          {entry.tech && (
+          {(entry.tech || entry.focus) && (
             <div className="tech">
-              {entry.tech.map(t => (
+              {(entry.tech || []).map(t => (
                 <span key={t}>{t}</span>
+              ))}
+              {(entry.focus || []).map(t => (
+                <span key={t} className="focus">
+                  {t}
+                </span>
               ))}
             </div>
           )}
