@@ -1,0 +1,38 @@
+---
+title: "PocketBase on Railway"
+date: "2022-07-09"
+type: "project"
+published: true
+keywords: "pocketbase,docker,railway,one-click deploy,backend,baas,self-hosting,devops,open source,go"
+description: "A Dockerized PocketBase with a one-click 'Deploy on Railway' template — one of my simplest yet most-used open-source repos."
+tags: "open-source,docker,pocketbase,railway,devops,deployment,backend"
+banner: "./banner.png"
+bannercaption: "PocketBase, one click away from a live Railway deployment"
+source: "https://github.com/krushiraj/pocketbase-docker"
+technologies: "docker,pocketbase,railway"
+---
+
+# PocketBase on Railway
+
+Back in 2022, **PocketBase** — the wonderful open-source Go backend that packs a
+database, auth, file storage, and an admin UI into a single binary — was still
+young, and getting a hosted instance running took more fiddling than it should
+have. So I wrote a tiny repo to fix that: a clean **Dockerfile**, a
+**docker-compose** setup, and a **one-click "Deploy on Railway" template**.
+
+It's one of the **simplest yet most impactful** things I've shipped — barely any
+code, but it let a lot of people go from zero to a live PocketBase backend in a
+single click. It picked up **11 stars and 5 forks** from people doing exactly
+that. It's **no longer maintained** (PocketBase has its own deployment story
+now), but it still works and the pattern holds up.
+
+## How you can use it
+
+- **One click:** hit the **Deploy on Railway** button in the repo and you get a
+  running PocketBase instance, no local setup.
+- **Docker:** `docker build --tag pocketbase . && docker run pocketbase`.
+- **Compose:** `docker-compose build && docker-compose up -d pocketbase`.
+
+It's a nice reference for anyone who wants to self-host PocketBase or understand
+how to wrap a single-binary service into a portable, one-click deployment.
+**[See the repo](https://github.com/krushiraj/pocketbase-docker).**
