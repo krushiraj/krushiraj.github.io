@@ -34,15 +34,26 @@ const Code = ({ codeString, language, ...props }) => {
         {...defaultProps}
         code={codeString}
         language={language}
-        theme={{ ...theme, plain: { backgroundColor: "#282c36" } }}
+        theme={{
+          ...theme,
+          // Keep vsDark's text color and only swap the background.
+          // Replacing `plain` wholesale dropped the color, so plain tokens
+          // inherited the page text color, which is dark-on-dark in light mode.
+          plain: { ...theme.plain, backgroundColor: "#14161F" },
+        }}
       >
         {({ className, style, tokens, getLineProps, getTokenProps }) => (
           <pre
             className={className}
             style={{
-              padding: 10,
+              padding: "1rem 1.15rem",
               overflowX: "auto",
-              fontFamily: `"Fira Code", "Inconsolata", "monospace"`,
+              borderRadius: 12,
+              border: "1px solid rgba(228, 228, 238, 0.12)",
+              fontFamily: `"IBM Plex Mono", "SFMono-Regular", Menlo, Consolas, monospace`,
+              fontSize: "0.88rem",
+              lineHeight: 1.65,
+              margin: "0 0 1.25rem",
               ...style,
             }}
           >
