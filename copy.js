@@ -16,3 +16,8 @@ filenames.forEach((filename) => {
   )
   console.log(`done copying file: ${filename}`);
 })
+
+// Disable Jekyll processing on GitHub Pages (legacy builds were timing out
+// / flaky-failing on the grown site). With .nojekyll, Pages just serves files.
+fs.writeFileSync(`${__dirname}/portfolio/public/.nojekyll`, "")
+console.log("created portfolio/public/.nojekyll")
