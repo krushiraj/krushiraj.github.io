@@ -1,342 +1,303 @@
-import React from "react"
+import React, { useMemo, useState } from "react"
 import { Link, graphql } from "gatsby"
 import styled from "styled-components"
 import QueryString from "query-string"
 
-import Layout from "../components/Layout"
-import { StyledPost, StyledSummary } from "../components/styles/post"
-import { StyledCrumb } from "../components/Layout/styles"
 import SEO from "../components/SEO"
-import { colors } from "../utils/theme"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faSearch } from "@fortawesome/free-solid-svg-icons"
-import Select from "react-select"
-import makeAnimated from "react-select/animated"
-import { rhythm } from "../utils/typography"
+import BlogShell from "../components/v2/BlogShell"
+import { colors, fonts, accentTint } from "../utils/theme"
 
-const StyledFilterSummary = styled.div`
-  display: flex;
-  align-items: left;
+const StyledIndex = styled.div`
+  .head {
+    padding: 3.5rem 0 2rem;
 
-  span {
-    border-radius: 25%;
+    h1 {
+      font-family: ${fonts.display};
+      font-size: clamp(2.4rem, 6vw, 3.4rem);
+      font-weight: 580;
+      letter-spacing: -0.03em;
+      line-height: 1.02;
+      margin: 0 0 0.9rem;
+      color: ${colors.paperBright};
+
+      em {
+        font-style: italic;
+        font-weight: 420;
+        color: ${colors.accent};
+      }
+    }
+
+    p {
+      color: ${colors.muted};
+      max-width: 52ch;
+      line-height: 1.65;
+      margin: 0;
+    }
   }
-`
 
-const StyledFilter = styled.div`
-  margin-bottom: ${rhythm(3)};
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.5rem 0 1rem;
+    border-bottom: 1px solid ${colors.line};
 
-  .text-query {
-    height: ${rhythm(1.5)};
+    .chips {
+      display: flex;
+      gap: 0.45rem;
+    }
+
+    button.chip {
+      appearance: none;
+      cursor: pointer;
+      font-family: ${fonts.mono};
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: ${colors.muted};
+      background: none;
+      border: 1px solid ${colors.line};
+      border-radius: 999px;
+      padding: 0.45rem 1rem;
+      transition: color 0.25s ease, border-color 0.25s ease,
+        background 0.25s ease;
+
+      &:hover {
+        color: ${colors.paperBright};
+        border-color: ${colors.accent};
+      }
+
+      &.on {
+        color: ${colors.accent};
+        border-color: ${accentTint("55%")};
+        background: ${accentTint("9%")};
+      }
+    }
 
     input {
-      width: 100%;
-      border-radius: 6px 0 0 6px;
+      flex: 1;
+      min-width: 200px;
+      font-family: ${fonts.mono};
+      font-size: 0.8rem;
+      color: ${colors.paper};
+      background: ${colors.inkRaised};
+      border: 1px solid ${colors.line};
+      border-radius: 999px;
+      padding: 0.55rem 1.1rem;
+      outline: none;
+      transition: border-color 0.25s ease;
+
+      &::placeholder {
+        color: ${colors.faint};
+      }
+
+      &:focus {
+        border-color: ${colors.accent};
+      }
+    }
+  }
+
+  .count {
+    font-family: ${fonts.mono};
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: ${colors.faint};
+    padding: 1rem 0 0.25rem;
+  }
+
+  a.entry {
+    display: grid;
+    grid-template-columns: 8.5rem 1fr auto;
+    gap: 1.5rem;
+    align-items: baseline;
+    padding: 1.35rem 0;
+    border-bottom: 1px solid ${colors.lineSoft};
+    color: inherit;
+
+    &:after {
+      display: none;
     }
 
-    button {
-      width: ${rhythm(1.5)};
-      background: #fff;
-      border-radius: 0 6px 6px 0;
-      // padding: calc(${rhythm(1.5)} * 0.25) 0;
+    @media (max-width: 640px) {
+      grid-template-columns: 1fr auto;
+
+      .date {
+        display: none;
+      }
     }
 
-    display: flex;
+    .date {
+      font-family: ${fonts.mono};
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: ${colors.muted};
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 1.25rem;
+      font-weight: 550;
+      letter-spacing: -0.01em;
+      color: ${colors.paperBright};
+      transition: color 0.25s ease;
+    }
+
+    .kind {
+      font-family: ${fonts.mono};
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: ${colors.accent};
+      border: 1px solid ${accentTint("40%")};
+      border-radius: 999px;
+      padding: 0.15rem 0.55rem;
+      margin-left: 0.6rem;
+      position: relative;
+      top: -2px;
+      white-space: nowrap;
+    }
+
+    .description {
+      font-size: 0.9rem;
+      line-height: 1.6;
+      color: ${colors.muted};
+      margin: 0.4rem 0 0;
+      max-width: 58ch;
+    }
+
+    .go {
+      font-family: ${fonts.mono};
+      color: ${colors.faint};
+      transition: color 0.25s ease, transform 0.25s ease;
+      justify-self: end;
+    }
+
+    &:hover {
+      h2 {
+        color: ${colors.accent};
+      }
+
+      .go {
+        color: ${colors.accent};
+        transform: translateX(4px);
+      }
+    }
+  }
+
+  .end {
+    font-family: ${fonts.mono};
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: ${colors.faint};
+    text-align: center;
+    padding: 2.5rem 0 0;
   }
 `
 
-const colourStyles = {
-  control: styles => ({ ...styles, backgroundColor: "white" }),
-  option: (styles, { data, isDisabled, isFocused, isSelected }) => {
-    return {
-      ...styles,
-      backgroundColor: isDisabled
-        ? null
-        : isSelected
-        ? colors.skyblue
-        : isFocused
-        ? colors.blue
-        : null,
-      color: isDisabled
-        ? "#ccc"
-        : isSelected
-        ? true
-          ? "white"
-          : "black"
-        : data.color,
-      cursor: isDisabled ? "not-allowed" : "default",
+const TYPE_FILTERS = [
+  { key: "all", label: "All" },
+  { key: "article", label: "Articles" },
+  { key: "project", label: "Projects" },
+]
 
-      ":active": {
-        ...styles[":active"],
-        backgroundColor: colors.green,
-      },
-    }
-  },
-  multiValue: styles => {
-    return {
-      ...styles,
-      backgroundColor: colors.text,
-    }
-  },
-  multiValueLabel: styles => ({
-    ...styles,
-    color: colors.background,
-  }),
-  multiValueRemove: styles => ({
-    ...styles,
-    color: colors.blue,
-    ":hover": {
-      backgroundColor: colors.red,
-      color: "white",
-    },
-  }),
+const initialType = search => {
+  const filters = QueryString.parse(search).filters
+  if (!filters) return "all"
+  if (String(filters).includes("project")) return "project"
+  if (String(filters).includes("article")) return "article"
+  return "all"
 }
 
-class Filter extends React.Component {
-  render() {
-    const {
-      options,
-      setQuery,
-      searchWritings,
-      select,
-      setSelection,
-    } = this.props
-    return (
-      <>
-        <StyledFilter>
-          <Select
-            closeMenuOnSelect={false}
-            components={makeAnimated()}
-            defaultValue={options.filter(
-              ({ value }) => select.indexOf(value) !== -1
-            )}
-            isMulti
-            options={options}
-            styles={colourStyles}
-            onChange={(selections, action) => {
-              const selection =
-                selections != null ? selections.map(({ value }) => value) : []
-              setSelection(selection, searchWritings)
-            }}
-          />
-          <div className="text-query">
-            <input
-              type="text"
-              name="query"
-              value={this.props.query || ""}
-              onChange={e => {
-                setQuery(e.target.value, searchWritings)
-              }}
-              onSubmit={searchWritings}
-            />
-            <button onClick={searchWritings}>
-              <FontAwesomeIcon
-                icon={faSearch}
-                style={{ margin: "auto 0", opacity: 0.3 }}
-              />
-            </button>
-          </div>
-        </StyledFilter>
-        <StyledFilterSummary></StyledFilterSummary>
-      </>
-    )
-  }
-}
-
-const BreadCrumbHeader = props => {
-  const {
-    options,
-    title,
-    showFilter,
-    data,
-    select,
-    setQuery,
-    setSelection,
-    query,
-    searchWritings,
-  } = props
-  return (
-    <>
-      <StyledCrumb>
-        <span>
-          <Link to={"/"}>{title}</Link>
-        </span>{" "}
-        <span>{"/"}</span>
-        <span>
-          <Link to={"/writings"}>{"writings"}</Link>
-        </span>
-        <span>{">"}</span>
-      </StyledCrumb>
-      {showFilter && (
-        <Filter
-          options={options}
-          data={data}
-          select={select}
-          searchWritings={searchWritings}
-          setQuery={setQuery}
-          setSelection={setSelection}
-          query={query}
-        />
-      )}
-    </>
+const matchesQuery = (node, query) => {
+  if (!query) return true
+  const q = query.toLowerCase()
+  const fm = node.frontmatter
+  return ["title", "description", "tags", "technologies", "keywords"].some(
+    key => fm[key] && String(fm[key]).toLowerCase().includes(q)
   )
 }
 
-export default class WritingsIndex extends React.Component {
-  state = {
-    posts: [],
-    query: "",
-    selection: [],
-    select: ["title", "description"],
-  }
+const WritingsIndex = ({ data, location }) => {
+  const [type, setType] = useState(() => initialType(location.search))
+  const [query, setQuery] = useState("")
 
-  checkForKeyword = ({ node }) => {
-    const typeSelection =
-      this.state.selection.indexOf("projects") !== -1
-        ? "project"
-        : this.state.selection.indexOf("articles") !== -1
-          ? "article"
-          : ""
-    const type = node.frontmatter.type
-    const typeCheck = typeSelection !== "" ? typeSelection === type : true
+  const posts = useMemo(
+    () =>
+      data.allMdx.edges.filter(({ node }) => {
+        const typeOk = type === "all" || node.frontmatter.type === type
+        return typeOk && matchesQuery(node, query)
+      }),
+    [data, type, query]
+  )
 
-    if (this.state.query === "") return typeCheck
-    for (let key of this.state.selection) {
-      if (!["articles", "projects"].includes(key)) {
-        for (let query of this.state.query.split(/[\s,.]+/)) {
-          const matchesSubStr =
-            node.frontmatter.hasOwnProperty(key) &&
-            node.frontmatter[key].toLowerCase().search(query.toLowerCase()) !==
-              -1
-          const subStrCheck = matchesSubStr && typeCheck
-          if (subStrCheck) return true
-        }
-      }
-    }
-    return false
-  }
+  return (
+    <BlogShell crumbs={[{ label: "Writings" }]}>
+      <SEO frontmatter={{ title: "Writings", slug: "/writings" }} />
+      <StyledIndex>
+        <div className="head">
+          <h1>
+            Things I <em>build &amp; write.</em>
+          </h1>
+          <p>
+            Projects I have shipped and articles on what I learn along the way,
+            from search infrastructure and dev tools to the games I make for my
+            own game nights.
+          </p>
+        </div>
 
-  getOptionsFromProps = () => {
-    return Object.getOwnPropertyNames(
-      this.props.data.allMdx.edges[0].node.frontmatter
-    )
-      .filter(val => val !== "type")
-      .map(key => ({
-        value: key,
-        label: key.charAt(0).toUpperCase() + key.slice(1),
-        color: colors.background,
-      }))
-      .concat([
-        {
-          label: "Type: Project",
-          value: "projects",
-          color: colors.background,
-        },
-        {
-          label: "Type: Article",
-          value: "articles",
-          color: colors.background,
-        },
-      ])
-  }
-
-  static getDerivedStateFromProps(props, state) {
-    let select = []
-
-    const filterOptions = QueryString.parse(props.location.search).filters
-      ? QueryString.parse(props.location.search).filters.split(",")
-      : []
-
-    for (let filter of filterOptions) {
-      if (state.select.indexOf(filter) === -1) select.push(filter)
-    }
-    return {
-      select: state.select.concat(select),
-      selection:
-        state.selection.length !== 0
-          ? state.selection
-          : state.select.concat(select),
-    }
-  }
-
-  searchWritings = () => {
-    const data = this.props.data.allMdx.edges
-    const posts = data.filter(this.checkForKeyword)
-    this.setState({ posts: posts }, () => {})
-  }
-
-  componentDidMount() {
-    this.searchWritings()
-  }
-
-  renderPosts() {
-    return this.state.posts.map(({ node }) => {
-      const title = node.frontmatter.title || node.fields.slug
-      return (
-        <StyledPost
-          key={node.fields.slug}
-          style={{
-            cursor: "pointer",
-          }}
-          onClick={() => (window.location = node.fields.slug)}
-        >
-          <div className="writing">
-            <h3>
-              <Link style={{ boxShadow: "none" }} to={node.fields.slug}>
-                {title}
-              </Link>
-            </h3>
-            <small>{node.frontmatter.date}</small>
-            <p
-              dangerouslySetInnerHTML={{
-                __html: node.frontmatter.description,
-              }}
-            />
+        <div className="controls">
+          <div className="chips">
+            {TYPE_FILTERS.map(({ key, label }) => (
+              <button
+                key={key}
+                type="button"
+                className={`chip ${type === key ? "on" : ""}`}
+                onClick={() => setType(key)}
+              >
+                {label}
+              </button>
+            ))}
           </div>
-        </StyledPost>
-      )
-    })
-  }
+          <input
+            type="search"
+            placeholder="Search title, tags, tech..."
+            value={query}
+            onChange={e => setQuery(e.target.value)}
+            aria-label="Search writings"
+          />
+        </div>
 
-  render() {
-    const { data, location } = this.props
-    const title = data.site.siteMetadata.title
-    //fetching all available options
-    const options = this.getOptionsFromProps()
-    return (
-      <Layout location={location}>
-        <SEO frontmatter={{ title: "Writings", slug: "/writings" }} />
-        <BreadCrumbHeader
-          title={title}
-          options={options}
-          data={data}
-          showFilter={
-            location.pathname === "/writings/" ||
-            location.pathname === "/writings"
-          }
-          searchWritings={this.searchWritings}
-          query={this.state.query}
-          setQuery={(query, cb) => this.setState({ query }, cb)}
-          setSelection={(selection, cb) => this.setState({ selection }, cb)}
-          select={this.state.select}
-          location={location}
-        />
-        {this.renderPosts()}
-        <hr />
-        <SummaryFooter />
-      </Layout>
-    )
-  }
+        <p className="count">
+          {posts.length} {posts.length === 1 ? "entry" : "entries"}
+        </p>
+
+        {posts.map(({ node }) => (
+          <Link className="entry" key={node.fields.slug} to={node.fields.slug}>
+            <span className="date">{node.frontmatter.date}</span>
+            <span>
+              <h2>
+                {node.frontmatter.title}
+                <span className="kind">{node.frontmatter.type}</span>
+              </h2>
+              <p className="description">{node.frontmatter.description}</p>
+            </span>
+            <span className="go">→</span>
+          </Link>
+        ))}
+
+        <p className="end">
+          That is everything for now. Check back for new entries.
+        </p>
+      </StyledIndex>
+    </BlogShell>
+  )
 }
 
-const SummaryFooter = () => (
-  <StyledSummary style={{ color: colors.goldenred }}>
-    <strong>Reached the end.</strong> That&#39;s it for now.
-    <br />
-    Checkout this place after some time, may be I&#39;ll have new content ready
-    for you.
-  </StyledSummary>
-)
+export default WritingsIndex
 
 export const pageQuery = graphql`
   query {
@@ -355,12 +316,13 @@ export const pageQuery = graphql`
             slug
           }
           frontmatter {
-            date(formatString: "MMMM DD, YYYY")
+            date(formatString: "MMM DD, YYYY")
             title
             description
             tags
             type
             technologies
+            keywords
           }
         }
       }
