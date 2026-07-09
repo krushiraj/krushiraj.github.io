@@ -19,7 +19,7 @@ const setDocumentTheme = theme => {
   try {
     localStorage.setItem("theme", theme)
   } catch (e) {
-    /* private mode / storage disabled — session-only is fine */
+    /* private mode / storage disabled - session-only is fine */
   }
 }
 

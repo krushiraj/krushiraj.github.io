@@ -20,7 +20,7 @@ import {
 
 /*
  * Subtle film-grain overlay (inline SVG turbulence, no asset needed).
- * Applied as an inline style on a dedicated element — data URIs inside
+ * Applied as an inline style on a dedicated element - data URIs inside
  * styled-components templates get mangled by stylis.
  */
 const GRAIN =

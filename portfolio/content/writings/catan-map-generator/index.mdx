@@ -7,7 +7,7 @@ keywords: "catan,board game,map generator,settlers of catan,react,typescript,pwa
 description: "A Catan board generator I built for my own game nights, complete with a face-down 'surprise mode' my group invented."
 tags: "game,board-games,catan,react,typescript,pwa,generator"
 banner: "./banner.png"
-bannercaption: "A freshly generated Catan board — resources, number tokens, and harbours"
+bannercaption: "A freshly generated Catan board, resources, number tokens, and harbours"
 source: "https://catan-map-gen.vercel.app"
 technologies: "react,typescript,game"
 ---
@@ -15,7 +15,7 @@ technologies: "react,typescript,game"
 # Catan Map Generator
 
 My group plays physical **Catan** almost every week, and setting up the board by
-hand gets old fast — shuffling tiles, laying number tokens, arguing about whether
+hand gets old fast, shuffling tiles, laying number tokens, arguing about whether
 the last map was "fair." The existing generator apps never quite matched how we
 like to play, so I built my own.
 
@@ -26,14 +26,14 @@ harbours, with optional constraints like **"no same resources touching"** and
 **"no same numbers touching"** for a more balanced game. You can also mark a
 scarce resource when you want a deliberately lopsided, trade-heavy round.
 
-The part I'm proudest of is **Surprise Mode** — a variant my group actually
+The part I'm proudest of is **Surprise Mode**, a variant my group actually
 invented. Every tile is placed **face down**, so you settle *before* you know
 what you're settling on. It flips the whole game toward reading your opponents
 and trading, with a genuinely fun reveal once the first roads go down.
 
 ## How you can use it
 
-- Open it at your next game night and hit **Generate Map** — no setup, no login.
+- Open it at your next game night and hit **Generate Map**, no setup, no login.
 - Turn on the balance constraints if your table likes fair starts, or a scarce
   resource if you want chaos.
 - Try **Surprise Mode** for a completely different, strategy-first way to play
@@ -44,9 +44,9 @@ here](https://catan-map-gen.vercel.app).**
 
 ## A note on how it was built
 
-I wrote the map-generation algorithm by hand — it's the kind of constraint logic
+I wrote the map-generation algorithm by hand, it's the kind of constraint logic
 early AI assistants couldn't get right for my taste. Once the engine worked (on a
 deliberately ugly UI), I handed the **entire UI/UX redesign to AI** with a full
 spec, since interface work is where those models are strongest. The visible
-result is the polished, cross-device version linked above — a nice example of
+result is the polished, cross-device version linked above, a nice example of
 delegating the right layer while keeping the core logic mine.

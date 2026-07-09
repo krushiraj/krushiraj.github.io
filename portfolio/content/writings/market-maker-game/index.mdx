@@ -1,0 +1,39 @@
+---
+title: "Market Maker Game"
+date: "2025-06-02"
+type: "project"
+published: true
+keywords: "market maker,stock trading game,board game,multiplayer,web game,nextjs,supabase,realtime,trading,ipo"
+description: "A multiplayer stock-trading game I designed as a board game and then turned into a real-time web app."
+tags: "game,board-games,multiplayer,nextjs,supabase,realtime"
+banner: "./banner.png"
+bannercaption: "Trade through ten rounds of a live, news-driven market"
+source: "https://github.com/krushiraj/market-maker-game"
+technologies: "nextjs,react,typescript,supabase"
+---
+
+# Market Maker Game
+
+I have wanted to design my own board games for a while, and this is the one I
+took the furthest. It started as a tabletop idea about trading in a live market,
+and it worked well enough with friends that I decided to build it into a proper
+web app so we could play it online.
+
+The game puts 2 to 8 players into the same market for ten rounds. You buy and
+sell stocks in real time, news events swing the prices around, and influence
+cards let you nudge the market in your favour. There is an IPO phase at the
+start, an order book so trades actually match against each other, short selling
+and margin for the braver players, and a few difficulty modes so it works for
+first-timers and for people who take it too seriously (my friends).
+
+Under the hood it is a Next.js and React app with Supabase for the database and
+real-time updates, which is what keeps everyone's board in sync as trades and
+news land. Getting the real-time trading and scoring to stay consistent across
+players was the fun, hard part.
+
+## How you can use it
+
+It is built to be played with a group. Everyone joins the same room with a code,
+and you trade your way through the rounds together. The code and design docs are
+on [GitHub](https://github.com/krushiraj/market-maker-game) if you want to see
+how it runs or run it yourself.

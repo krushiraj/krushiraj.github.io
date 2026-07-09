@@ -2,18 +2,18 @@ import { createGlobalStyle } from "styled-components"
 import { rhythm } from "./typography"
 
 /**
- * Redesign 2026 — "Periwinkle Ink"
+ * Redesign 2026 - "Periwinkle Ink"
  *
  * Soft indigo-periwinkle accent on a cool ink canvas, with a full
  * light/dark theme. Every token is a CSS custom property so the theme
  * can flip at runtime (see <ThemeToggle /> and gatsby-ssr.js) without
- * re-rendering React — styled-components interpolate `var(--x)` and the
+ * re-rendering React - styled-components interpolate `var(--x)` and the
  * browser resolves it against the `data-theme` on <html>.
  *
  * Key trick: --accent is the *legibility-appropriate* shade per theme
  * (bright periwinkle on dark, deep periwinkle on light) and --ink is
- * always the opposite lightness. So "accent fill + ink text" — the
- * contact button — stays high-contrast in both themes for free.
+ * always the opposite lightness. So "accent fill + ink text" - the
+ * contact button - stays high-contrast in both themes for free.
  *
  * Legacy color keys (skyblue, yellow, goldenred, ...) are kept as
  * aliases so the older blog-post styles inherit the new theme too.

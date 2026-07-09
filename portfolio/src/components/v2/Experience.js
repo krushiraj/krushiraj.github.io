@@ -12,7 +12,7 @@ const experienceList = [
     imgSrc: "/paperpile-logo.png",
     role: "Full-Stack Engineer",
     type: "Full Time",
-    duration: "Jan 2020 — Present",
+    duration: "Jan 2020 - Present",
     description:
       "Sole developer of Paperpile's internal academic search platform, a 230M+ document system I own end to end (React/Next.js, Node/TypeScript; MongoDB, Elasticsearch, PostgreSQL).",
     highlights: [
@@ -53,7 +53,7 @@ const experienceList = [
     imgSrc: "/NCR-logo.png",
     role: "Software Developer",
     type: "Full Time",
-    duration: "Jul 2019 — Dec 2019",
+    duration: "Jul 2019 - Dec 2019",
     description:
       "Built the Content Management and Advertising module for ATM machines and cut ad initial-load latency from ~2 minutes to under 30 seconds on constrained, low-bandwidth hardware; root-caused a production defect blocking a major bank chain's ads.",
     tech: ["Java", "JavaScript"],
@@ -64,7 +64,7 @@ const experienceList = [
     imgSrc: "/servicenow-logo.png",
     role: "Software Engineer",
     type: "Internship",
-    duration: "Jan 2019 — Jun 2019",
+    duration: "Jan 2019 - Jun 2019",
     description:
       "Full-stack developer with a Seismic frontend on the ServiceNow platform. Took a use case from design and analysis through prototype to a fully functional shipped feature.",
     tech: ["JavaScript", "ServiceNow"],
@@ -75,7 +75,7 @@ const experienceList = [
     imgSrc: "/verzeo-logo.png",
     role: "UI Developer · Interns' Team Lead",
     type: "Internship · Remote",
-    duration: "May 2018 — Jun 2018",
+    duration: "May 2018 - Jun 2018",
     description:
       "Led a team of interns building the frontend for an e-commerce site, contributing UI development while coordinating the team's output.",
     tech: ["HTML", "CSS", "JavaScript"],
@@ -86,9 +86,9 @@ const experienceList = [
     icon: faGraduationCap,
     role: "Adjunct Faculty & Guest Lecturer",
     type: "Teaching · Part-time",
-    duration: "2022 — Present",
+    duration: "2022 - Present",
     description:
-      "Teach and mentor IT students at my alma mater — guest lectures on full-stack development and DevOps, hands-on project reviews, and placement coaching.",
+      "Teach and mentor IT students at my alma mater, with guest lectures on full-stack development and DevOps, hands-on project reviews, and placement coaching.",
     highlights: [
       "Deliver guest lectures on full-stack development and DevOps (Docker, Kubernetes), with comparative backend teaching across Express.js, Django, and Java/Spring Boot.",
       "Review student projects and advise on architecture and implementation decisions, including guiding students' RAG (Retrieval-Augmented Generation) builds.",
@@ -135,7 +135,7 @@ const StyledEntry = styled.article`
       flex-shrink: 0;
       margin: 0;
       /* Brand logos are dark/colored artwork on transparent, so give them a
-         fixed light chip in both themes (not a theme token — that inverted
+         fixed light chip in both themes (not a theme token - that inverted
          to black in light mode). */
       background: #ffffff;
       border: 1px solid rgba(20, 17, 12, 0.1);
@@ -258,7 +258,7 @@ const StyledEntry = styled.article`
       padding: 0.25rem 0.7rem;
     }
 
-    /* domain focus areas — accent-highlighted to stand out from the stack */
+    /* domain focus areas - accent-highlighted to stand out from the stack */
     span.focus {
       color: ${colors.accent};
       border-color: ${accentTint("45%")};

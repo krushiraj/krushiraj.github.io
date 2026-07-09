@@ -63,7 +63,7 @@ const StyledTerminalLink = styled.a`
 const TerminalLink = () => (
   <StyledTerminalLink
     href="https://krushiraj.github.io/mini-terminal/"
-    title="Open Mini-Terminal — a browser terminal I built"
+    title="Open Mini-Terminal, a browser terminal I built"
   >
     <span className="prompt">$</span> ./mini-terminal
     <span className="cursor" />

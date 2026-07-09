@@ -28,7 +28,7 @@ const Footer = () => (
   <StyledFooter>
     <p>
       © {new Date().getFullYear()} Krushi Raj Tula · Designed &amp; built by
-      me — and it&rsquo;s{" "}
+      me, and it&rsquo;s{" "}
       <a
         className="underline"
         href="https://github.com/krushiraj/krushiraj.github.io"

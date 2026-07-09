@@ -1,0 +1,51 @@
+---
+title: "C++ Speed in Node.js (N-API)"
+date: "2023-02-08"
+type: "project"
+published: true
+keywords: "n-api,napi,node.js,c++,native addons,bindings,performance,express,tech talk,fast server"
+description: "A tech talk and template exploring how to call fast C++ from Node.js through N-API, so time-sensitive work runs at native speed while keeping Node's event loop."
+tags: "node,c++,napi,performance,express,tech-talk"
+banner: "./banner.png"
+bannercaption: "Same algorithm, native speed, called straight from Node"
+technologies: "nodejs,cpp,napi,express"
+---
+
+import RepoCards from "../../../src/components/v2/RepoCards"
+
+# C++ Speed in Node.js (N-API)
+
+This started as a tech talk I wanted to give. I was running the same algorithm in
+C++ and in Node.js and could not get over the difference: the C++ version was
+blazing fast, and the Node version was significantly slower. That sent me down a
+rabbit hole, and I learned that you can write native add-ons and call C++ code
+straight from Node through N-API, which means you can hand the slow, time-sensitive
+parts to C++ and get native speed without leaving your Node app.
+
+`napi-js-cpp` is the demo I built for the talk: the same algorithm in plain
+JavaScript and in C++ via N-API, side by side, so you can actually see the gap.
+
+Then I took the idea one step further. If Node is so good at handling lots of
+connections with its event loop, what if you keep the server in Node but push the
+heavy computation down to C++? `express-napi` is the result: an Express server
+template wired up with N-API native add-ons, so you get the event-loop advantage
+for serving requests and native speed for the parts that need it.
+
+<RepoCards
+  repos={[
+    {
+      name: "napi-js-cpp",
+      url: "https://github.com/krushiraj/napi-js-cpp",
+      desc:
+        "The tech-talk demo. The same algorithm written in plain JavaScript and in C++ called through N-API, so you can see just how much faster the native version runs.",
+      tech: ["Node.js", "C++", "N-API"],
+    },
+    {
+      name: "express-napi",
+      url: "https://github.com/krushiraj/express-napi",
+      desc:
+        "A fast Express server template that keeps Node's event loop for handling requests and drops down to C++ native add-ons for the heavy, time-sensitive work.",
+      tech: ["Express", "Node.js", "C++"],
+    },
+  ]}
+/>

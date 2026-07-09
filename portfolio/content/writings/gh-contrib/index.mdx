@@ -1,0 +1,39 @@
+---
+title: "gh-contrib"
+date: "2025-11-18"
+type: "project"
+published: true
+keywords: "gh-contrib,github cli,contribution graph,terminal,open source,bug fix,sliding window,shell"
+description: "An open-source fix I made to a GitHub CLI extension that renders your contribution graph in the terminal, so it shows the correct data over a proper sliding one-year window."
+tags: "open-source,github,cli,terminal,shell"
+banner: "./banner.png"
+bannercaption: "Your contribution graph, correctly, right in the terminal"
+source: "https://github.com/krushiraj/gh-contrib"
+technologies: "shell,github-cli"
+---
+
+# gh-contrib
+
+`gh-contrib` is a neat little GitHub CLI extension that draws your contribution
+graph right in the terminal. I liked it and started using it, but I noticed the
+data it showed was off: the graph did not line up with a correct one-year window,
+so the numbers were wrong.
+
+So I dug in and fixed it. My contribution was getting the graph to show the
+correct data over a proper sliding window, so what you see in the terminal
+actually matches your real contribution history.
+
+It is a small change, but it is the kind of open-source work I enjoy: pick up a
+tool you use, find the thing that is subtly broken, and fix it for everyone else
+too.
+
+## How you can use it
+
+Install it as a `gh` extension and run it:
+
+```bash
+gh extension install krushiraj/gh-contrib
+gh contrib
+```
+
+The [repo](https://github.com/krushiraj/gh-contrib) has the details and the fix.

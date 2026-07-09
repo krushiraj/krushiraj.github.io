@@ -1,0 +1,63 @@
+---
+title: "Teaching & Tutorial Repos"
+date: "2025-03-27"
+type: "project"
+published: true
+keywords: "teaching,tutorials,docker,kubernetes,react,nodejs,mern,spring boot,mongodb,vasavi,full stack,course,students"
+description: "A collection of hands-on tutorial and course repos I built for my guest lectures and the Full-Stack Development course I teach, so students have clean, runnable material to learn from."
+tags: "teaching,tutorial,docker,kubernetes,react,nodejs,spring-boot,full-stack"
+banner: "./banner.png"
+bannercaption: "The teaching stack, Docker, Kubernetes, React, Node.js, and Spring Boot"
+technologies: "docker,kubernetes,react,nodejs,spring-boot,mongodb"
+---
+
+import RepoCards from "../../../src/components/v2/RepoCards"
+
+# Teaching & Tutorial Repos
+
+These come out of the [full-stack course and guest lectures I teach](/#experience) at Vasavi College of Engineering. I build small, focused repositories so students have **clean, runnable material to learn from and refer
+back to**, not just slides, but working code they can clone, run, and tinker
+with. Each one is scoped to a topic and written to be read in order.
+
+<RepoCards
+  repos={[
+    {
+      name: "docker-k8s-demo",
+      url: "https://github.com/krushiraj/docker-k8s-demo",
+      desc:
+        "Hands-on Docker & Kubernetes, concept notes, end-to-end walkthroughs (Docker on EC2, Kubernetes on minikube), ready-to-apply manifests (Deployments, HPA autoscaling, self-healing probes), and Marp slide decks.",
+      tech: ["Docker", "Kubernetes", "AWS"],
+    },
+    {
+      name: "spring-boot-demo",
+      url: "https://github.com/krushiraj/spring-boot-demo",
+      desc:
+        "The full course-resource repo for the Vasavi Full-Stack Development course, Spring Boot, React, Node.js, and MongoDB, with theory notes, lab experiments, and runnable code examples.",
+      tech: ["Spring Boot", "Java", "React", "MongoDB"],
+    },
+    {
+      name: "mern-tutorial",
+      url: "https://github.com/krushiraj/mern-tutorial",
+      desc:
+        "A starter MERN app with separate frontend and backend, so students can run and study a full MongoDB, Express, React, and Node stack end to end.",
+      tech: ["MongoDB", "Express", "React", "Node.js"],
+    },
+    {
+      name: "react-tutorial",
+      url: "https://github.com/krushiraj/react-tutorial",
+      desc:
+        "A lesson-by-lesson React course: components, props & state, conditional rendering, event handling, and routing, from JSX basics to setting up your own project.",
+      tech: ["React", "JSX", "Webpack"],
+    },
+    {
+      name: "nodejs-basics",
+      url: "https://github.com/krushiraj/nodejs-basics",
+      desc:
+        "Node.js fundamentals with runnable examples, HTTP servers, Express, and talking to MongoDB: the building blocks before the frameworks.",
+      tech: ["Node.js", "Express", "MongoDB"],
+    },
+  ]}
+/>
+
+Each repo is public, feel free to clone them, and if you're a student (or just
+learning), start at the README and work top to bottom.

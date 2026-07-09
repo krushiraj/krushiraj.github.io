@@ -1,0 +1,42 @@
+---
+title: "sshmux"
+date: "2021-01-12"
+type: "project"
+published: true
+keywords: "sshmux,ssh,tmux,persistent sessions,remote,ec2,nas,homebrew,shell,cli,devtools"
+description: "A tiny tool that gives me persistent SSH sessions using tmux, so my connections to remote machines survive drops and long-running jobs keep going."
+tags: "open-source,cli,ssh,tmux,homebrew,shell"
+banner: "./banner.png"
+bannercaption: "sshmux host, and the connection just stays alive"
+source: "https://github.com/krushiraj/sshmux"
+technologies: "shell,tmux,ssh"
+---
+
+# sshmux
+
+I do a lot of my work on remote machines: EC2 boxes, my NAS, and whatever else I
+happen to be SSH'd into. The problem was the connection dropping on me. Between
+flaky wifi and my router's dynamic routing, a long-running task would die halfway
+through just because SSH lost the link, and that got old fast.
+
+Then I started using tmux on the server so sessions would survive, and somewhere
+along the way I saw someone suggest the obvious combination: why not wrap SSH and
+tmux together so the session is persistent by default? That was the whole idea
+behind sshmux.
+
+Now I can run `sshmux ec2-instance-far-away` and get a stable, long-lived session
+that reattaches itself if the connection drops. Long-running jobs keep running,
+and I stop losing work to a dropped pipe.
+
+## How you can use it
+
+Install it with Homebrew and point it at any host you SSH into:
+
+```bash
+brew tap krushiraj/sshmux
+brew install sshmux
+sshmux your-remote-host
+```
+
+It is a small shell tool, so it is easy to read and tweak if you want to. The
+[repo](https://github.com/krushiraj/sshmux) has the details.

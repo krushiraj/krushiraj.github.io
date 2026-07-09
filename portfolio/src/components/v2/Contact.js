@@ -120,7 +120,7 @@ const Contact = () => (
         </h3>
         <p>
           Whether it&rsquo;s search infrastructure, a full-stack product, or an
-          AI agent that needs guardrails &mdash; my inbox is open. I usually
+          AI agent that needs guardrails, my inbox is open. I usually
           reply within a day.
         </p>
         <div className="actions">

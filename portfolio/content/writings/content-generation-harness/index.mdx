@@ -1,0 +1,64 @@
+---
+title: "Content Generation Harness"
+date: "2026-02-08"
+type: "project"
+published: true
+keywords: "content generation,multi-agent,ai,orchestration,educational video,manim,remotion,tts,claude code,eduvid,techniches,reels,shorts"
+description: "A multi-agent harness I built that turns a single topic into a finished short-form educational video, and cut my video-making time by about 10x."
+tags: "ai,multi-agent,orchestration,video,manim,remotion,teaching"
+banner: "./banner.png"
+bannercaption: "From a topic to a finished reel, mostly on autopilot"
+technologies: "typescript,python,manim,remotion,ai"
+---
+
+import RepoCards from "../../../src/components/v2/RepoCards"
+
+# Content Generation Harness
+
+From guest-lecturing and reviewing student projects, I noticed the same thing
+over and over: students absorb core CS concepts much better in short,
+bite-sized form. I wanted to publish short educational videos regularly, but
+making them by hand ate up all my time. So I built a harness to do most of the
+work for me.
+
+It is a Claude-Code-style setup, a little ecosystem of scripts, CLI tools, and
+plugins that takes a topic and produces a finished video. Give it something like
+"Database Replication" and it will:
+
+- source good reference material on the topic,
+- draft a script tuned to the audience metrics I care about,
+- run that script through a review gate where a few sub-agents score it and keep
+  refining until the average score hits 8,
+- use two more sub-agents to decide which scene is best rendered in which tool
+  (Remotion or Manim),
+- render the scenes, generate the narration with a TTS service, and stitch
+  everything into the final cut.
+
+I also built a small video-reviewer web app for the human-in-the-loop part. I can
+click a specific pixel at a specific timestamp and leave a change note, and the
+harness reads those notes back in and acts on them. All of this cut my
+video-generation time by at least 10x, and I actually started publishing content
+instead of just meaning to.
+
+The two repos below are the pieces of it: `eduvid` is the engine (the CLI tools
+and binaries that handle TTS, rendering, and compositing), and `techniches` is
+the layer of plugins and skills that orchestrates the whole pipeline on top.
+
+<RepoCards
+  repos={[
+    {
+      name: "eduvid",
+      url: "https://github.com/krushiraj/eduvid",
+      desc:
+        "The engine. A TypeScript pipeline that turns declarative YAML scripts into videos, with TTS narration and Manim/Remotion visuals, usable from a CLI, a web UI, or as a Claude Code plugin.",
+      tech: ["TypeScript", "Manim", "Remotion", "TTS"],
+    },
+    {
+      name: "techniches",
+      url: "https://github.com/krushiraj/techniches",
+      desc:
+        "The orchestration layer. The plugins and skills that drive the multi-agent pipeline on top of eduvid, from sourcing references to the script scoring gate.",
+      tech: ["Python", "Multi-agent", "Orchestration"],
+    },
+  ]}
+/>

@@ -89,15 +89,15 @@ const About = () => (
         <p>
           I&rsquo;m a senior full-stack engineer who loves solving hard problems
           and fixing things with technology. I own products{" "}
-          <strong>end to end</strong> &mdash; React and Next.js frontends, Node
+          <strong>end to end</strong>, React and Next.js frontends, Node
           and Python services, and the search, data, and infrastructure
-          underneath &mdash; and I care as much about how a system behaves in
+          underneath, and I care as much about how a system behaves in
           production as how it&rsquo;s built.
         </p>
         <p>
           Since 2020 I&rsquo;ve been building at <strong>Paperpile</strong>,
           currently as the sole engineer behind its internal academic search
-          platform. A lot of my work lately is <strong>AI-native</strong> &mdash;
+          platform. A lot of my work lately is <strong>AI-native</strong>:
           MCP servers, agent harnesses, and guardrails that keep LLMs honest. I
           ship open-source developer tools on the side and write about what I
           learn <Link to="/writings/">on my blog</Link>.

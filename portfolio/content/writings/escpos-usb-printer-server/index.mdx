@@ -1,0 +1,36 @@
+---
+title: "ESC/POS Printer Server"
+date: "2025-02-05"
+type: "project"
+published: true
+keywords: "escpos,thermal printer,usb printer,receipt printing,node,browser,abstraction layer,pos,posix"
+description: "A small server that lets me print to a USB thermal printer straight from the browser, working around all the driver and browser headaches."
+tags: "open-source,node,hardware,thermal-printer,escpos,pos"
+banner: "./banner.png"
+bannercaption: "A clean HTTP call in, a real thermal receipt out"
+source: "https://github.com/krushiraj/escpos-usb-printer-server"
+technologies: "nodejs,escpos,usb"
+---
+
+# ESC/POS Printer Server
+
+I needed to print to a USB thermal printer (the ESC/POS kind you see at shop
+counters) from a web app, and it turned out to be a real pain. Talking to these
+printers from the browser is blocked by driver issues, permissions, and a dozen
+other complications, so there is no clean way to just send a print job.
+
+So I built a small server to sit in the middle and handle all of that. My web app
+makes a simple print call over HTTP, the server talks to the printer over USB
+using ESC/POS, and you get a proper thermal print out the other end. It hides all
+the messy hardware and driver details behind one straightforward endpoint.
+
+Right now it is wired to a fixed receipt template for my own use case, but the
+core idea is a general abstraction. The natural next step is to open the template
+up so anyone could send their own format and use it with any ESC/POS printer, not
+just mine.
+
+## How you can use it
+
+Run the server on the machine the printer is plugged into, then POST your print
+payload to it from wherever your app lives. The [repo](https://github.com/krushiraj/escpos-usb-printer-server)
+has the setup and the platform-specific USB driver notes.

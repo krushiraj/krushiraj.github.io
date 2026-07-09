@@ -1,0 +1,60 @@
+---
+title: "gist-pdf"
+date: "2025-11-20"
+type: "project"
+published: true
+keywords: "gist-pdf,github gist,pdf,rust,cli,homebrew,go,nextjs,package management,open source,developer tooling"
+description: "A tool I built to turn GitHub Gists into clean PDFs, then packaged it properly for Homebrew, APT, Cargo, and Docker."
+tags: "open-source,cli,rust,homebrew,go,developer-tooling"
+banner: "./banner.png"
+bannercaption: "brew install gist-pdf, then convert any Gist to a PDF"
+source: "https://github.com/krushiraj/gist-pdf"
+technologies: "rust,go,nextjs,docker"
+---
+
+import RepoCards from "../../../src/components/v2/RepoCards"
+
+# gist-pdf
+
+While I was writing GitHub Gists for my Docker and Kubernetes teaching notes, I
+kept wishing my students had a clean, offline copy they could read while
+preparing for exams. So I built gist-pdf, a tool that turns any GitHub Gist into
+a nicely formatted PDF.
+
+It started as a Rust CLI (with a UX I modeled on Claude Code), and then I added a
+web version too, with a Next.js frontend, a Go backend, and headless Chrome
+doing the actual rendering. Once the CLI felt solid, I wanted it to be easy to
+install, so I packaged it properly. I wrote and now maintain my own Homebrew tap
+and formula (`brew tap krushiraj/gist-pdf && brew install gist-pdf`), and I also
+shipped it via APT, Cargo, prebuilt binaries, and Docker.
+
+The distribution side is where I learned the most. Authoring my own Homebrew
+formula, an APT package, and Cargo/Docker builds for the same tool gave me a real
+feel for the whole package-management lifecycle, not just the code.
+
+## How you can use it
+
+- Install it with Homebrew: `brew tap krushiraj/gist-pdf && brew install gist-pdf`
+- Convert a Gist: `gist-pdf <gist-url> -o notes.pdf`
+- Or just use the web app if you would rather not install anything.
+
+It is open source (MIT), so feel free to poke around or use it for your own notes.
+
+<RepoCards
+  repos={[
+    {
+      name: "gist-pdf",
+      url: "https://github.com/krushiraj/gist-pdf",
+      desc:
+        "The main project. A Rust CLI plus a web app (Next.js + Go) that convert any GitHub Gist into a clean, syntax-highlighted PDF.",
+      tech: ["Rust", "Go", "Next.js", "Docker"],
+    },
+    {
+      name: "homebrew-gist-pdf",
+      url: "https://github.com/krushiraj/homebrew-gist-pdf",
+      desc:
+        "The Homebrew tap and formula I maintain for gist-pdf, so anyone on macOS can install it with a single brew command.",
+      tech: ["Homebrew", "Ruby"],
+    },
+  ]}
+/>

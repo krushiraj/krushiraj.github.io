@@ -1,0 +1,36 @@
+---
+title: "fetch-cookie"
+date: "2020-06-02"
+type: "project"
+published: true
+keywords: "fetch-cookie,open source,javascript,fetch,cookies,bug fix,contribution,node"
+description: "An open-source fix I needed for my own work: making fetch-cookie not throw the whole request away when setting a cookie fails."
+tags: "open-source,javascript,node,fetch,bug-fix"
+banner: "./banner.png"
+bannercaption: "A bad cookie should not kill the whole request"
+source: "https://github.com/krushiraj/fetch-cookie"
+technologies: "javascript,node"
+---
+
+# fetch-cookie
+
+`fetch-cookie` is a handy library that wraps a `fetch` function and handles
+cookies for you automatically, storing what comes back and sending the right ones
+on the next request. I was relying on it for something at work, and I hit a case
+that broke everything: if setting a cookie failed for any reason, the library
+would throw, and that error would take down the entire request.
+
+That was a real problem for me, so I fixed it. My contribution makes it not throw
+in that situation: when there is an error setting a cookie, it handles it
+gracefully instead of blowing up the whole request, which is the behaviour you
+actually want in production.
+
+This one mattered because it was not a toy fix. It unblocked real work I was
+doing, and it is a good example of the everyday side of open source: you depend
+on something, it has a sharp edge, so you smooth it out and send the fix back.
+
+## How you can use it
+
+It is a `fetch` decorator for automatic cookie handling in Node and the browser.
+My fork carries the fix. The [repo](https://github.com/krushiraj/fetch-cookie) has
+the details.

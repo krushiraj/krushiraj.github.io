@@ -1,0 +1,55 @@
+---
+title: "Self-Hosted Backup Tools"
+date: "2025-11-25"
+type: "project"
+published: true
+keywords: "nas,self-hosting,google takeout,google photos,snapchat memories,backup,home server,synology,qnap,python"
+description: "A few small tools I built while moving my own data off the cloud and onto my home NAS, shared for anyone else backing up Google and Snapchat exports."
+tags: "self-hosting,nas,backup,python,home-server,open-source"
+banner: "./banner.png"
+bannercaption: "Getting Google and Snapchat exports off the cloud and onto a NAS"
+technologies: "python,shell,nas"
+---
+
+import RepoCards from "../../../src/components/v2/RepoCards"
+
+# Self-Hosted Backup Tools
+
+At some point I decided to pull my data out of the various cloud accounts I was
+paying for and move it onto my own NAS at home. The exports you get from Google
+and Snapchat are a mess though, thousands of files with odd names, split ZIPs,
+and metadata scattered around. So while I was doing my own migration, I wrote a
+few small tools to make it painless, and cleaned them up so anyone else running a
+home server can use them too.
+
+They are the kind of thing I reach for when I want to actually own my data
+instead of renting space for it. Each one does one job well.
+
+<RepoCards
+  repos={[
+    {
+      name: "google-takeout-organizer",
+      url: "https://github.com/krushiraj/google-takeout-organizer",
+      desc:
+        "Takes a messy Google Takeout export and sorts your photos and videos into clean yyyy/mm folders, ready to drop onto a NAS like Synology, QNAP, or UNAS.",
+      tech: ["Python", "NAS"],
+    },
+    {
+      name: "google-photos-takeout-to-nas",
+      url: "https://github.com/krushiraj/google-photos-takeout-to-nas",
+      desc:
+        "A shell workflow for moving a Google Photos takeout straight onto a NAS, the exact path I used for my own home setup.",
+      tech: ["Shell", "NAS"],
+    },
+    {
+      name: "snapchat-memories-downloader",
+      url: "https://github.com/krushiraj/snapchat-memories-downloader",
+      desc:
+        "Downloads Snapchat memories from the HTML data export, in parallel, so thousands of them come down in minutes with progress tracking and ZIP extraction handled for you.",
+      tech: ["Python", "Parallel"],
+    },
+  ]}
+/>
+
+If you are backing up your own exports, clone whichever one fits and point it at
+your files. They are simple by design.
