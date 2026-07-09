@@ -70,11 +70,13 @@ const Page = styled.div`
     margin: 0 auto;
     padding: 0 2.5rem;
     display: grid;
-    grid-template-columns: minmax(320px, 5fr) 7fr;
+    /* minmax(0, …) so a wide child can never blow the track past the
+       viewport (the classic 1fr grid overflow on mobile) */
+    grid-template-columns: minmax(320px, 5fr) minmax(0, 7fr);
     gap: 4rem;
 
     @media (max-width: 1024px) {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
       gap: 0;
       padding: 0 1.5rem;
     }

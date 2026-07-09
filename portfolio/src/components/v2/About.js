@@ -24,7 +24,7 @@ const StyledAbout = styled.div`
 
   .stats {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 1px;
     background: ${colors.line};
     border: 1px solid ${colors.line};
@@ -33,13 +33,18 @@ const StyledAbout = styled.div`
     margin-top: 2.5rem;
 
     ${media.phone} {
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
 
   .stat {
     background: ${colors.inkRaised};
     padding: 1.3rem 1.2rem 1.1rem;
+    min-width: 0;
+
+    ${media.phone} {
+      padding: 1rem 0.9rem 0.9rem;
+    }
 
     .value {
       font-family: ${fonts.display};
@@ -48,6 +53,10 @@ const StyledAbout = styled.div`
       letter-spacing: -0.02em;
       color: ${colors.paperBright};
       display: block;
+
+      ${media.phone} {
+        font-size: 1.35rem;
+      }
 
       em {
         font-style: italic;
@@ -77,9 +86,9 @@ const yearsOfExperience = Math.floor(
 
 const stats = [
   { value: <>{yearsOfExperience}<em>+</em> yrs</>, caption: "shipping production software" },
-  { value: <>Full<em>&#8288;-&#8288;</em>stack</>, caption: "frontend, backend, data & infra" },
-  { value: <>End<em>&#8288;-&#8288;</em>to<em>&#8288;-&#8288;</em>end</>, caption: "design, ship, run, and own it" },
-  { value: <>AI<em>&#8288;-&#8288;</em>native</>, caption: "MCP servers, agents & guardrails" },
+  { value: <>Full<em>-</em>stack</>, caption: "frontend, backend, data & infra" },
+  { value: <>End<em>-</em>to<em>-</em>end</>, caption: "design, ship, run, and own it" },
+  { value: <>AI<em>-</em>native</>, caption: "MCP servers, agents & guardrails" },
 ]
 
 const About = () => (

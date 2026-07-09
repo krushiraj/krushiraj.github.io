@@ -107,6 +107,9 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
     -webkit-font-smoothing: antialiased;
     transition: background-color 0.3s ease, color 0.3s ease;
+    /* safety net against horizontal scroll on small screens; clip (not
+       hidden) so it does not break position: sticky */
+    overflow-x: clip;
   }
 
   ::selection {
