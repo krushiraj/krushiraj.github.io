@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Krushi Raj Tula - RSS Feed]]></title><description><![CDATA[Portfolio of Krushi Raj Tula. A developer, geek, enthusiast, who loves to solve problems and fix things with technology. You can read my writings here.]]></description><link>https://krushiraj.github.io</link><generator>GatsbyJS</generator><lastBuildDate>Thu, 09 Jul 2026 09:10:20 GMT</lastBuildDate><item><title><![CDATA[Content Generation Harness]]></title><description><![CDATA[Content Generation Harness From guest-lecturing and reviewing student projects, I noticed the same thing
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Krushi Raj Tula - RSS Feed]]></title><description><![CDATA[Portfolio of Krushi Raj Tula. A developer, geek, enthusiast, who loves to solve problems and fix things with technology. You can read my writings here.]]></description><link>https://krushiraj.github.io</link><generator>GatsbyJS</generator><lastBuildDate>Thu, 09 Jul 2026 09:12:24 GMT</lastBuildDate><item><title><![CDATA[Content Generation Harness]]></title><description><![CDATA[Content Generation Harness From guest-lecturing and reviewing student projects, I noticed the same thing
 over and over: students absorb core…]]></description><link>https://krushiraj.github.io/writings/content-generation-harness/</link><guid isPermaLink="true">https://krushiraj.github.io/writings/content-generation-harness/</guid><pubDate>Sun, 08 Feb 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;Content Generation Harness&lt;/h1&gt;&lt;p&gt;From guest-lecturing and reviewing student projects, I noticed the same thing
 over and over: students absorb core CS concepts much better in short,
 bite-sized form. I wanted to publish short educational videos regularly, but
@@ -501,4 +501,17 @@ produced desktop &lt;strong&gt;EXE&lt;/strong&gt; builds. Along the way I learne
 multi-target distribution years before either was part of my day job.&lt;/p&gt;&lt;h2&gt;How you can use it&lt;/h2&gt;&lt;p&gt;It’s an arcade game, pick it up for a quick, reflex-testing run. The Play Store
 listing was later unlisted (I stopped keeping the SDK/APK updated), but the app
 is &lt;strong&gt;&lt;a href=&quot;https://apkpure.com/rapid-roll-reloaded/com.KrushiRaj.RapidRoll&quot;&gt;archived on APKPure&lt;/a&gt;&lt;/strong&gt;
-under the package &lt;code&gt;com.KrushiRaj.RapidRoll&lt;/code&gt; if you want to try the original.&lt;/p&gt;</content:encoded></item></channel></rss>
+under the package &lt;code&gt;com.KrushiRaj.RapidRoll&lt;/code&gt; if you want to try the original.&lt;/p&gt;</content:encoded></item><item><title><![CDATA[IPL Auction]]></title><description><![CDATA[IPL Auction This is one of the earliest things I built, for a game we ran at our college tech
+fest. The game is an IPL-style player auction…]]></description><link>https://krushiraj.github.io/writings/ipl-auction/</link><guid isPermaLink="true">https://krushiraj.github.io/writings/ipl-auction/</guid><pubDate>Tue, 31 May 2016 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;IPL Auction&lt;/h1&gt;&lt;p&gt;This is one of the earliest things I built, for a game we ran at our college tech
+fest. The game is an IPL-style player auction: each participant claims a team, and
+then everyone takes part in an auction to buy players. Every player has their own
+ratings and rankings, and once the auction is done, the team that ended up with
+the best combined player ratings and stats wins.&lt;/p&gt;&lt;p&gt;The catch is that running an auction like that by hand gets messy fast, tracking
+bids, budgets, who bought whom, and tallying up ratings at the end. So this is not
+really a game app itself, it is a companion tool that runs the auction for you and
+keeps the whole thing smooth and easy to manage. It handles the bidding, keeps
+score, and works out the winning squad so the people running the event can just
+focus on the fun part.&lt;/p&gt;&lt;p&gt;It is a simple project and an old one, but it did its job at the fest and people
+had a great time with it.&lt;/p&gt;&lt;h2&gt;How you can use it&lt;/h2&gt;&lt;p&gt;It is meant to sit alongside a live auction event and manage it. The
+&lt;a href=&quot;https://github.com/krushiraj/IPL-Auction&quot;&gt;repo&lt;/a&gt; has the code if you want to run
+your own auction night or see how it works.&lt;/p&gt;</content:encoded></item></channel></rss>
