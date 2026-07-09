@@ -1,0 +1,44 @@
+---
+title: "Exploring How Systems Work"
+date: "2018-07-09"
+type: "project"
+published: true
+keywords: "systems,compiler,database,sqlite,query engine,multithreading,concurrency,mission rnd,c++,learning,internals"
+description: "A college-days deep dive into how big systems actually work under the hood: I built a small compiler, a SQLite-like database, and explored multithreading, just to understand the internals."
+tags: "learning,systems,compiler,database,concurrency,cpp"
+banner: "./banner.png"
+bannercaption: "Building small versions of big systems to see how they really work"
+source: "https://github.com/krushiraj/my-work-on-systems"
+technologies: "cpp,compiler,database,concurrency"
+---
+
+# Exploring How Systems Work
+
+During my college days I got really curious about how the bigger systems we all
+use actually work, and why they are built the way they are. A lot of this
+happened as part of a team activity at the Mission R&D bootcamp, where instead of
+just reading about these systems, we tried building small versions of them
+ourselves.
+
+That turned into a few different experiments:
+
+- We built a **compiler** and worked through how a basic compiler goes from source
+  code to something runnable, so parsing and code generation stopped being magic.
+- We built a **SQLite-like database** to understand what is actually happening
+  inside one: how the query engine works, how data gets stored on disk and read
+  back, and the general internals of a database.
+- We explored **multithreading**, and got a real feel for how powerful it is for
+  doing things concurrently, and how genuinely tricky it is to get right.
+
+None of these were meant to be products. They were pure learning and
+experimentation, and building the small versions taught me far more about how the
+real ones work than any amount of reading would have. A lot of the intuition I
+still use for reasoning about performance, storage, and concurrency started here.
+
+## How you can use it
+
+It is organized as a set of explorations (a compiler, a database, a filesystem,
+and multithreading experiments), so it is a decent place to poke around if you
+are curious about systems internals. The
+[repo](https://github.com/krushiraj/my-work-on-systems) has each piece in its own
+folder.
