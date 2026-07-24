@@ -1,0 +1,64 @@
+---
+title: "Fibozzle, in Rust"
+date: "2026-07-15"
+type: "project"
+published: true
+keywords: "fibozzle,rust,ratatui,tui,terminal game,2048,fibonacci,homebrew,crossterm,learning rust"
+description: "A Rust remake of Fibbozle, my old C console game — 2048 where tiles merge along the Fibonacci series — rebuilt as a full Ratatui TUI with saves, undo, and a leaderboard, and shipped on Homebrew."
+tags: "game,rust,terminal,tui,homebrew,learning"
+banner: "./banner.png"
+bannercaption: "The old C game, reborn as a proper Rust TUI"
+source: "https://github.com/krushiraj/fibozzle-rust"
+technologies: "rust,game"
+---
+
+# Fibozzle, in Rust
+
+Back in 2018 I wrote [Fibbozle](/writings/fibbozle/), a console game in C that
+plays like 2048 except tiles merge along the Fibonacci series — a 2 and a 3 make
+a 5, a 5 and an 8 make a 13. It was my first proper terminal project, and I have
+a soft spot for it.
+
+In 2026 I wanted to learn Rust, and the best way I know to learn a language is
+to rebuild something I already understand completely. So Fibozzle became my Rust
+project: same game at its core, but this time built the way I'd build it today
+instead of the way I could manage back then.
+
+## What it became
+
+The remake grew well past the original. It's a full
+[Ratatui](https://ratatui.rs) TUI now, not just a redrawn grid:
+
+- A welcome menu with **New Game** (pick a player name and any board size from
+  2x2 up to 8x8), **Load Game**, and **High Scores**.
+- 2048-style **colored tiles** that shift through the palette as values climb.
+- **Undo** for up to five moves, and **save/resume** — games are written to the
+  platform data directory as compact binary files with an integrity checksum, so
+  a casually edited save is detected and skipped on load.
+- A **leaderboard** that ranks by highest Fibonacci tile reached, tie-broken by
+  fewest moves, keeping the top 10 per board size.
+
+The game logic itself was the part I was most careful with. All movement runs
+through a single shared `shift_vector` routine with slide-and-merge semantics,
+backed by a full directional test matrix plus whole-game simulation tests —
+including the subtle bits like valid-move detection counting plain slides, not
+just merges. Writing that in Rust, with the borrow checker looking over my
+shoulder, taught me more about ownership and module design than any tutorial
+had.
+
+## On Homebrew
+
+The part I'd never done before: packaging. The release profile builds a lean
+`fibozzle` binary, and a [tap](https://github.com/krushiraj/homebrew-fibozzle)
+makes it installable anywhere:
+
+```sh
+brew install krushiraj/fibozzle/fibozzle
+fibozzle
+```
+
+Or, with Rust installed: `cargo install --git
+https://github.com/krushiraj/fibozzle-rust`.
+
+There's something very satisfying about a game I first wrote as a student in C
+being one `brew install` away for anyone with a terminal.

@@ -1,0 +1,63 @@
+---
+title: "Royal Lands"
+date: "2026-07-24"
+type: "project"
+published: true
+keywords: "royal lands,go,golang,pixijs,websockets,multiplayer,tile placement,kingdomino,event sourcing,sqlite,railway,browser game"
+description: "An online multiplayer kingdom-building tile-placement game for 2–4 players, built to learn Go and PixiJS — server-authoritative rules engine, event-sourced SQLite persistence, WebSockets, deployed on Railway."
+tags: "game,go,pixijs,websockets,multiplayer,learning"
+banner: "./banner.png"
+bannercaption: "Draft dominoes, grow your 5x5 kingdom, score crowns"
+demo: "https://royal-lands.up.railway.app"
+technologies: "go,typescript,pixijs,sqlite"
+---
+
+# Royal Lands
+
+Royal Lands is an online multiplayer kingdom-building tile-placement game for
+2–4 players, playable in the browser at
+[royal-lands.up.railway.app](https://royal-lands.up.railway.app). Players take
+turns drafting dominoes and placing them to grow a 5x5 kingdom, scoring by
+matching terrains and crowns — with a Middle Kingdom bonus for keeping your
+castle centered.
+
+I built it to learn two things at once: **Go** on the server and **PixiJS** on
+the client. Deliberately no frameworks in the way — the backend is Go's stdlib
+`net/http` plus a WebSocket library (the entire Go dependency list is two
+modules), and the frontend is PixiJS v8 with TypeScript and Vite, no React. The
+point was to learn the actual technologies, not a framework's wrapper around
+them.
+
+## How the server works
+
+The server is **authoritative**: clients send intents, the server validates,
+applies, and broadcasts state. It's split into three strict layers:
+
+- A **pure rules engine** — placement validation, flood-fill scoring, drafting —
+  with no I/O or goroutines, covered by table-driven tests.
+- A **room layer** where one goroutine owns each room's game state, receiving
+  actions over a channel and broadcasting back. No mutexes on game state; the
+  goroutine is the lock. "Share memory by communicating" finally clicked for me
+  here.
+- A thin **WebSocket transport** with one reader and one writer goroutine per
+  connection.
+
+## Games that survive redeploys
+
+Persistence is **event sourcing on SQLite**: every accepted action appends an
+event to a per-room journal, and on startup the server replays non-finished
+rooms through the same rules engine used live — decks are regenerated from a
+logged seed, so replay is deterministic. Live games survive server restarts and
+Railway redeploys. A TTL sweeper expires idle lobbies and abandoned games, and a
+summary table powers history and leaderboards without replaying logs.
+
+## The client
+
+The PixiJS client is a deliberately dumb renderer: one `applyState` per scene
+reconciles the screen with the latest server snapshot. On top of that sit the
+parts that made it feel like a real game — lobby and room scenes, a pan-and-zoom
+kingdom view with a shrinking placement window and locked-boundary walls,
+clickable minimaps to peek at opponents' kingdoms, touch controls
+(tap to preview, tap again to confirm), and a PWA production build with the
+client embedded in the Go binary — the whole thing deploys as a single
+container.
