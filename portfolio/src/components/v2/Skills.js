@@ -10,6 +10,8 @@ const skillGroups = [
       { name: "TypeScript", src: "/typescript.svg" },
       { name: "JavaScript", src: "/javascript.svg" },
       { name: "Python", src: "/python.svg" },
+      { name: "Go", src: "/go.svg" },
+      { name: "Rust", src: "/rust.svg" },
       { name: "Java", src: "/java.svg" },
       { name: "C#", src: "/c-sharp.svg" },
       { name: "C", src: "/c.svg" },
