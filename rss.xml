@@ -1,4 +1,91 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Krushi Raj Tula - RSS Feed]]></title><description><![CDATA[Portfolio of Krushi Raj Tula. A developer, geek, enthusiast, who loves to solve problems and fix things with technology. You can read my writings here.]]></description><link>https://krushiraj.github.io</link><generator>GatsbyJS</generator><lastBuildDate>Thu, 09 Jul 2026 10:00:17 GMT</lastBuildDate><item><title><![CDATA[Content Generation Harness]]></title><description><![CDATA[Content Generation Harness From guest-lecturing and reviewing student projects, I noticed the same thing
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Krushi Raj Tula - RSS Feed]]></title><description><![CDATA[Portfolio of Krushi Raj Tula. A developer, geek, enthusiast, who loves to solve problems and fix things with technology. You can read my writings here.]]></description><link>https://krushiraj.github.io</link><generator>GatsbyJS</generator><lastBuildDate>Fri, 24 Jul 2026 10:25:00 GMT</lastBuildDate><item><title><![CDATA[Royal Lands]]></title><description><![CDATA[Royal Lands Royal Lands is an online multiplayer kingdom-building tile-placement game for
+2–4 players, playable in the browser at
+ royal…]]></description><link>https://krushiraj.github.io/writings/royal-lands/</link><guid isPermaLink="true">https://krushiraj.github.io/writings/royal-lands/</guid><pubDate>Fri, 24 Jul 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;Royal Lands&lt;/h1&gt;&lt;p&gt;Royal Lands is an online multiplayer kingdom-building tile-placement game for
+2–4 players, playable in the browser at
+&lt;a href=&quot;https://royal-lands.up.railway.app&quot;&gt;royal-lands.up.railway.app&lt;/a&gt;. Players take
+turns drafting dominoes and placing them to grow a 5x5 kingdom, scoring by
+matching terrains and crowns — with a Middle Kingdom bonus for keeping your
+castle centered.&lt;/p&gt;&lt;p&gt;I built it to learn two things at once: &lt;strong&gt;Go&lt;/strong&gt; on the server and &lt;strong&gt;PixiJS&lt;/strong&gt; on
+the client. Deliberately no frameworks in the way — the backend is Go’s stdlib
+&lt;code&gt;net/http&lt;/code&gt; plus a WebSocket library (the entire Go dependency list is two
+modules), and the frontend is PixiJS v8 with TypeScript and Vite, no React. The
+point was to learn the actual technologies, not a framework’s wrapper around
+them.&lt;/p&gt;&lt;h2&gt;How the server works&lt;/h2&gt;&lt;p&gt;The server is &lt;strong&gt;authoritative&lt;/strong&gt;: clients send intents, the server validates,
+applies, and broadcasts state. It’s split into three strict layers:&lt;/p&gt;&lt;ul&gt;&lt;li&gt;A &lt;strong&gt;pure rules engine&lt;/strong&gt; — placement validation, flood-fill scoring, drafting —
+with no I/O or goroutines, covered by table-driven tests.&lt;/li&gt;&lt;li&gt;A &lt;strong&gt;room layer&lt;/strong&gt; where one goroutine owns each room’s game state, receiving
+actions over a channel and broadcasting back. No mutexes on game state; the
+goroutine is the lock. “Share memory by communicating” finally clicked for me
+here.&lt;/li&gt;&lt;li&gt;A thin &lt;strong&gt;WebSocket transport&lt;/strong&gt; with one reader and one writer goroutine per
+connection.&lt;/li&gt;&lt;/ul&gt;&lt;h2&gt;Games that survive redeploys&lt;/h2&gt;&lt;p&gt;Persistence is &lt;strong&gt;event sourcing on SQLite&lt;/strong&gt;: every accepted action appends an
+event to a per-room journal, and on startup the server replays non-finished
+rooms through the same rules engine used live — decks are regenerated from a
+logged seed, so replay is deterministic. Live games survive server restarts and
+Railway redeploys. A TTL sweeper expires idle lobbies and abandoned games, and a
+summary table powers history and leaderboards without replaying logs.&lt;/p&gt;&lt;h2&gt;The client&lt;/h2&gt;&lt;p&gt;The PixiJS client is a deliberately dumb renderer: one &lt;code&gt;applyState&lt;/code&gt; per scene
+reconciles the screen with the latest server snapshot. On top of that sit the
+parts that made it feel like a real game — lobby and room scenes, a pan-and-zoom
+kingdom view with a shrinking placement window and locked-boundary walls,
+clickable minimaps to peek at opponents’ kingdoms, touch controls
+(tap to preview, tap again to confirm), and a PWA production build with the
+client embedded in the Go binary — the whole thing deploys as a single
+container.&lt;/p&gt;</content:encoded></item><item><title><![CDATA[babygo]]></title><description><![CDATA[babygo When I learned Rust I loved  rustlings :
+it hands you broken code and a compiler, and you are not done until the check
+passes. When I…]]></description><link>https://krushiraj.github.io/writings/babygo/</link><guid isPermaLink="true">https://krushiraj.github.io/writings/babygo/</guid><pubDate>Sun, 19 Jul 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;babygo&lt;/h1&gt;&lt;p&gt;When I learned Rust I loved &lt;a href=&quot;https://github.com/rust-lang/rustlings&quot;&gt;rustlings&lt;/a&gt;:
+it hands you broken code and a compiler, and you are not done until the check
+passes. When I got to Go, the closest equivalent I found was golings — and
+honestly, it wasn’t very good. Meanwhile &lt;a href=&quot;https://gobyexample.com&quot;&gt;Go by
+Example&lt;/a&gt; is 85 complete, beautifully annotated
+programs that are excellent to read — but nothing is ever asked of you.&lt;/p&gt;&lt;p&gt;So I combined them. babygo is Go by Example with the load-bearing lines cut
+out. You put them back. The runner is a small Go CLI called &lt;code&gt;gorun&lt;/code&gt;:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot;&gt;git clone https://github.com/krushiraj/babygo &amp;amp;&amp;amp; cd babygo
+make watch
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;code&gt;make watch&lt;/code&gt; drops you into the first unsolved exercise and re-runs it every
+time you save — with a diff of expected vs. actual output, the exact differing
+characters highlighted, hints on demand, and single-key controls to re-run,
+reset, or move on. It needs Go 1.26+ and nothing else: no dependencies, no
+network after the clone.&lt;/p&gt;&lt;h2&gt;All 85 are machine-checked&lt;/h2&gt;&lt;p&gt;Exercises are checked by running them and diffing stdout — in Go by Example,
+&lt;em&gt;the output is the lesson&lt;/em&gt;. Where exact diffing can’t work, each exercise
+declares a mode: &lt;code&gt;regex&lt;/code&gt; for lines with timestamps or random values, &lt;code&gt;test&lt;/code&gt; for
+&lt;code&gt;go test&lt;/code&gt;-driven exercises, &lt;code&gt;unordered&lt;/code&gt; where Go’s map ordering shuffles lines.
+The modes weren’t guessed — a &lt;code&gt;capture&lt;/code&gt; command runs every solution ten times
+and observes what actually varies.&lt;/p&gt;&lt;p&gt;I was stubborn about one thing: &lt;strong&gt;no “tick the box to say you did it” mode.&lt;/strong&gt;
+The design allowed for one, assuming exercises like &lt;code&gt;http-server&lt;/code&gt;, &lt;code&gt;tcp-server&lt;/code&gt;
+and &lt;code&gt;signals&lt;/code&gt; couldn’t be harness-driven — they block forever or want a second
+terminal. Turns out they all can: &lt;code&gt;httptest&lt;/code&gt; covers HTTP, a port-0 listener
+with deadlines covers TCP, and &lt;code&gt;signals&lt;/code&gt; sends itself the interrupt. An “I
+promise I solved it” checkbox is exactly what a learner reaches for on the
+exercises that would have taught them the most.&lt;/p&gt;&lt;p&gt;There’s also a &lt;code&gt;make verify&lt;/code&gt; honesty check asserting the two things that
+matter for all 85: every solution passes its own checker (the exercise is
+solvable), and every shipped exercise fails it (there’s something to solve).&lt;/p&gt;&lt;h2&gt;Not a fork&lt;/h2&gt;&lt;p&gt;Go by Example isn’t forked — it’s cloned read-only, and the exercises are a
+derived artifact recording the upstream hash they were cut from. A fork would
+make every upstream merge conflict precisely where the lines were cut; instead
+&lt;code&gt;make sync&lt;/code&gt; just reports what moved upstream so exercises can be re-cut. All 85
+programs and all of the teaching are &lt;a href=&quot;https://github.com/mmcgrana/gobyexample&quot;&gt;Mark McGranaghan and Eli Bendersky’s Go
+by Example&lt;/a&gt; (CC BY 3.0) — this project
+only removes lines and adds a checker.&lt;/p&gt;</content:encoded></item><item><title><![CDATA[Fibozzle, in Rust]]></title><description><![CDATA[Fibozzle, in Rust Back in 2018 I wrote  Fibbozle , a console game in C that
+plays like 2048 except tiles merge along the Fibonacci series…]]></description><link>https://krushiraj.github.io/writings/fibozzle-rust/</link><guid isPermaLink="true">https://krushiraj.github.io/writings/fibozzle-rust/</guid><pubDate>Wed, 15 Jul 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;Fibozzle, in Rust&lt;/h1&gt;&lt;p&gt;Back in 2018 I wrote &lt;a href=&quot;/writings/fibbozle/&quot;&gt;Fibbozle&lt;/a&gt;, a console game in C that
+plays like 2048 except tiles merge along the Fibonacci series — a 2 and a 3 make
+a 5, a 5 and an 8 make a 13. It was my first proper terminal project, and I have
+a soft spot for it.&lt;/p&gt;&lt;p&gt;In 2026 I wanted to learn Rust, and the best way I know to learn a language is
+to rebuild something I already understand completely. So Fibozzle became my Rust
+project: same game at its core, but this time built the way I’d build it today
+instead of the way I could manage back then.&lt;/p&gt;&lt;h2&gt;What it became&lt;/h2&gt;&lt;p&gt;The remake grew well past the original. It’s a full
+&lt;a href=&quot;https://ratatui.rs&quot;&gt;Ratatui&lt;/a&gt; TUI now, not just a redrawn grid:&lt;/p&gt;&lt;ul&gt;&lt;li&gt;A welcome menu with &lt;strong&gt;New Game&lt;/strong&gt; (pick a player name and any board size from
+2x2 up to 8x8), &lt;strong&gt;Load Game&lt;/strong&gt;, and &lt;strong&gt;High Scores&lt;/strong&gt;.&lt;/li&gt;&lt;li&gt;2048-style &lt;strong&gt;colored tiles&lt;/strong&gt; that shift through the palette as values climb.&lt;/li&gt;&lt;li&gt;&lt;strong&gt;Undo&lt;/strong&gt; for up to five moves, and &lt;strong&gt;save/resume&lt;/strong&gt; — games are written to the
+platform data directory as compact binary files with an integrity checksum, so
+a casually edited save is detected and skipped on load.&lt;/li&gt;&lt;li&gt;A &lt;strong&gt;leaderboard&lt;/strong&gt; that ranks by highest Fibonacci tile reached, tie-broken by
+fewest moves, keeping the top 10 per board size.&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;The game logic itself was the part I was most careful with. All movement runs
+through a single shared &lt;code&gt;shift_vector&lt;/code&gt; routine with slide-and-merge semantics,
+backed by a full directional test matrix plus whole-game simulation tests —
+including the subtle bits like valid-move detection counting plain slides, not
+just merges. Writing that in Rust, with the borrow checker looking over my
+shoulder, taught me more about ownership and module design than any tutorial
+had.&lt;/p&gt;&lt;h2&gt;On Homebrew&lt;/h2&gt;&lt;p&gt;The part I’d never done before: packaging. The release profile builds a lean
+&lt;code&gt;fibozzle&lt;/code&gt; binary, and a &lt;a href=&quot;https://github.com/krushiraj/homebrew-fibozzle&quot;&gt;tap&lt;/a&gt;
+makes it installable anywhere:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot;&gt;brew install krushiraj/fibozzle/fibozzle
+fibozzle
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Or, with Rust installed: &lt;code&gt;cargo install --git
+https://github.com/krushiraj/fibozzle-rust&lt;/code&gt;.&lt;/p&gt;&lt;p&gt;There’s something very satisfying about a game I first wrote as a student in C
+being one &lt;code&gt;brew install&lt;/code&gt; away for anyone with a terminal.&lt;/p&gt;</content:encoded></item><item><title><![CDATA[Content Generation Harness]]></title><description><![CDATA[Content Generation Harness From guest-lecturing and reviewing student projects, I noticed the same thing
 over and over: students absorb core…]]></description><link>https://krushiraj.github.io/writings/content-generation-harness/</link><guid isPermaLink="true">https://krushiraj.github.io/writings/content-generation-harness/</guid><pubDate>Sun, 08 Feb 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;Content Generation Harness&lt;/h1&gt;&lt;p&gt;From guest-lecturing and reviewing student projects, I noticed the same thing
 over and over: students absorb core CS concepts much better in short,
 bite-sized form. I wanted to publish short educational videos regularly, but
@@ -478,7 +565,9 @@ different parts of something that was, for me back then, a slightly bigger
 project than usual. Getting the grid logic, the merging rules, and the input
 handling to all fit together cleanly was the whole point.&lt;/p&gt;&lt;h2&gt;How you can use it&lt;/h2&gt;&lt;p&gt;Clone it, compile the C, and play it in your terminal. The
 &lt;a href=&quot;https://github.com/krushiraj/fibbozle&quot;&gt;repo&lt;/a&gt; has the code if you want to see how
-it works or how I structured it.&lt;/p&gt;</content:encoded></item><item><title><![CDATA[django-forms-builder (my first PR)]]></title><description><![CDATA[django-forms-builder (my first PR) This is where my open-source story actually starts. I was using
+it works or how I structured it.&lt;/p&gt;&lt;h2&gt;The sequel&lt;/h2&gt;&lt;p&gt;In 2026 I &lt;a href=&quot;/writings/fibozzle-rust/&quot;&gt;rewrote Fibozzle in Rust&lt;/a&gt; as my
+learning-Rust project — a full Ratatui TUI with saves, undo, and a leaderboard,
+installable from Homebrew.&lt;/p&gt;</content:encoded></item><item><title><![CDATA[django-forms-builder (my first PR)]]></title><description><![CDATA[django-forms-builder (my first PR) This is where my open-source story actually starts. I was using
 django-forms-builder, a package that lets…]]></description><link>https://krushiraj.github.io/writings/django-forms-builder/</link><guid isPermaLink="true">https://krushiraj.github.io/writings/django-forms-builder/</guid><pubDate>Wed, 18 Apr 2018 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;django-forms-builder (my first PR)&lt;/h1&gt;&lt;p&gt;This is where my open-source story actually starts. I was using
 django-forms-builder, a package that lets you build forms right in the Django
 admin, for a college project. While using it I ran into a few shortcomings and
