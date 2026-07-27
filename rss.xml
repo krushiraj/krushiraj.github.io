@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Krushi Raj Tula - RSS Feed]]></title><description><![CDATA[Portfolio of Krushi Raj Tula. A developer, geek, enthusiast, who loves to solve problems and fix things with technology. You can read my writings here.]]></description><link>https://krushiraj.github.io</link><generator>GatsbyJS</generator><lastBuildDate>Fri, 24 Jul 2026 14:29:25 GMT</lastBuildDate><item><title><![CDATA[Royal Lands]]></title><description><![CDATA[Royal Lands Royal Lands is an online multiplayer kingdom-building tile-placement game for
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Krushi Raj Tula - RSS Feed]]></title><description><![CDATA[Portfolio of Krushi Raj Tula. A developer, geek, enthusiast, who loves to solve problems and fix things with technology. You can read my writings here.]]></description><link>https://krushiraj.github.io</link><generator>GatsbyJS</generator><lastBuildDate>Mon, 27 Jul 2026 08:39:13 GMT</lastBuildDate><item><title><![CDATA[Royal Lands]]></title><description><![CDATA[Royal Lands Royal Lands is an online multiplayer kingdom-building tile-placement game for
 2–4 players, playable in the browser at
  royal…]]></description><link>https://krushiraj.github.io/writings/royal-lands/</link><guid isPermaLink="true">https://krushiraj.github.io/writings/royal-lands/</guid><pubDate>Fri, 24 Jul 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;Royal Lands&lt;/h1&gt;&lt;p&gt;Royal Lands is an online multiplayer kingdom-building tile-placement game for
 2–4 players, playable in the browser at
@@ -88,20 +88,55 @@ https://github.com/krushiraj/fibozzle-rust&lt;/code&gt;.&lt;/p&gt;&lt;p&gt;There
 being one &lt;code&gt;brew install&lt;/code&gt; away for anyone with a terminal.&lt;/p&gt;</content:encoded></item><item><title><![CDATA[Content Generation Harness]]></title><description><![CDATA[Content Generation Harness From guest-lecturing and reviewing student projects, I noticed the same thing
 over and over: students absorb core…]]></description><link>https://krushiraj.github.io/writings/content-generation-harness/</link><guid isPermaLink="true">https://krushiraj.github.io/writings/content-generation-harness/</guid><pubDate>Sun, 08 Feb 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;Content Generation Harness&lt;/h1&gt;&lt;p&gt;From guest-lecturing and reviewing student projects, I noticed the same thing
 over and over: students absorb core CS concepts much better in short,
-bite-sized form. I wanted to publish short educational videos regularly, but
-making them by hand ate up all my time. So I built a harness to do most of the
-work for me.&lt;/p&gt;&lt;p&gt;It is a Claude-Code-style setup, a little ecosystem of scripts, CLI tools, and
-plugins that takes a topic and produces a finished video. Give it something like
-“Database Replication” and it will:&lt;/p&gt;&lt;ul&gt;&lt;li&gt;source good reference material on the topic,&lt;/li&gt;&lt;li&gt;draft a script tuned to the audience metrics I care about,&lt;/li&gt;&lt;li&gt;run that script through a review gate where a few sub-agents score it and keep
-refining until the average score hits 8,&lt;/li&gt;&lt;li&gt;use two more sub-agents to decide which scene is best rendered in which tool
-(Remotion or Manim),&lt;/li&gt;&lt;li&gt;render the scenes, generate the narration with a TTS service, and stitch
-everything into the final cut.&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;I also built a small video-reviewer web app for the human-in-the-loop part. I can
-click a specific pixel at a specific timestamp and leave a change note, and the
-harness reads those notes back in and acts on them. All of this cut my
-video-generation time by at least 10x, and I actually started publishing content
-instead of just meaning to.&lt;/p&gt;&lt;p&gt;The two repos below are the pieces of it: &lt;code&gt;eduvid&lt;/code&gt; is the engine (the CLI tools
-and binaries that handle TTS, rendering, and compositing), and &lt;code&gt;techniches&lt;/code&gt; is
-the layer of plugins and skills that orchestrates the whole pipeline on top.&lt;/p&gt;&lt;div class=&quot;RepoCards__Grid-sc-12xjmh7-0 bXKrXS&quot;&gt;&lt;a class=&quot;repo-card&quot; href=&quot;https://github.com/krushiraj/eduvid&quot; target=&quot;_blank&quot; rel=&quot;noopener noreferrer&quot;&gt;&lt;span class=&quot;repo-name&quot;&gt;krushiraj&lt;span class=&quot;slash&quot;&gt;/&lt;/span&gt;eduvid&lt;/span&gt;&lt;span class=&quot;repo-desc&quot;&gt;The engine. A TypeScript pipeline that turns declarative YAML scripts into videos, with TTS narration and Manim/Remotion visuals, usable from a CLI, a web UI, or as a Claude Code plugin.&lt;/span&gt;&lt;span class=&quot;repo-tech&quot;&gt;&lt;span&gt;TypeScript&lt;/span&gt;&lt;span&gt;Manim&lt;/span&gt;&lt;span&gt;Remotion&lt;/span&gt;&lt;span&gt;TTS&lt;/span&gt;&lt;/span&gt;&lt;/a&gt;&lt;a class=&quot;repo-card&quot; href=&quot;https://github.com/krushiraj/techniches&quot; target=&quot;_blank&quot; rel=&quot;noopener noreferrer&quot;&gt;&lt;span class=&quot;repo-name&quot;&gt;krushiraj&lt;span class=&quot;slash&quot;&gt;/&lt;/span&gt;techniches&lt;/span&gt;&lt;span class=&quot;repo-desc&quot;&gt;The orchestration layer. The plugins and skills that drive the multi-agent pipeline on top of eduvid, from sourcing references to the script scoring gate.&lt;/span&gt;&lt;span class=&quot;repo-tech&quot;&gt;&lt;span&gt;Python&lt;/span&gt;&lt;span&gt;Multi-agent&lt;/span&gt;&lt;span&gt;Orchestration&lt;/span&gt;&lt;/span&gt;&lt;/a&gt;&lt;/div&gt;</content:encoded></item><item><title><![CDATA[Self-Hosted Backup Tools]]></title><description><![CDATA[Self-Hosted Backup Tools At some point I decided to pull my data out of the various cloud accounts I was
+bite-sized form. I wanted to publish educational videos regularly, but making
+them by hand ate up all my time. So I built a harness to do most of the work
+for me.&lt;/p&gt;&lt;p&gt;It runs on Claude Code. I didn’t write an agent runtime — I wrote the layer
+that tells one what to do. &lt;code&gt;techniches&lt;/code&gt; is a Claude Code plugin: 33 sub-agents,
+23 slash commands, and a set of skills that encode how each stage of the
+pipeline should behave. &lt;code&gt;eduvid&lt;/code&gt; is the engine underneath it, a TypeScript
+monorepo handling everything that has to be deterministic — text-to-speech,
+rendering, compositing, thumbnails, sound effects. Give it a topic like “How
+DNS Works” and one command carries it through fifteen stages to a finished
+video.&lt;/p&gt;&lt;h2&gt;Voice first&lt;/h2&gt;&lt;p&gt;The decision everything else follows from: the audio is generated before any
+visuals exist.&lt;/p&gt;&lt;p&gt;Text-to-speech runs early and emits word-level timestamps. That file becomes
+the source of truth for the rest of the pipeline — every animation keyframe
+traces back to a real moment in the real narration. Visuals land 0.2 to 0.5
+seconds &lt;em&gt;after&lt;/em&gt; the narrator says the word they illustrate, because the ear
+should lead the eye.&lt;/p&gt;&lt;p&gt;The obvious alternative is to animate first and talk over it. That’s what makes
+most auto-generated video feel subtly wrong: the narration ends up stretched or
+clipped to fit visuals that were never listening to it. Here the narrator sets
+the pace and the animation follows.&lt;/p&gt;&lt;h2&gt;Gates, not vibes&lt;/h2&gt;&lt;p&gt;Almost every stage ends in a scored review gate, and nothing advances until it
+passes. Three failed attempts and the pipeline stops and asks me.&lt;/p&gt;&lt;p&gt;Script review is the strictest one. Six personas read the draft in parallel: a
+beginner asking whether they could follow it without pausing, a senior engineer
+checking it’s correct without being condescending, a script editor on pacing
+and word economy, a tech reviewer asking whether the analogies build the &lt;em&gt;right&lt;/em&gt;
+mental model, a retention analyst marking where someone would click away, and a
+competitor asking whether a creator with 500K subscribers would run this instead
+of their own. To pass, the average has to be 9 out of 10 with no individual
+score below 8. A coordinator then sorts the complaints — anything two or more
+personas independently flagged gets treated as blocking.&lt;/p&gt;&lt;p&gt;The final review works the same way but routes its failures by cause: script
+problems go back to the writing stage, pacing to audio, timing to the animation
+scripts, artifacts to rendering, and anything independent runs in parallel.&lt;/p&gt;&lt;h2&gt;Human in the loop&lt;/h2&gt;&lt;p&gt;The part I use most is the review board — a small web app that opens the
+finished deliverables and lets me annotate them the way I’d mark up a document.&lt;/p&gt;&lt;p&gt;On a video I can scrub to a timestamp and drop a point or a range with a note.
+On carousel slides I can drag a rectangle around the thing that’s wrong. On
+publishing copy I can select the offending sentence. Each annotation carries a
+category and a priority, and saving writes them all to a single
+&lt;code&gt;human-feedback.yaml&lt;/code&gt; in the project.&lt;/p&gt;&lt;p&gt;That file is the whole interface. &lt;code&gt;/studio-fix&lt;/code&gt; reads it back, groups the items
+by type and priority, works through them, and records what it actually did in a
+history file so the next pass knows what’s already been tried. Later stages
+check for open feedback before they run. So the loop is: watch the video, click
+the thing I don’t like, type a sentence, and let it go fix it. No describing
+where the problem is in prose.&lt;/p&gt;&lt;h2&gt;What actually comes out&lt;/h2&gt;&lt;p&gt;Not just the one video. The pipeline ends with a long-form cut, a set of
+vertical shorts — each built from scratch at native 1080×1920 rather than
+cropped out of the main video — an 8 to 12 slide carousel for Instagram and
+LinkedIn, three thumbnail variants that pass their own two-stage gate, and
+ready-to-paste copy for every platform.&lt;/p&gt;&lt;p&gt;The least glamorous part took the longest to get right. Manim and Remotion
+produce files with different time bases, so concatenating them directly
+desynchronizes the audio. Everything routes through MPEG-TS intermediates with
+the channel layout forced to stereo, because mono narration silently plays out
+of one ear otherwise. Nobody notices that work when it’s correct, which is the
+point.&lt;/p&gt;&lt;p&gt;All of this cut my production time by at least 10x, and I actually started
+publishing instead of just meaning to.&lt;/p&gt;&lt;div class=&quot;RepoCards__Grid-sc-12xjmh7-0 bXKrXS&quot;&gt;&lt;a class=&quot;repo-card&quot; href=&quot;https://github.com/krushiraj/eduvid&quot; target=&quot;_blank&quot; rel=&quot;noopener noreferrer&quot;&gt;&lt;span class=&quot;repo-name&quot;&gt;krushiraj&lt;span class=&quot;slash&quot;&gt;/&lt;/span&gt;eduvid&lt;/span&gt;&lt;span class=&quot;repo-desc&quot;&gt;The engine. A TypeScript monorepo that turns declarative YAML into video — TTS with word-level timestamps, Manim and Remotion rendering, ffmpeg compositing — usable from a CLI, a web UI, or as a Claude Code plugin.&lt;/span&gt;&lt;span class=&quot;repo-tech&quot;&gt;&lt;span&gt;TypeScript&lt;/span&gt;&lt;span&gt;Manim&lt;/span&gt;&lt;span&gt;Remotion&lt;/span&gt;&lt;span&gt;TTS&lt;/span&gt;&lt;/span&gt;&lt;/a&gt;&lt;a class=&quot;repo-card&quot; href=&quot;https://github.com/krushiraj/techniches&quot; target=&quot;_blank&quot; rel=&quot;noopener noreferrer&quot;&gt;&lt;span class=&quot;repo-name&quot;&gt;krushiraj&lt;span class=&quot;slash&quot;&gt;/&lt;/span&gt;techniches&lt;/span&gt;&lt;span class=&quot;repo-desc&quot;&gt;The orchestration layer. A Claude Code plugin of 33 sub-agents, 23 commands, and the skills that drive the pipeline on top of eduvid, from sourcing references to the scored review gates.&lt;/span&gt;&lt;span class=&quot;repo-tech&quot;&gt;&lt;span&gt;Claude Code&lt;/span&gt;&lt;span&gt;Multi-agent&lt;/span&gt;&lt;span&gt;Orchestration&lt;/span&gt;&lt;/span&gt;&lt;/a&gt;&lt;/div&gt;</content:encoded></item><item><title><![CDATA[Self-Hosted Backup Tools]]></title><description><![CDATA[Self-Hosted Backup Tools At some point I decided to pull my data out of the various cloud accounts I was
 paying for and move it onto my own…]]></description><link>https://krushiraj.github.io/writings/self-hosted-backup-tools/</link><guid isPermaLink="true">https://krushiraj.github.io/writings/self-hosted-backup-tools/</guid><pubDate>Tue, 25 Nov 2025 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;Self-Hosted Backup Tools&lt;/h1&gt;&lt;p&gt;At some point I decided to pull my data out of the various cloud accounts I was
 paying for and move it onto my own NAS at home. The exports you get from Google
 and Snapchat are a mess though, thousands of files with odd names, split ZIPs,
