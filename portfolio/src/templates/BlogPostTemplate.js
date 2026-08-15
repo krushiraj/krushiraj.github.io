@@ -274,19 +274,12 @@ const StyledPost = styled.article`
 `
 
 const BlogPostTemplate = ({ data, pageContext }) => {
-  const {
-    body,
-    frontmatter,
-    fields: {
-      slug,
-      timeToRead: { minutes },
-      socialImage: {
-        childImageSharp: {
-          original: { src },
-        },
-      },
-    },
-  } = data.mdx
+  const { body, frontmatter, fields } = data.mdx
+  const { slug } = fields
+  // socialImage is generated at build time and can be absent if that step
+  // failed, so never destructure through it.
+  const src = fields.socialImage?.childImageSharp?.original?.src
+  const minutes = fields.timeToRead?.minutes ?? 0
   const { previous, next } = pageContext
   const readMins = Math.max(1, Math.ceil(minutes))
   const crumbLabel = frontmatter.title

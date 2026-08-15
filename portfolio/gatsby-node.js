@@ -102,6 +102,7 @@ exports.onCreateNode = async ({
   getNode,
   store,
   createNodeId,
+  reporter,
 }) => {
   const { createNodeField, createNode } = actions
 
@@ -146,7 +147,12 @@ exports.onCreateNode = async ({
         value: ogImageNode.id,
       })
     } catch (e) {
-      console.log(e)
+      // The post still renders without a social card, so don't fail the build,
+      // but make it loud enough to notice instead of silently dropping the field.
+      reporter.warn(
+        `Social image generation failed for ${node.frontmatter.title ||
+          node.id}: ${e.message}`
+      )
     }
   }
 }
