@@ -100,9 +100,13 @@ const getHtml = ({ type, date, readMins, title, description, tags }) => `
         font-size: 19px; font-weight: 500; color: ${T.accent}; position: relative;
       }
       h1 {
-        font-size: 74px; font-weight: 600; line-height: 1.07;
+        /* line-height has to clear Fraunces' descenders: the line-clamp box
+           clips at the last line box, so a tight leading shears the tails off
+           g, j and p on the final line. */
+        font-size: 70px; font-weight: 600; line-height: 1.16;
         letter-spacing: -0.022em; color: ${T.paperBright};
-        -webkit-line-clamp: 3; margin-top: 30px; position: relative;
+        -webkit-line-clamp: 3; margin-top: 26px; padding-bottom: 6px;
+        position: relative;
       }
       .desc {
         font-size: 26px; line-height: 1.5; color: ${T.muted};
