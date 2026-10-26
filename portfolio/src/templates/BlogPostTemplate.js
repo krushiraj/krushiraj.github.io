@@ -336,7 +336,7 @@ const BlogPostTemplate = ({ data, pageContext }) => {
             enthusiast who loves solving hard problems and fixing things with
             technology. Reach out on{" "}
             <a
-              href="https://twitter.com/krushiraj123"
+              href="https://x.com/krushiraj123"
               target="_blank"
               rel="noopener noreferrer"
             >

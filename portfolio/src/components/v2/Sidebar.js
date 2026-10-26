@@ -183,7 +183,7 @@ const Sidebar = ({ activeId }) => (
         <em>Tula</em>
       </h1>
       <p className="role">
-        Full-Stack Engineer ·{" "}
+        Senior Full Stack Engineer ·{" "}
         <a
           href="https://www.paperpile.com/"
           target="_blank"
@@ -193,8 +193,9 @@ const Sidebar = ({ activeId }) => (
         </a>
       </p>
       <p className="tagline">
-        I design and scale backend systems, ship developer tools people
-        actually enjoy, and build AI-native products end to end.
+        I own a 230M+ document search platform end to end, ship developer
+        tools people actually enjoy, and build AI agents that verify before
+        they act. Open to remote roles.
       </p>
 
       <nav aria-label="Section navigation">

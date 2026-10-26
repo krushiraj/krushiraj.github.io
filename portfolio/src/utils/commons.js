@@ -28,7 +28,7 @@ export const contactItems = [
     title: "StackOverflow",
   },
   {
-    href: "https://twitter.com/krushiraj123",
+    href: "https://x.com/krushiraj123",
     icon: faTwitter,
     title: "Twitter",
   },

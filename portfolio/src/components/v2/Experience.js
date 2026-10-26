@@ -10,13 +10,14 @@ const experienceList = [
     company: "Paperpile",
     companyUrl: "https://www.paperpile.com/",
     imgSrc: "/paperpile-logo.png",
-    role: "Full-Stack Engineer",
+    role: "Senior Full Stack Engineer",
     type: "Full Time",
     duration: "Jan 2020 - Present",
     description:
       "Sole developer of Paperpile's internal academic search platform, a 230M+ document system I own end to end (React/Next.js, Node/TypeScript; MongoDB, Elasticsearch, PostgreSQL).",
     highlights: [
       "Cut p99 search latency from ~10s to under 1s by redesigning indexing and query paths across Elasticsearch, MongoDB, and SQLite.",
+      "Cut Elasticsearch load about 55% without adding capacity, by moving rarely changing journal data into a replicated per-server SQLite FTS file and caching URL-crawl results for a day.",
       "Designed and maintained 10+ microservices handling millions of dynamic-payload messages, with strict retries, ordering, and idempotency.",
       "Built ingestion pipelines processing 300GB+ of text monthly, and raised corpus abstract coverage from 27% to 51% with crawler/scraper engines.",
       "Built the author-name parser (Stanford NLP model + a custom trie), reaching 87% accuracy vs 45-58% for the best open-source parsers at the time.",
@@ -62,7 +63,7 @@ const experienceList = [
     company: "ServiceNow",
     companyUrl: "https://www.servicenow.com/",
     imgSrc: "/servicenow-logo.png",
-    role: "Software Engineer",
+    role: "Software Engineering Intern",
     type: "Internship",
     duration: "Jan 2019 - Jun 2019",
     description:

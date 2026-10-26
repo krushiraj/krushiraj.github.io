@@ -76,7 +76,7 @@ export default class Bio extends React.Component {
           loves to solve problems and fix things with technology. You can reach
           out to him on{" "}
           <a
-            href="https://twitter.com/krushiraj123"
+            href="https://x.com/krushiraj123"
             target="_blank"
             rel="noopener noreferrer"
           >
