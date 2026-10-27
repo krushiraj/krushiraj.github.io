@@ -1,6 +1,8 @@
 import React from "react"
 import styled from "styled-components"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { colors, fonts, accentTint } from "../../utils/theme"
+import { contactItems } from "../../utils/commons"
 import { media, smoothScrollToId } from "./shared"
 import ThemeToggle from "./ThemeToggle"
 
@@ -36,6 +38,83 @@ const StyledSidebar = styled.aside`
     outline: 1px solid ${accentTint("55%")};
     outline-offset: 4px;
     box-shadow: 0 10px 24px -10px ${accentTint("45%")};
+  }
+
+  .hire-banner {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin: 0 0 1.5rem;
+    padding: 0.45rem 0.95rem 0.45rem 0.75rem;
+    border-radius: 999px;
+    border: 1px dashed ${accentTint("55%")};
+    background: ${accentTint("10%")};
+    color: ${colors.paperBright};
+    font-size: 0.82rem;
+    line-height: 1.35;
+    transition: transform 0.25s ease, border-color 0.25s ease;
+
+    &:after {
+      display: none;
+    }
+
+    &:hover {
+      transform: translateY(-2px) rotate(-0.6deg);
+      border-color: ${colors.accent};
+    }
+
+    .dot {
+      flex: none;
+      width: 0.55rem;
+      height: 0.55rem;
+      border-radius: 50%;
+      background: #4ade80;
+      box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.6);
+      animation: hire-pulse 2s ease-out infinite;
+    }
+
+    b {
+      font-weight: 600;
+      color: ${colors.accent};
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .dot {
+        animation: none;
+      }
+    }
+  }
+
+  @keyframes hire-pulse {
+    70% {
+      box-shadow: 0 0 0 0.5rem rgba(74, 222, 128, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(74, 222, 128, 0);
+    }
+  }
+
+  .socials {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.1rem;
+    margin: 1.5rem 0 0;
+
+    a {
+      color: ${colors.muted};
+      font-size: 1.15rem;
+      transition: color 0.25s ease, transform 0.25s ease;
+
+      &:after {
+        display: none;
+      }
+
+      &:hover {
+        color: ${colors.paperBright};
+        transform: translateY(-3px);
+      }
+    }
   }
 
   .theme-toggle {
@@ -161,6 +240,16 @@ export const navItems = [
 const Sidebar = ({ activeId }) => (
   <StyledSidebar>
     <div>
+      <a
+        className="hire-banner"
+        href="mailto:krushiraj123+portfolio@gmail.com?subject=Let%27s%20talk%20about%20a%20role"
+      >
+        <span className="dot" aria-hidden="true" />
+        <span>
+          <b>Looking for my next role.</b> Refer me, test me, or hire me
+          directly. Say hi &rarr;
+        </span>
+      </a>
       <picture>
         <source
           type="image/webp"
@@ -197,6 +286,21 @@ const Sidebar = ({ activeId }) => (
         tools people actually enjoy, and build AI agents that verify before
         they act. Open to remote roles.
       </p>
+
+      <div className="socials">
+        {contactItems.map(({ href, icon, title }) => (
+          <a
+            key={title}
+            href={href}
+            title={title}
+            aria-label={title}
+            target={href.startsWith("mailto:") ? undefined : "_blank"}
+            rel="noopener noreferrer"
+          >
+            <FontAwesomeIcon icon={icon} />
+          </a>
+        ))}
+      </div>
 
       <nav aria-label="Section navigation">
         <ul>
